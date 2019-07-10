@@ -3,8 +3,6 @@
   export let title;
   export let className;
 
-  console.log(title);
-
   const classNames = classnames({
     "nes-container": true,
     "with-title": !!title,
