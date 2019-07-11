@@ -19,16 +19,16 @@ const getGames = async function(id) {
     `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${Meteor.settings.steam.key}&steamid=${id}&format=json&include_appinfo=1&include_played_free_games=1`
   );
   const games = gamesResponse.data.response.games;
+  const insertedGames = [];
   if (games) {
-    const insertedGames = [];
     games.forEach(g => {
       const { insertedId }= Game.upsert({ appid: g.appid }, g);
-      console.log(t);
-      return insertedId;
+      if(insertedId) {
+        insertedGames.push(insertedId);
+      }
     })
-  } else {
-    return [];
   }
+  return insertedGames;
 };
 
 Meteor.startup(() => {
@@ -63,9 +63,12 @@ Meteor.startup(() => {
         gameIds = await getGames(steamConnection.id);
       }
 
-      const serverIds = servers.map(s => {
-        const { insertedId } = Server.upsert({id: s.id}, s)
-        return insertedId;
+      const insertedServers = [];
+      servers.forEach(s => {
+        const { insertedId } = Server.upsert({id: s.id}, s);
+        if(insertedId) {
+          insertedServers.push(insertedId);
+        }
       });
       
       Accounts.users.update({ _id: user._id }, { 
@@ -73,7 +76,7 @@ Meteor.startup(() => {
           connections
         },
         $addToSet: {
-          servers: { $each: serverIds },
+          servers: { $each: insertedServers },
           games: { $each: gameIds }
         }
       });
