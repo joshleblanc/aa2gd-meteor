@@ -19,4 +19,4 @@
   }
 </style>
 
-<button class={classNames} disabled={disabled} on:click>{value}</button>
+<button class={classNames} disabled={disabled} on:click><slot></slot></button>

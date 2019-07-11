@@ -53,7 +53,6 @@ Meteor.startup(() => {
     async 'users.fetchInfo'() {
       const user = Accounts.user();
       const token = user.services.discord.accessToken;
-      const discordUser = await discordReq("users/@me", token);
       const connections = await discordReq("users/@me/connections", token);
       const servers = await discordReq("users/@me/guilds", token);
 

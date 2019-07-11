@@ -1,21 +1,4 @@
-<script>
-  import Button from './Button';
-  import { Link } from 'svelte-routing';
 
-  function handleClick(event) {
-    Meteor.loginWithDiscord({
-      requestPermissions: ['identify', 'email', 'connections', 'guilds', 'guilds.join']
-    }, (error) => {
-      console.log("Did the thing afterwords");
-      if (error) {
-        // Do some error handling stuff
-      } else {
-        Meteor.call('users.fetchInfo');
-      }
-    });
-    console.log("login with discord");
-  }
-</script>
 
 <style>
   header {
@@ -48,9 +31,29 @@
 <header>
   <div>
     <h6>Famti.me</h6>
-    <Link to="/test">
-      <Button variant="primary" value="Create Event" on:click={handleClick}/>
-    </Link>
-    
+    {#if user}
+      <Button variant="primary">Create Event</Button>
+    {:else}
+      <LoginButton />
+    {/if}
   </div>
 </header>
+
+<script>
+  import LoginButton from './LoginButton';
+  import Button from './Button';
+  import { Meteor } from 'meteor/meteor';
+  import { Link } from 'svelte-routing';
+  import { Tracker } from 'meteor/tracker';
+  import { onDestroy } from 'svelte';
+
+  let user;
+  const computation = Tracker.autorun(() => {
+    user = Meteor.user();
+    console.log(user);
+  });
+
+  onDestroy(() => {
+    computation.stop();
+  });
+</script>
