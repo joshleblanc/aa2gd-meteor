@@ -6,10 +6,14 @@
     Meteor.loginWithDiscord({
       requestPermissions: ['identify', 'email', 'connections', 'guilds', 'guilds.join']
     }, (error) => {
+      console.log("Did the thing afterwords");
       if (error) {
         // Do some error handling stuff
+      } else {
+        Meteor.call('users.fetchInfo');
       }
     });
+    console.log("login with discord");
   }
 </script>
 
