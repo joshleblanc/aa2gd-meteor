@@ -8,6 +8,7 @@
     import ServerList from '../components/ServerList';
     import ConnectionList from '../components/ConnectionList';
     import { User } from '../../lib/User';
+    import TimeTable from '../components/TimeTable';
 
     let user;
     let avatarUrl;
@@ -38,7 +39,7 @@
 <div class="columns is-multiline">
     <div class="column">
         <StyledPaper title="Times available">
-        
+            <TimeTable />
         </StyledPaper>
     </div>
     <div class="column">
