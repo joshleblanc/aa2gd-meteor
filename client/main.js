@@ -2,7 +2,8 @@ import App from './App.svelte';
 import 'nes.css/css/nes.css';
 
 Meteor.startup(() => {
-  console.log(document.querySelector('main'));
+  Meteor.subscribe('currentUser');
+
   new App({
     target: document.querySelector('main')
   });

@@ -1,5 +1,5 @@
 <script>
-  import Button from './Button';
+  import Button from './Button.svelte';
 
   function handleClick(event) {
     Meteor.loginWithDiscord({

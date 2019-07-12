@@ -4,6 +4,23 @@ import Persons from '/lib/Persons';
 import Server from '/lib/Server';
 import Game from '../lib/Game';
 
+Meteor.publish('currentUser', function() {
+  if(this.userId) {
+    return Meteor.users.find({
+      _id: this.userId
+    }, {
+      fields: {
+        servers: 1,
+        games: 1,
+        profile: 1,
+        services: 1
+      }
+    })
+  } else {
+    this.ready();
+  }
+});
+
 const discordReq = async function(path, token) {
   const api_url = "https://discordapp.com/api";
   const response = await HTTP.get(`${api_url}/${path}`, {
@@ -42,12 +59,6 @@ Meteor.startup(() => {
       }
     }
   );
-
-  if(Persons.find().count() < 1) {
-    Persons.insert({
-      name: "Meteor developer"
-    });
-  }
 
   Meteor.methods({
     async 'users.fetchInfo'() {

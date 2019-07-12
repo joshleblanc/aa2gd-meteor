@@ -1,4 +1,21 @@
+<script>
+  import LoginButton from './LoginButton';
+  import Button from './Button';
+  import { Meteor } from 'meteor/meteor';
+  import { Link } from 'svelte-routing';
+  import { Tracker } from 'meteor/tracker';
+  import { onDestroy } from 'svelte';
 
+  let user;
+  const computation = Tracker.autorun(() => {
+    user = Meteor.user();
+    console.log(user);
+  });
+
+  onDestroy(() => {
+    computation.stop();
+  });
+</script>
 
 <style>
   header {
@@ -11,7 +28,9 @@
     box-sizing: border-box;
     flex-shrink: 0;
     flex-direction: column;
-    width: 100%;
+    width: calc(100% - 240px);
+    border-bottom: 1px solid black;
+
   }
 
   header > div {
@@ -38,22 +57,3 @@
     {/if}
   </div>
 </header>
-
-<script>
-  import LoginButton from './LoginButton';
-  import Button from './Button';
-  import { Meteor } from 'meteor/meteor';
-  import { Link } from 'svelte-routing';
-  import { Tracker } from 'meteor/tracker';
-  import { onDestroy } from 'svelte';
-
-  let user;
-  const computation = Tracker.autorun(() => {
-    user = Meteor.user();
-    console.log(user);
-  });
-
-  onDestroy(() => {
-    computation.stop();
-  });
-</script>
