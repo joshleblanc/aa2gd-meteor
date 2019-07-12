@@ -51,7 +51,9 @@
   <div>
     <h6>Famti.me</h6>
     {#if user}
-      <Button variant="primary">Create Event</Button>
+      <Link to="/events/new">
+        <Button variant="primary">Create Event</Button>
+      </Link>
     {:else}
       <LoginButton />
     {/if}
