@@ -3,6 +3,7 @@
   import { Tracker } from 'meteor/tracker';
   import { onDestroy } from 'svelte';
   import { Meteor } from 'meteor/meteor';
+  import { makeDiscordAvatarUrl } from '../../lib/utils';
   import ListItem from './ListItem';
   import ListItemAvatar from './ListItemAvatar';
   import Avatar from './Avatar';
@@ -17,7 +18,7 @@
     console.log(user);
     discord = user && user.services && user.services.discord;
     if(discord) {
-      avatarUrl = `http://cdn.discordapp.com/avatars/${discord.id}/${discord.avatar}.png`;
+      avatarUrl = makeDiscordAvatarUrl(discord.id, discord.avatar);
     }
   });
 

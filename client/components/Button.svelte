@@ -16,6 +16,7 @@
 <style>
   button {
     font-size: 0.625rem;
+    font-family: "Press Start 2P";
   }
 </style>
 

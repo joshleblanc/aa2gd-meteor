@@ -17,13 +17,18 @@
   .toolbar {
     min-height: 64px;
   }
+
+  .content {
+    height: 100%;
+    width: 100%;
+  }
 </style>
 
 <div class="root">
   <Router url="{url}">
     <Navbar />
     <Sidebar />
-    <div>
+    <div class="content">
       <div class="toolbar" />
       <Route path="home" component="{Home}" />
       <Route path="profile" component="{Profile}" />

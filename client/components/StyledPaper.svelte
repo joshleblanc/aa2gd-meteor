@@ -12,9 +12,9 @@
 </script>
 
 <style>
-  div {
-    padding: 6px;
-    margin: 8px;
+  div.nes-container {
+    padding: 12px;
+    margin: 16px;
   }
 
   p {

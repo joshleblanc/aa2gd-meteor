@@ -13,7 +13,8 @@ Meteor.publish('currentUser', function() {
         servers: 1,
         games: 1,
         profile: 1,
-        services: 1
+        services: 1,
+        connections: 1
       }
     })
   } else {
