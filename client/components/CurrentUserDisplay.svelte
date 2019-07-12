@@ -3,23 +3,16 @@
   import { Tracker } from 'meteor/tracker';
   import { onDestroy } from 'svelte';
   import { Meteor } from 'meteor/meteor';
-  import { makeDiscordAvatarUrl } from '../../lib/utils';
   import ListItem from './ListItem';
   import ListItemAvatar from './ListItemAvatar';
   import Avatar from './Avatar';
   import ListItemText from './ListItemText';
-
+  import ListItemPrimaryText from './ListItemPrimaryText';
+  import { User } from '../../lib/User';
 
   let user;
-  let avatarUrl;
-  let discord;
   const computation = Tracker.autorun(() => {
-    user = Meteor.user();
-    console.log(user);
-    discord = user && user.services && user.services.discord;
-    if(discord) {
-      avatarUrl = makeDiscordAvatarUrl(discord.id, discord.avatar);
-    }
+    user = User.findOne(Meteor.userId);
   });
 
   onDestroy(() => {
@@ -38,10 +31,10 @@
     <div class="container">
       <ListItem>
         <ListItemAvatar>
-          <Avatar src={avatarUrl} alt="profile picture" />
+          <Avatar src={user.avatarUrl()} alt="profile picture" />
         </ListItemAvatar>
         <ListItemText>
-          {discord && discord.username}
+          <ListItemPrimaryText>{user.services.discord.username}</ListItemPrimaryText>
         </ListItemText>
       </ListItem>
     </div>

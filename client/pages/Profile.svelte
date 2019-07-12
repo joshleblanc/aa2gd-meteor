@@ -2,26 +2,21 @@
     import { Tracker } from 'meteor/tracker';
     import { Meteor } from 'meteor/meteor';
     import { onDestroy } from 'svelte';
+    import StyledPaper from '../components/StyledPaper';
     import HeaderPaper from '../components/HeaderPaper';
     import Button from '../components/Button';
-    import { makeDiscordAvatarUrl } from '../../lib/utils';
+    import ServerList from '../components/ServerList';
+    import ConnectionList from '../components/ConnectionList';
+    import { User } from '../../lib/User';
 
     let user;
     let avatarUrl;
     let name;
     let hasSteam = true;
-    $: {
-        if(user && user.services && user.services.discord) {
-            let d = user.services.discord;
-            avatarUrl = makeDiscordAvatarUrl(d.id, d.avatar);
-            name = d.username;
-        }
-        if(user && user.connections) {
-            hasSteam = user.connections.find(c => c.type === "steam");
-        }
-    }
+    let serverIds = [];
     const computation = Tracker.autorun(() => {
-        user = Meteor.user();
+        user = User.findOne(Meteor.userId);
+        console.log(user);
     });
 
     onDestroy(() => {
@@ -31,11 +26,29 @@
 
 <div class="columns">
     <div class="column">
-        <HeaderPaper imgUrl={avatarUrl} title={name}>
+        <HeaderPaper imgUrl={user.avatarUrl()} title={user.services.discord.username}>
             {#if !hasSteam}
                 <Button>Connect Steam</Button>
             {/if}
             <Button variant="error" on:click={() => Meteor.logout()}>Logout</Button>
         </HeaderPaper>
+    </div>
+</div>
+
+<div class="columns is-multiline">
+    <div class="column">
+        <StyledPaper title="Times available">
+        
+        </StyledPaper>
+    </div>
+    <div class="column">
+        <StyledPaper title="Servers">
+            <ServerList />
+        </StyledPaper>
+    </div>
+    <div class="column">
+        <StyledPaper title="Connections">
+            <ConnectionList />
+        </StyledPaper>
     </div>
 </div>

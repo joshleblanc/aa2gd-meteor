@@ -1,6 +1,6 @@
 <script>
-    export let src;
-    export let alt;
+    export let src = null;
+    export let alt = null;
 </script>
 
 <style>
@@ -27,5 +27,10 @@
 </style>
 
 <div>
-    <img alt={alt} src={src}>
+    {#if src}
+        <img alt={alt} src={src}>
+    {:else}
+        <slot></slot>
+    {/if}
 </div>
+

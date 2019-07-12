@@ -11,7 +11,6 @@
         Meteor.call('users.fetchInfo');
       }
     });
-    console.log("login with discord");
   }
 </script>
 

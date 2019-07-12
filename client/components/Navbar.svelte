@@ -5,11 +5,11 @@
   import { Link } from 'svelte-routing';
   import { Tracker } from 'meteor/tracker';
   import { onDestroy } from 'svelte';
+  import { User } from '../../lib/User';
 
   let user;
   const computation = Tracker.autorun(() => {
-    user = Meteor.user();
-    console.log(user);
+    user = User.findOne(Meteor.userId);
   });
 
   onDestroy(() => {

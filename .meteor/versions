@@ -35,12 +35,14 @@ http@1.4.2
 id-map@1.1.0
 insecure@1.0.7
 inter-process-messaging@0.1.0
+jagi:astronomy@2.7.2
 launch-screen@1.1.1
 lichthagel:accounts-discord@0.2.0
 lichthagel:discord-oauth@0.1.0
 livedata@1.0.18
 localstorage@1.2.0
 logging@1.1.20
+mdg:validation-error@0.5.1
 meteor@1.9.3
 meteor-base@1.4.0
 minifier-css@1.4.2

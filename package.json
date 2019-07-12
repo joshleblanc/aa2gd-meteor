@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.3.4",
+    "@fortawesome/fontawesome-pro": "^5.9.0",
     "bulma": "^0.7.5",
     "classnames": "^2.2.6",
     "meteor-node-stubs": "^0.4.1",

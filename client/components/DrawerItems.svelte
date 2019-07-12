@@ -7,7 +7,7 @@
   import List from './List';
   import ListItemText from './ListItemText';
   import ListItem from './ListItem';
-  
+  import ListItemPrimaryText from './ListItemPrimaryText';
   let events = [];
   const computation = Tracker.autorun(() => {
     // subscribe to events
@@ -19,19 +19,13 @@
 
 </script>
 
-<style>
-  .divider {
-    background-color: black;
-  }
-</style>
-
 <CurrentUserDisplay />
 <Divider />
 <List>
   {#if events.length === 0}
     <ListItem>
       <ListItemText>
-        No events have been created!
+        <ListItemPrimaryText>No events have been created!</ListItemPrimaryText>
       </ListItemText>
     </ListItem>
   {/if}

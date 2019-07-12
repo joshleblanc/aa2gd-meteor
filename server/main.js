@@ -1,26 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
-import Persons from '/lib/Persons';
-import Server from '/lib/Server';
-import Game from '../lib/Game';
-
-Meteor.publish('currentUser', function() {
-  if(this.userId) {
-    return Meteor.users.find({
-      _id: this.userId
-    }, {
-      fields: {
-        servers: 1,
-        games: 1,
-        profile: 1,
-        services: 1,
-        connections: 1
-      }
-    })
-  } else {
-    this.ready();
-  }
-});
+import { Server }  from '/lib/Server';
+import { Game } from '../lib/Game';
+import { User } from '../lib/User';
 
 const discordReq = async function(path, token) {
   const api_url = "https://discordapp.com/api";
@@ -40,7 +22,7 @@ const getGames = async function(id) {
   const insertedGames = [];
   if (games) {
     games.forEach(g => {
-      const { insertedId }= Game.upsert({ appid: g.appid }, g);
+      const { insertedId }= Games.upsert({ appid: g.appid }, g);
       if(insertedId) {
         insertedGames.push(insertedId);
       }
@@ -76,7 +58,7 @@ Meteor.startup(() => {
 
       const insertedServers = [];
       servers.forEach(s => {
-        const { insertedId } = Server.upsert({id: s.id}, s);
+        const { insertedId } = Servers.upsert({id: s.id}, s);
         if(insertedId) {
           insertedServers.push(insertedId);
         }
