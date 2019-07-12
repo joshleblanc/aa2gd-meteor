@@ -1,5 +1,6 @@
 <script>
   import CurrentUserDisplay from './CurrentUserDisplay';
+  import Divider from './Divider';
 </script>
 
 <style>
@@ -9,3 +10,4 @@
 </style>
 
 <CurrentUserDisplay />
+<Divider />

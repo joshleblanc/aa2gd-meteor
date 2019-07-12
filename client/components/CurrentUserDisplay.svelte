@@ -5,17 +5,27 @@
   import { Meteor } from 'meteor/meteor';
 
   let user;
+  let avatarUrl;
+  let discord;
   const computation = Tracker.autorun(() => {
-    console.log(Meteor.user());
+    user = Meteor.user();
+    console.log(user);
+    discord = user && user.services && user.services.discord;
+    if(discord) {
+      avatarUrl = `http://cdn.discordapp.com/avatars/${discord.id}/${discord.avatar}.png`;
+    }
   });
 
   onDestroy(() => {
     computation.stop();
   });
+
+
+
 </script>
 
 <style>
-  div:first {
+  .container {
     min-height: 64px;
     padding-left: 16px;
     padding-right: 16px;
@@ -56,13 +66,25 @@
     text-align: center;
     object-fit: cover;
   }
+
+  .text {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
 </style>
 
 {#if user}
   <Link to="/profile">
-    <div class="avatar">
-      <div class="avatar-root">
-        <!-- <img src={`http://cdn.discordapp.com/avatars/${user.services.discord.id}/${user.services.discord.avatar}.png`}> -->
+    <div class="container">
+      <div class="avatar">
+        <div class="avatar-root">
+          <img src={avatarUrl}>
+        </div>
+      </div>
+      <div class="text">
+        <span>{discord && discord.username}</span>
       </div>
     </div>
   </Link>
