@@ -18,16 +18,12 @@ const getGames = async function(id) {
     `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${Meteor.settings.steam.key}&steamid=${id}&format=json&include_appinfo=1&include_played_free_games=1`
   );
   const games = gamesResponse.data.response.games;
-  const insertedGames = [];
   if (games) {
     games.forEach(g => {
-      const { insertedId }= Game.upsert({ appid: g.appid }, g);
-      if(insertedId) {
-        insertedGames.push(insertedId);
-      }
+      Game.upsert({ appid: g.appid }, g);
     })
   }
-  return insertedGames;
+  return games;
 };
 
 
@@ -81,25 +77,33 @@ User.extend({
     async populate() {
       const token = this.services.discord.accessToken;
       const connections = await discordReq("users/@me/connections", token);
-      const servers = await discordReq("users/@me/guilds", token);
+      let servers = await discordReq("users/@me/guilds", token);
 
       const steamConnection = connections.find(c => c.type === "steam");
-      let gameIds = [];
+      let games = [];
       if(steamConnection) {
-        gameIds = await getGames(steamConnection.id);
+        games = await getGames(steamConnection.id);
       }
 
-      const insertedServers = [];
       servers.forEach(s => {
-        const { insertedId } = Server.upsert({id: s.id}, s);
-        if(insertedId) {
-          insertedServers.push(insertedId);
+        Server.upsert({id: s.id}, s);
+      });
+
+      servers = Server.find({
+        id: {
+          $in: servers.map(s => s.id)
+        }
+      });
+
+      games = Game.find({
+        appid: {
+          $in: games.map(s => s.appid)
         }
       });
 
       this.connections = connections;
-      this.servers = [...this.servers, ...insertedServers];
-      this.games = [...this.games, ...gameIds];
+      this.servers = servers.map(s => s._id);
+      this.games = games.map(g => g._id);
       console.log(this.servers);
       return this.save();
     }
