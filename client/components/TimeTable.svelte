@@ -9,18 +9,26 @@
   }
 
   let user;
+  let timeTable;
   const computation = Tracker.autorun(() => {
     user = User.current();
+    if(user) {
+      timeTable = user.timeTable;
+    }
   });
 
   function handleClick(day, time) {
-    const date = moment();
-    const offset = date.utcOffset();
-    console.log(date);
-    console.log(day, time);
-    console.log(moment(time, "HH:mm"));
-    user.toggleAvailableTime(day, time, offset);
+    user.toggleAvailableTime(toUtc(day, time));
   }
+
+  function toUtc(day, time) {
+    const t = moment(time, 'HH:mm');
+    t.set('day', day);
+    t.utc();
+  
+    return `${daysOfWeek[t.day()]} ${t.format('HH:mm')}`;
+  }
+
 </script>
 
 
@@ -64,7 +72,7 @@
       <tr>
         <td colspan="2">{time}</td>
         {#each daysOfWeek as day}
-          <td on:click={() => handleClick(day, time)}></td>
+          <td on:click={() => handleClick(day, time)} style="background-color: {user.timeTable.includes(toUtc(day, time)) ? 'green' : 'red'}"></td>
         {/each}
       </tr>
     {/each}
