@@ -98,8 +98,9 @@ User.extend({
       });
 
       this.connections = connections;
-      this.servers.push(...insertedServers);
-      this.games.push(...gameIds);
+      this.servers = [...this.servers, ...insertedServers];
+      this.games = [...this.games, ...gameIds];
+      console.log(this.servers);
       return this.save();
     }
   }
