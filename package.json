@@ -16,6 +16,7 @@
     "moment": "^2.24.0",
     "nes.css": "^2.2.0",
     "svelte": "^3.6.7",
+    "svelte-calendar": "^1.0.2",
     "svelte-routing": "^1.2.1",
     "yup": "^0.27.0"
   },

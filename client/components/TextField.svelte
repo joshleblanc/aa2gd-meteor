@@ -10,6 +10,8 @@
     export let helperText = null;
     export let disabled = false;
     export let value = "";
+    export let type = "text";
+    export let readonly = false;
 
     const dispatcher = createEventDispatcher();
 
@@ -32,6 +34,7 @@
     .root {
         margin: 8px;
         display: flex;
+        text-align: left;
     }
 
     .full-width {
@@ -52,7 +55,7 @@
     <div class="{containerClassnames}">
         <label>{label}</label>
         <div class="children">
-            <input type="text" class="{inputClassnames}" disabled={disabled} bind:value={value}/>
+            <input readonly={readonly} type={type} class="{inputClassnames}" disabled={disabled} value={value} on:change on:click />
             {#if adornment}
                 <svelte:component this={adornment} on:click={forward}/>
             {/if}

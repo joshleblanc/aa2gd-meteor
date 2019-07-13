@@ -40,6 +40,14 @@
       font-weight: 400;
       line-height: 1.43;
     }
+
+    button {
+      font-family: "Press Start 2P",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    }
+
+    .datepicker {
+      width: 100%;
+    }
   </style>>
 </svelte:head>
 

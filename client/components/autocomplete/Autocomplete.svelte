@@ -29,10 +29,7 @@
     open={modalOpen}
     label={label}
     on:close={() => modalOpen = false}
-    on:select={item => {
-        console.log(item);
-        selectedItem = options.find(o => o.value === item.detail)
-    }}
+    on:select={item => selectedItem = options.find(o => o.value === item.detail)}
     title={placeholder}
     options={options}
     name={name}
