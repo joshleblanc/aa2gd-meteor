@@ -13,6 +13,7 @@
     export let type = "text";
     export let readonly = false;
 
+    export let ref;
     const dispatcher = createEventDispatcher();
 
     function forward(e) {
@@ -55,7 +56,7 @@
     <div class="{containerClassnames}">
         <label>{label}</label>
         <div class="children">
-            <input readonly={readonly} type={type} class="{inputClassnames}" disabled={disabled} value={value} on:change on:click />
+            <input readonly={readonly} type={type} class="{inputClassnames}" disabled={disabled} value={value} on:change on:click bind:this={ref} />
             {#if adornment}
                 <svelte:component this={adornment} on:click={forward}/>
             {/if}

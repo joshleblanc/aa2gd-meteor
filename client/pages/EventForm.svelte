@@ -5,27 +5,31 @@
     import { Tracker } from 'meteor/tracker';
     import { Server } from '/lib/Server';
     import { Game } from '/lib/Game';
+    import { User } from '/lib/User';
     import { Meteor } from 'meteor/meteor';
-    import Datepicker from 'svelte-calendar/src/Components/Datepicker';
     import Timepicker from '../components/Timepicker';
+    import moment from 'moment';
+    import Button from '/client/components/Button';
 
     let games = [];
     let servers = [];
     const computation = Tracker.autorun(() => {
-        Meteor.subscribe('servers');
+        const user = User.current();
+        Meteor.subscribe('servers', user.servers);
         Meteor.subscribe('games');
-        servers = Server.find({}).fetch();
+        servers = user.getServers().fetch();
         games = Game.find({}).fetch();
         console.log(servers);
     });
 
+    let name;
     let server;
     let game;
-    let date;
+    let date = moment();
 
-    const dateFormat = "#{Y}/#{m}/#{d}";
-
-    $: console.log(server);
+    function submit() {
+        console.log(name, server, game, date);
+    }
 </script>
 
 <style>
@@ -38,7 +42,7 @@
 
 <div class="root">
     <StyledPaper title="Create a new event!">
-        <TextField label="Name" fullWidth />
+        <TextField label="Name" fullWidth value={name} on:change={e => name = e.target.value} />
         <Autocomplete 
             fullWidth
             label="Server"
@@ -65,9 +69,7 @@
                 }
             })}
         />
-        <Datepicker bind:formattedSelected={date} format={dateFormat}>
-            <TextField fullWidth label="Date" value={date} readonly/>
-        </Datepicker>
-        <Timepicker />
+        <Timepicker on:change={e => date = e.detail} value={date.format('YYYY-MM-DD HH:00')} />
+        <Button variant="primary" on:click={submit}>Submit</Button>
     </StyledPaper>
 </div>

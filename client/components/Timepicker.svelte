@@ -1,26 +1,31 @@
 <script>
     import TextField from './TextField';
-    import Dialog from './Dialog';
-
-    let open = false;
-
-    $: console.log(open);
+    import Picker from 'pickerjs';
+    import { createEventDispatcher } from 'svelte';
+    import moment from 'moment';
+    
+    export let value;
+    const dispatch = createEventDispatcher();
+    let ref;
+    $: {
+        if(ref) {
+            const picker = new Picker(ref, {
+                format: 'YYYY-MM-DD HH:mm',
+                headers: true,
+                pick: () => {
+                    dispatch('change', moment(picker.getDate()));
+                },
+                increment: {
+                    year: 1,
+                    month: 1,
+                    day: 1,
+                    hour: 1,
+                    minute: 15,
+                }
+            });
+        }
+        
+    }
 </script>
 
-<style>
-    .time {
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-        font-size: 7em;
-    }
-</style>
-
-<TextField on:click={() => open = true}/>
-
-<Dialog open={open} title="Pick a time" on:close={() => open = false}>
-    <div class="time">
-        <span>10</span>:<span>00</span>
-    </div>
-    
-</Dialog>
+<TextField label="Date and time" fullWidth bind:ref={ref} value={value} />

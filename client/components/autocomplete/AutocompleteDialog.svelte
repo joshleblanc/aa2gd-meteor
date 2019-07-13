@@ -29,6 +29,7 @@
     function selectItem(option) {
         if(option && option.value) {
             dispatch('select', option.value)
+            dispatch('close');
             search = "";
         }
     }

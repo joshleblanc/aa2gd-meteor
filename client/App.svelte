@@ -6,6 +6,7 @@
   import Profile from './pages/Profile.svelte';
   import EventForm from './pages/EventForm.svelte';
 
+
   export let url = "";
 </script>
 
