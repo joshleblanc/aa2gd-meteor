@@ -12,7 +12,7 @@
 
   let user;
   const computation = Tracker.autorun(() => {
-    user = User.findOne(Meteor.userId);
+    user = User.current();
   });
 
   onDestroy(() => {
