@@ -22,7 +22,7 @@ const getGames = async function(id) {
   const insertedGames = [];
   if (games) {
     games.forEach(g => {
-      const { insertedId }= Games.upsert({ appid: g.appid }, g);
+      const { insertedId }= Game.upsert({ appid: g.appid }, g);
       if(insertedId) {
         insertedGames.push(insertedId);
       }
@@ -58,7 +58,7 @@ Meteor.startup(() => {
 
       const insertedServers = [];
       servers.forEach(s => {
-        const { insertedId } = Servers.upsert({id: s.id}, s);
+        const { insertedId } = Server.upsert({id: s.id}, s);
         if(insertedId) {
           insertedServers.push(insertedId);
         }
