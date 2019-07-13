@@ -46,12 +46,11 @@ Meteor.publish('currentUser', function() {
   }
 });
 
-Meteor.publish("servers", function() {
-  const user = User.current();
-  if(user) {
+Meteor.publish("servers", function(ids) {
+  if(this.userId) {
     return Server.find({
       _id: {
-        $in: user.servers
+        $in: ids
       }
     });
   } else {

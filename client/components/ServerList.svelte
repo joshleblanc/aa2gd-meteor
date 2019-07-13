@@ -9,13 +9,9 @@
   
   let servers = [];
   const computation = Tracker.autorun(() => {
-    Meteor.subscribe('servers');
-    const user = User.findOne({ _id: Meteor.userId });
-    servers = Server.find({
-      _id: {
-        $in: user.servers
-      }
-    }).fetch();
+    const user = User.current();
+    Meteor.subscribe('servers', user.servers);
+    servers = user.getServers().fetch();
   });
 
 </script>
