@@ -56,6 +56,10 @@
     line-height: 0.9375rem;
     font-weight: 500;
   }
+
+  .availability-cell {
+    border: 1px solid black;
+  }
 </style>
 
 <table>
@@ -72,7 +76,7 @@
       <tr>
         <td colspan="2">{time}</td>
         {#each daysOfWeek as day}
-          <td on:click={() => handleClick(day, time)} style="background-color: {user.timeTable.includes(toUtc(day, time)) ? 'green' : 'red'}"></td>
+          <td class="availability-cell" on:click={() => handleClick(day, time)} style="background-color: {user.timeTable.includes(toUtc(day, time)) ? 'rgb(0,100,0)' : 'rgb(100,0,0)'}"></td>
         {/each}
       </tr>
     {/each}
