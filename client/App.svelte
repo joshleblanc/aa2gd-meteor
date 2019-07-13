@@ -4,6 +4,7 @@
   import Home from './pages/Home.svelte';
   import Navbar from './components/Navbar';
   import Profile from './pages/Profile.svelte';
+  import EventForm from './pages/EventForm.svelte';
 
   export let url = "";
 </script>
@@ -11,7 +12,6 @@
 <style>
   .root {
     display: flex;
-    font-family: "Press Start 2P";
   }
   
   .toolbar {
@@ -24,6 +24,26 @@
   }
 </style>
 
+<svelte:head>
+  <!-- Overriding some bulma styles -->
+	<style>
+    .title {
+      font-weight: 100 !important;
+      color: black !important;
+    }
+
+    body {
+      color: rgba(0, 0, 0, 0.87);
+      margin: 0;
+      font-size: 0.625rem;
+      font-family: "Press Start 2P",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+      font-weight: 400;
+      line-height: 1.43;
+    }
+  </style>>
+</svelte:head>
+
+
 <div class="root">
   <Router url="{url}">
     <Navbar />
@@ -32,6 +52,7 @@
       <div class="toolbar" />
       <Route path="home" component="{Home}" />
       <Route path="profile" component="{Profile}" />
+      <Route path="events/new" component={EventForm} />
     </div>
   </Router>
 </div>
