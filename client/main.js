@@ -7,6 +7,7 @@ import { Tracker } from 'meteor/tracker';
 
 Meteor.startup(() => {
   const handle = Meteor.subscribe('currentUser');
+  console.log("weuiofnwef");
   Tracker.autorun(() => {
     if(handle.ready()) {
       new App({

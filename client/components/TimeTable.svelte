@@ -9,12 +9,8 @@
   }
 
   let user;
-  let timeTable;
   const computation = Tracker.autorun(() => {
     user = User.current();
-    if(user) {
-      timeTable = user.timeTable;
-    }
   });
 
   function handleClick(day, time) {

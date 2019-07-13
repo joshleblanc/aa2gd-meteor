@@ -4,9 +4,11 @@
   import { Link } from 'svelte-routing';
   import { Server } from '../../lib/Server';
   import { Tracker } from 'meteor/tracker';
+  import { Meteor } from 'meteor/meteor';
   
   let servers = [];
   const computation = Tracker.autorun(() => {
+    Meteor.subscribe('servers');
     servers = Server.find({}).fetch();
   });
 

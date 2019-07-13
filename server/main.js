@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { HTTP } from 'meteor/http';
-import { Server }  from '/lib/Server';
-import { Game } from '../lib/Game';
 import { User } from '../lib/User';
+import { Server } from '../lib/Server';
+import { Game } from '../lib/Game';
 
 const discordReq = async function(path, token) {
   const api_url = "https://discordapp.com/api";
@@ -31,22 +30,43 @@ const getGames = async function(id) {
   return insertedGames;
 };
 
-Meteor.startup(() => {
-  ServiceConfiguration.configurations.upsert(
-    { service: 'discord' },
-    {
-      $set: {
-        loginStyle: "popup",
-        clientId: "570931295253823488", 
-        secret: "C6RXU2uDnb1Um1yxRxlnTXBdYsAiTCE8"
-      }
-    }
-  );
 
-  Meteor.methods({
-    async 'users.fetchInfo'() {
-      const user = Accounts.user();
-      const token = user.services.discord.accessToken;
+Meteor.publish('currentUser', function() {
+  if(this.userId) {
+    return Meteor.users.find({
+      _id: this.userId
+    }, {
+      fields: {
+        servers: 1,
+        games: 1,
+        profile: 1,
+        services: 1,
+        connections: 1,
+        timeTable: 1
+      }
+    })
+  } else {
+    this.ready();
+  }
+});
+
+Meteor.publish("servers", function() {
+  const user = User.current();
+  if(user) {
+    return Server.find({
+      _id: {
+        $in: user.servers
+      }
+    });
+  } else {
+    this.ready();
+  }
+});
+
+User.extend({
+  meteorMethods: {
+    async populate() {
+      const token = this.services.discord.accessToken;
       const connections = await discordReq("users/@me/connections", token);
       const servers = await discordReq("users/@me/guilds", token);
 
@@ -63,16 +83,24 @@ Meteor.startup(() => {
           insertedServers.push(insertedId);
         }
       });
-      
-      Accounts.users.update({ _id: user._id }, { 
-        $set: {
-          connections
-        },
-        $addToSet: {
-          servers: { $each: insertedServers },
-          games: { $each: gameIds }
-        }
-      });
+
+      this.connections = connections;
+      this.servers.push(...insertedServers);
+      this.games.push(...gameIds);
+      return this.save();
     }
-  })
+  }
+})
+
+Meteor.startup(() => {
+  ServiceConfiguration.configurations.upsert(
+    { service: 'discord' },
+    {
+      $set: {
+        loginStyle: "popup",
+        clientId: "570931295253823488", 
+        secret: "C6RXU2uDnb1Um1yxRxlnTXBdYsAiTCE8"
+      }
+    }
+  );
 });

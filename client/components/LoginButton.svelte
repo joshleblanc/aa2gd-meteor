@@ -1,5 +1,6 @@
 <script>
   import Button from './Button.svelte';
+  import { User } from '../../lib/User';
 
   function handleClick(event) {
     Meteor.loginWithDiscord({
@@ -8,7 +9,7 @@
       if (error) {
         // Do some error handling stuff
       } else {
-        Meteor.call('users.fetchInfo');
+        User.current().callMethod('populate');
       }
     });
   }
