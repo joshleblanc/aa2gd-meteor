@@ -16,6 +16,8 @@
     export let open = false;
     export let options = [];
 
+    const dispatch = createEventDispatcher();
+
     let search = "";
     let filteredOptions = [];
     $: {
@@ -26,8 +28,7 @@
 
     function selectItem(option) {
         if(option && option.value) {
-            dispatcher('select', option.value)
-            dispatcher('close');
+            dispatch('select', option.value)
             search = "";
         }
     }
