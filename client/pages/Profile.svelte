@@ -16,8 +16,7 @@
     let hasSteam = true;
     let serverIds = [];
     const computation = Tracker.autorun(() => {
-        user = User.findOne(Meteor.userId);
-        console.log(user);
+        user = User.current();
     });
 
     onDestroy(() => {
@@ -25,31 +24,33 @@
     });
 </script>
 
-<div class="columns">
-    <div class="column">
-        <HeaderPaper imgUrl={user.avatarUrl()} title={user.services.discord.username}>
-            {#if !hasSteam}
-                <Button>Connect Steam</Button>
-            {/if}
-            <Button variant="error" on:click={() => Meteor.logout()}>Logout</Button>
-        </HeaderPaper>
+{#if user}
+    <div class="columns">
+        <div class="column">
+            <HeaderPaper imgUrl={user.avatarUrl()} title={user.services.discord.username}>
+                {#if !hasSteam}
+                    <Button>Connect Steam</Button>
+                {/if}
+                <Button variant="error" on:click={() => Meteor.logout()}>Logout</Button>
+            </HeaderPaper>
+        </div>
     </div>
-</div>
 
-<div class="columns is-multiline">
-    <div class="column">
-        <StyledPaper title="Times available">
-            <TimeTable />
-        </StyledPaper>
+    <div class="columns is-multiline">
+        <div class="column">
+            <StyledPaper title="Times available">
+                <TimeTable />
+            </StyledPaper>
+        </div>
+        <div class="column">
+            <StyledPaper title="Servers">
+                <ServerList />
+            </StyledPaper>
+        </div>
+        <div class="column">
+            <StyledPaper title="Connections">
+                <ConnectionList />
+            </StyledPaper>
+        </div>
     </div>
-    <div class="column">
-        <StyledPaper title="Servers">
-            <ServerList />
-        </StyledPaper>
-    </div>
-    <div class="column">
-        <StyledPaper title="Connections">
-            <ConnectionList />
-        </StyledPaper>
-    </div>
-</div>
+{/if}
