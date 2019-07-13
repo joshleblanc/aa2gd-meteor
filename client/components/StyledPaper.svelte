@@ -18,9 +18,9 @@
   }
 
   p {
-    display: 'table';
-    padding: '0 0.5rem';
-    background-color: "#303030";
+    display: table;
+    padding: 0 0.5rem;
+    background-color: #303030;
   }
 </style>
 

@@ -63,6 +63,19 @@ Meteor.publish("servers", function() {
   }
 });
 
+Meteor.publish("games", function() {
+  const user = User.current();
+  if(user) {
+    return Game.find({
+      _id: {
+        $in: user.games
+      }
+    })
+  } else {
+    this.ready();
+  }
+});
+
 User.extend({
   meteorMethods: {
     async populate() {

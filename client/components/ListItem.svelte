@@ -13,8 +13,12 @@
         justify-content: flex-start;
         text-decoration: none;
     }
+
+    li:hover {
+        background-color: rgba(0,0,0,0.08);
+    }
 </style>
 
-<li>
+<li on:click>
     <slot></slot>
 </li>

@@ -1,0 +1,49 @@
+<script>
+    import StyledPaper from '../components/StyledPaper';
+    import TextField from '../components/TextField';
+    import Autocomplete from '../components/autocomplete/Autocomplete';
+    import { Tracker } from 'meteor/tracker';
+    import { Server } from '/lib/Server';
+    import { Game } from '/lib/Game';
+    import { Meteor } from 'meteor/meteor';
+    let games = [];
+    let servers = [];
+    const computation = Tracker.autorun(() => {
+        Meteor.subscribe('servers');
+        Meteor.subscribe('games');
+        servers = Server.find({}).fetch();
+        games = Game.find({}).fetch();
+        console.log(servers);
+    });
+
+    let server;
+
+    $: console.log(server);
+</script>
+
+<style>
+    .root {
+        max-width: 496px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+<div class="root">
+    <StyledPaper title="Create a new event!">
+        <TextField label="Name" fullWidth />
+        <Autocomplete 
+            fullWidth
+            label="Server"
+            bind:selectedItem={server}
+            placeholder="Select a server"
+            options={servers.map(s => {
+                return {
+                    value: s._id,
+                    name: s.name,
+                    image: s.avatarUrl()
+                }
+            })}
+        />
+    </StyledPaper>
+</div>
