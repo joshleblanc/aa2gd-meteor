@@ -7,7 +7,7 @@
   import EventForm from './pages/EventForm.svelte';
   import { usersReady } from './stores/subscriptionStores';
   import Server from './pages/Server';
-
+  import Meteor from 'meteor/meteor';
 
   export let url = "";
   $: console.log(url);

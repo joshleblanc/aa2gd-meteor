@@ -7,6 +7,7 @@
     import { Server } from '/lib/Server';
     import StyledPaper from '../components/StyledPaper';
     import Tabs from '../components/Tabs';
+    import EventList from '../components/EventList';
 
     let server;
     export let id;
@@ -20,7 +21,7 @@
 </script>
 
 {#if $serversReady}
-    <div class="columns">
+    <div class="columns is-multiline">
         <div class="column is-full">
             <HeaderPaper title={server.name} imgUrl={server.avatarUrl()} />
         </div>
@@ -31,6 +32,7 @@
                     selectedTab={selectedTab} 
                     on:select={e => selectedTab = e.detail}
                 />
+                <EventList server={server} />
             </StyledPaper>
         </div>
     </div>

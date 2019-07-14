@@ -8,7 +8,6 @@ function sub(fn) {
         const computation = Tracker.autorun(() => {
             set(fn());
         });
-
         return () => computation.stop();
     })
 }
@@ -19,15 +18,27 @@ export const usersReady = sub(() => {
 
 export const serversReady = sub(() => {
     const user = User.current();
-    return Meteor.subscribe('servers', user.servers).ready();
+    if(user) {
+        return Meteor.subscribe('servers', user.servers).ready();
+    } else {
+        return false;
+    }
 })
 
 export const gamesReady = sub(() => {
     const user = User.current();
-    return Meteor.subscribe('games', user.games).ready();
+    if(user) {
+        return Meteor.subscribe('games', user.games).ready();
+    } else {
+        return false;
+    }
 })
 
 export const eventsReady = sub(() => {
     const user = User.current();
-    return Meteor.subscribe('events', user.servers).ready();
+    if(user) {
+        return Meteor.subscribe('events', user.servers).ready();
+    } else {
+        return false;
+    }
 })

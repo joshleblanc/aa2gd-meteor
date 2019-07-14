@@ -3,6 +3,7 @@
   import { Tracker } from 'meteor/tracker';
   import { User } from '../../lib/User';
   import { daysOfWeek } from '/lib/utils';
+  import { onDestroy } from 'svelte';
 
   const times = [];
   for (let i = 0; i < 24; i++) {
@@ -25,6 +26,10 @@
   
     return `${daysOfWeek[t.day()]} ${t.format('HH:mm')}`;
   }
+
+  onDestroy(() => {
+    computation.stop();
+  });
 
 </script>
 

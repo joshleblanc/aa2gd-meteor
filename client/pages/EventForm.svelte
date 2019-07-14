@@ -14,6 +14,7 @@
     import { Event } from '/lib/Event';
     import { gamesReady, serversReady } from '../stores/subscriptionStores';
     import Loader from '../components/Loader';
+    import { onDestroy } from 'svelte';
 
     let games = [];
     let servers = [];
@@ -70,6 +71,10 @@
         }
         
     });
+
+    onDestroy(() => {
+        computation.stop();
+    })
 
     function submit() {
         event.insert();

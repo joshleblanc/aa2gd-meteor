@@ -28,12 +28,18 @@
 
   const computation = Tracker.autorun(() => {
     const user = User.current();
-    events = Event.find({
-      serverId: {
-        $in: user.servers
-      }
-    }).fetch();
+    if(user) {
+      events = Event.find({
+        serverId: {
+          $in: user.servers
+        }
+      }).fetch();
+    } else {
+      events = [];
+    }
   });
+
+  console.log(Meteor.userId());
 
 
   onDestroy(() => {
