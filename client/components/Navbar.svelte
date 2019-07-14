@@ -41,8 +41,8 @@
     flex-shrink: 0;
     flex-direction: column;
     width: 100%;
+    background-color: white;
     border-bottom: 1px solid black;
-
   }
 
   header > div {
