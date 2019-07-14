@@ -8,6 +8,7 @@
 
 
   export let url = "";
+  let mobileOpen = false;
 </script>
 
 <style>
@@ -22,6 +23,7 @@
   .content {
     height: 100%;
     width: 100%;
+    min-width: 100%;
   }
 </style>
 
@@ -59,8 +61,8 @@
 
 <div class="root">
   <Router url="{url}">
-    <Navbar />
-    <Sidebar />
+    <Navbar on:mobileOpen={() => { console.log("??"); mobileOpen = !mobileOpen } } mobileOpen={mobileOpen} />
+    <Sidebar mobileOpen={mobileOpen} />
     <div class="content">
       <div class="toolbar" />
       <Route path="home" component="{Home}" />

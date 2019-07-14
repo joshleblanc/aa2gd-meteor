@@ -15,6 +15,7 @@
     position: fixed;
     overflow-y: auto;
     flex-direction: column;
+    background-color: white;
   }
 </style>
 <div class="root">
