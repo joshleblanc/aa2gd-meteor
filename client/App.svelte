@@ -24,6 +24,7 @@
     height: 100%;
     width: 100%;
     min-width: 100%;
+    font-weight: unset !important;
   }
 
   @media (min-width: 601px) {
@@ -54,6 +55,17 @@
 
     a:hover {
       text-decoration: none;
+    }
+    .title {
+      font-weight: unset;
+    }
+
+    .content h4 {
+      font-weight: unset;
+    }
+
+    body {
+      font-size: 0.85rem;
     }
   </style>
 </svelte:head>
