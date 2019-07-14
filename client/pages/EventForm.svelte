@@ -24,7 +24,7 @@
     let name;
     let server;
     let game;
-    let date = moment();
+    let date = moment().set('minutes', 0);
 
     function submit() {
         console.log(name, server, game, date);
@@ -45,7 +45,7 @@
         <Autocomplete 
             fullWidth
             label="Server"
-            bind:selectedItem={server}
+            on:change={e => server = e.detail}
             placeholder="Select a server"
             options={servers.map(s => {
                 return {
@@ -58,7 +58,7 @@
         <Autocomplete
             fullWidth
             label="Game"
-            bind:selectedItem={game}
+            on:change={e => game = e.detail}
             placeholder="Select a game"
             options={games.map(g => {
                 return {
