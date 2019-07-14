@@ -75,7 +75,12 @@
 <header class={headerClass}>
   <div>
     <div class="hamburger" on:click={() => dispatch('mobileOpen')}>
-      <Button>></Button>
+      {#if mobileOpen}
+        <Button>{"<"}</Button>
+      {:else}
+        <Button>></Button>
+      {/if}
+      
     </div>
     <h6>Famti.me</h6>
     {#if user}
