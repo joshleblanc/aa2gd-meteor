@@ -63,7 +63,7 @@
 
     $: console.log(formValid);
     function submit() {
-        
+        Meteor.call('createEvent', name, server, game, date.utc().format());
     }
 </script>
 

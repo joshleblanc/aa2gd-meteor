@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { User } from '../lib/User';
 import { Server } from '../lib/Server';
 import { Game } from '../lib/Game';
+import { Event } from '/lib/Event';
 
 const discordReq = async function(path, token) {
   const api_url = "https://discordapp.com/api";
@@ -26,6 +27,17 @@ const getGames = async function(id) {
   return games;
 };
 
+Meteor.methods({
+  createEvent(name, server, game, date) {
+    const event = new Event();
+    event.name = name;
+    event.gameId = game;
+    event.serverId = server;
+    event.date = new Date(date);
+    event.save();
+  }
+});
+
 
 Meteor.publish('currentUser', function() {
   if(this.userId) {
@@ -46,6 +58,19 @@ Meteor.publish('currentUser', function() {
   }
 });
 
+Meteor.publish('events', function(servers) {
+  if(this.userId) {
+    return Event.find({
+      serverId: {
+        $in: servers
+      }
+    });
+  } else {
+    this.ready();
+  }
+
+});
+
 Meteor.publish("servers", function(ids) {
   if(this.userId) {
     return Server.find({
@@ -64,7 +89,7 @@ Meteor.publish("games", function(ids) {
       _id: {
         $in: ids
       }
-    })
+    }, { sort: { name: 1 }})
   } else {
     this.ready();
   }
