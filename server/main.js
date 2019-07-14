@@ -29,18 +29,6 @@ const getGames = async function(id) {
   return games;
 };
 
-Meteor.methods({
-  createEvent(name, server, game, date) {
-    const event = new Event();
-    event.name = name;
-    event.gameId = game;
-    event.serverId = server;
-    event.date = new Date(date);
-    event.save();
-  }
-});
-
-
 Meteor.publish('currentUser', function() {
   if(this.userId) {
     return Meteor.users.find({
@@ -96,32 +84,6 @@ Meteor.publish("games", function(ids) {
     this.ready();
   }
 });
-
-Meteor.methods({
-  availableUsers({ server, game, date }) {
-    const d = moment(date).utc();
-    const time = d.format('HH:00');
-    const timeTableTime = `${daysOfWeek[d.day()]} ${time}`;
-    const users = User.find({
-        servers: {
-            $elemMatch: {
-                $eq: server
-            }
-        },
-        games: {
-            $elemMatch: {
-                $eq: game
-            }
-        },
-        timeTable: {
-            $elemMatch: {
-                $eq: timeTableTime
-            }
-        }
-    });
-    return users.count();
-  }
-})
 
 User.extend({
   meteorMethods: {

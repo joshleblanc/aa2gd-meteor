@@ -11,6 +11,7 @@
     import moment from 'moment';
     import Button from '/client/components/Button';
     import Yup from 'yup';
+    import { Event } from '/lib/Event';
 
     let games = [];
     let servers = [];
@@ -36,19 +37,21 @@
     let game;
     let availableUsers = 0;
     let date = new Date();
+    let event = new Event();
+    event.date = new Date();
+    event.date.setMinutes(0);
+    event.date.setSeconds(0);
     date.setMinutes(0);
     date.setSeconds(0);
 
-    $: {
-        Meteor.call('availableUsers', { server, game, date }, (err, result) => {
-            availableUsers = result;
-        });
-    }
+    $: availableUsers = event.availableUsers();
 
     function setErrors(error) {
+        console.log(error);
+        formValid = false;
         errors = {};
-        error.inner.forEach(e => {
-            errors[e.params.path] = e.message;
+        error.details.forEach(e => {
+            errors[e.name] = e.message;
         });
     }
 
@@ -59,20 +62,17 @@
         formValid = valid;
     }
 
-    $: schema.validate({
-            name,
-            server,
-            game,
-            date
-        }, { abortEarly: false }).catch(error => {
-            setErrors(error);
-        }).then(valid => {
-            setValid(!!valid);
-        });
+    $: event.validate({ stopOnFirstError: false }, err => {
+        if(err) {
+            setErrors(err)
+        } else {
+            setValid(true);
+        }
+        
+    });
 
-    $: console.log(formValid);
     function submit() {
-        Meteor.call('createEvent', name, server, game, date)
+        event.insert();
     }
 </script>
 
@@ -90,14 +90,14 @@
             label="Name" 
             fullWidth 
             value={name} 
-            on:input={e => name = e.target.value} 
+            on:input={e => event.name = e.target.value} 
             helperText={errors.name}
         />
         <Autocomplete 
             fullWidth
-            helperText={errors.server}
+            helperText={errors.serverId}
             label="Server"
-            on:change={e => server = e.detail}
+            on:change={e => event.serverId = e.detail}
             placeholder="Select a server"
             options={servers.map(s => {
                 return {
@@ -110,8 +110,8 @@
         <Autocomplete
             fullWidth
             label="Game"
-            helperText={errors.game}
-            on:change={e => game = e.detail}
+            helperText={errors.gameId}
+            on:change={e => event.gameId = e.detail}
             placeholder="Select a game"
             options={games.map(g => {
                 return {
@@ -121,8 +121,8 @@
                 }
             })}
         />
-        <Timepicker on:change={e => date = e.detail} value={date.toLocaleString()} helperText={errors.date} />
-        {#if server && game && date}
+        <Timepicker on:change={e => event.date = e.detail} value={event.date.toLocaleString()} helperText={errors.date} />
+        {#if event.serverId && event.gameId && event.date}
             <p>There are {availableUsers} users available for that server, game, and date.</p>
         {/if}
         <Button variant="primary" on:click={submit} disabled={!formValid}>Submit</Button>
