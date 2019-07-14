@@ -36,24 +36,6 @@
 <svelte:head>
   <!-- Overriding some bulma styles -->
 	<style>
-    .title {
-      font-weight: 100 !important;
-      color: black !important;
-    }
-
-    body {
-      color: rgba(0, 0, 0, 0.87);
-      margin: 0;
-      font-size: 0.625rem;
-      font-family: "Press Start 2P",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-      font-weight: 400;
-      line-height: 1.43;
-    }
-
-    button {
-      font-family: "Press Start 2P",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-    }
-
     .datepicker {
       width: 100%;
     }
@@ -79,7 +61,7 @@
 
 <div class="root">
   <Router url="{url}">
-    <Navbar on:mobileOpen={() => { console.log("??"); mobileOpen = !mobileOpen } } mobileOpen={mobileOpen} />
+    <Navbar on:mobileOpen={() => { mobileOpen = !mobileOpen } } mobileOpen={mobileOpen} />
     <Sidebar mobileOpen={mobileOpen} />
     <div class="content">
       <div class="toolbar" />
