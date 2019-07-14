@@ -2,7 +2,8 @@
   import moment from 'moment';
   import { Tracker } from 'meteor/tracker';
   import { User } from '../../lib/User';
-  const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  import { daysOfWeek } from '/lib/utils';
+
   const times = [];
   for (let i = 0; i < 24; i++) {
     times.push(`${i}:00`);

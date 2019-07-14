@@ -6,6 +6,11 @@
 
     export let value;
     export let helperText;
+
+    const date = new Date();
+    date.setSeconds(0);
+    date.setMinutes(0);
+
     const dispatch = createEventDispatcher();
     let ref;
     $: {
@@ -13,8 +18,9 @@
             const picker = new Picker(ref, {
                 format: 'YYYY-MM-DD HH:mm',
                 headers: true,
+                date: date,
                 pick: () => {
-                    dispatch('change', moment(picker.getDate()));
+                    dispatch('change', picker.getDate());
                 },
                 increment: {
                     year: 1,

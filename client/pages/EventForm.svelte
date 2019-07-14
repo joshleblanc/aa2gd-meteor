@@ -34,7 +34,16 @@
     let name;
     let server;
     let game;
-    let date = moment().set('minutes', 0);
+    let availableUsers = 0;
+    let date = new Date();
+    date.setMinutes(0);
+    date.setSeconds(0);
+
+    $: {
+        Meteor.call('availableUsers', { server, game, date }, (err, result) => {
+            availableUsers = result;
+        });
+    }
 
     function setErrors(error) {
         errors = {};
@@ -63,7 +72,7 @@
 
     $: console.log(formValid);
     function submit() {
-        Meteor.call('createEvent', name, server, game, date.utc().format());
+        Meteor.call('createEvent', name, server, game, date)
     }
 </script>
 
@@ -112,7 +121,10 @@
                 }
             })}
         />
-        <Timepicker on:change={e => date = e.detail} value={date.format('YYYY-MM-DD HH:00')} helperText={errors.date} />
+        <Timepicker on:change={e => date = e.detail} value={date.toLocaleString()} helperText={errors.date} />
+        {#if server && game && date}
+            <p>There are {availableUsers} users available for that server, game, and date.</p>
+        {/if}
         <Button variant="primary" on:click={submit} disabled={!formValid}>Submit</Button>
     </StyledPaper>
 </div>

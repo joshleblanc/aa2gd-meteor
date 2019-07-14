@@ -3,6 +3,8 @@ import { User } from '../lib/User';
 import { Server } from '../lib/Server';
 import { Game } from '../lib/Game';
 import { Event } from '/lib/Event';
+import moment from 'moment';
+import { daysOfWeek } from '/lib/utils';
 
 const discordReq = async function(path, token) {
   const api_url = "https://discordapp.com/api";
@@ -95,6 +97,32 @@ Meteor.publish("games", function(ids) {
   }
 });
 
+Meteor.methods({
+  availableUsers({ server, game, date }) {
+    const d = moment(date).utc();
+    const time = d.format('HH:00');
+    const timeTableTime = `${daysOfWeek[d.day()]} ${time}`;
+    const users = User.find({
+        servers: {
+            $elemMatch: {
+                $eq: server
+            }
+        },
+        games: {
+            $elemMatch: {
+                $eq: game
+            }
+        },
+        timeTable: {
+            $elemMatch: {
+                $eq: timeTableTime
+            }
+        }
+    });
+    return users.count();
+  }
+})
+
 User.extend({
   meteorMethods: {
     async populate() {
@@ -127,7 +155,6 @@ User.extend({
       this.connections = connections;
       this.servers = servers.map(s => s._id);
       this.games = games.map(g => g._id);
-      console.log(this.servers);
       return this.save();
     }
   }
