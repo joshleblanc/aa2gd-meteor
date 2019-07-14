@@ -61,6 +61,18 @@
     .picker-cancel, .picker-confirm {
       display: inline-block !important
     }
+
+    a {
+      color: black;
+    }
+
+    a:visited {
+      color: black;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
   </style>
 </svelte:head>
 
