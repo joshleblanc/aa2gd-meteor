@@ -1,7 +1,7 @@
 <script>
   import DesktopDrawer from './DesktopDrawer';
   import MobileDrawer from './MobileDrawer';
-  import { fly } from 'svelte/transition'
+  import { fly } from 'svelte/transition';
 
   export let mobileOpen = false
 
@@ -18,22 +18,11 @@
     z-index: 1500;
     position: relative;
   }
-  /* @media (min-width: 601px) {
-    .mobile {
-      display: none;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .desktop {
-      display: none;
-    }
-  } */
 </style>
 
 <svelte:window bind:innerWidth={width} />
 
-{#if width > 600}>
+{#if width > 600}
   <nav class="desktop">
     <div class="desktop">
       <DesktopDrawer />

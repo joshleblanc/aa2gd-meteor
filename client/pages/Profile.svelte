@@ -37,7 +37,7 @@
     </div>
 
     <div class="columns is-multiline">
-        <div class="column">
+        <div class="column is-half-desktop is-full">
             <StyledPaper title="Times available">
                 <TimeTable />
             </StyledPaper>

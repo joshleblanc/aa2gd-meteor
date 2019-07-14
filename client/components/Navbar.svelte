@@ -70,11 +70,6 @@
         display: none;
       }
   }
-  /* @media (max-width: 600px) {
-    header {
-      width: 100%
-    }
-  } */
 </style>
 
 <header class={headerClass}>

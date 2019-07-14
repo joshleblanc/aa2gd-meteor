@@ -25,6 +25,12 @@
     width: 100%;
     min-width: 100%;
   }
+
+  @media (min-width: 601px) {
+    .content {
+      min-width: 0;
+    }
+  }
 </style>
 
 <svelte:head>
@@ -55,7 +61,7 @@
     .picker-cancel, .picker-confirm {
       display: inline-block !important
     }
-  </style>>
+  </style>
 </svelte:head>
 
 
