@@ -58,12 +58,11 @@ Meteor.publish("servers", function(ids) {
   }
 });
 
-Meteor.publish("games", function() {
-  const user = User.current();
-  if(user) {
+Meteor.publish("games", function(ids) {
+  if(this.userId) {
     return Game.find({
       _id: {
-        $in: user.games
+        $in: ids
       }
     })
   } else {

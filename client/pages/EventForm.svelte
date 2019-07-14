@@ -16,10 +16,9 @@
     const computation = Tracker.autorun(() => {
         const user = User.current();
         Meteor.subscribe('servers', user.servers);
-        Meteor.subscribe('games');
+        Meteor.subscribe('games', user.games);
         servers = user.getServers().fetch();
-        games = Game.find({}).fetch();
-        console.log(servers);
+        games = user.getGames().fetch();
     });
 
     let name;
