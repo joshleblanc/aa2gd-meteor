@@ -49,6 +49,10 @@
     .datepicker {
       width: 100%;
     }
+
+    .picker-cancel, .picker-confirm {
+      display: inline-block !important
+    }
   </style>>
 </svelte:head>
 
