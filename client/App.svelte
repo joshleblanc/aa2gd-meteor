@@ -6,9 +6,11 @@
   import Profile from './pages/Profile.svelte';
   import EventForm from './pages/EventForm.svelte';
   import { usersReady } from './stores/subscriptionStores';
+  import Server from './pages/Server';
 
 
   export let url = "";
+  $: console.log(url);
   let mobileOpen = false;
 </script>
 
@@ -81,6 +83,7 @@
         <Route path="home" component="{Home}" />
         <Route path="profile" component="{Profile}" />
         <Route path="events/new" component={EventForm} />
+        <Route path="servers/:id" component={Server} />
       </div>
     </Router>
   </div>
