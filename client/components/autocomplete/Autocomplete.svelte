@@ -2,6 +2,7 @@
     import AutocompleteAdornment from './AutocompleteAdornment';
     import AutocompleteDialog from './AutocompleteDialog';
     import TextField from '../TextField';
+    import { createEventDispatcher } from 'svelte';
 
     export let label = null;
     export let selectedItem = {};
@@ -11,6 +12,8 @@
     export let placeholder = "";
     export let options = [];
     export let name = "";
+
+    const dispatch = createEventDispatcher();
 
     let modalOpen = false;
 </script>
@@ -29,7 +32,10 @@
     open={modalOpen}
     label={label}
     on:close={() => modalOpen = false}
-    on:select={item => selectedItem = options.find(o => o.value === item.detail)}
+    on:select={item => {
+        selectedItem = options.find(o => o.value === item.detail);
+        dispatch('change', selectedItem.value);
+    }}
     title={placeholder}
     options={options}
     name={name}
