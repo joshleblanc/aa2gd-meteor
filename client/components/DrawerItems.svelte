@@ -17,21 +17,17 @@
   import Avatar from './Avatar';
   import { Link } from 'svelte-routing';
   import Loader from './Loader';
+  import { eventsReady, gamesReady, serversReady } from '../stores/subscriptionStores';
 
 
   let events = [];
   let gameHandle;
   let serverHandle;
   let eventHandle;
-  let ready = false;
+  let ready = true;
 
   const computation = Tracker.autorun(() => {
     const user = User.current();
-    gameHandle = Meteor.subscribe('games', user.games);
-    serverHandle = Meteor.subscribe('servers', user.servers);
-    eventHandle = Meteor.subscribe('events', user.servers);
-
-    ready = gameHandle.ready() && serverHandle.ready() && eventHandle.ready();
     events = Event.find({
       serverId: {
         $in: user.servers
@@ -49,7 +45,7 @@
 <CurrentUserDisplay />
 <Divider />
 <List>
-  {#if ready}
+  {#if $eventsReady && $gamesReady && $serversReady}
     {#if events.length === 0}
       <ListItem>
         <ListItemText>

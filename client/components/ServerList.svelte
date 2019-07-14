@@ -6,20 +6,25 @@
   import { Tracker } from 'meteor/tracker';
   import { Meteor } from 'meteor/meteor';
   import { User } from '/lib/User';
+  import { serversReady } from '../stores/subscriptionStores';
+  import Loader from './Loader';
   
   let servers = [];
   const computation = Tracker.autorun(() => {
     const user = User.current();
-    Meteor.subscribe('servers', user.servers);
     servers = user.getServers().fetch();
   });
 
 </script>
 
-<FixedHeightList height={522}>
-  {#each servers as server}
-    <Link to="/servers/{server._id}">
-      <ServerListItem server={server} />
-    </Link>
-  {/each}
-</FixedHeightList>
+{#if $serversReady}
+  <FixedHeightList height={522}>
+    {#each servers as server}
+      <Link to="/servers/{server._id}">
+        <ServerListItem server={server} />
+      </Link>
+    {/each}
+  </FixedHeightList>
+{:else}
+  <Loader />
+{/if}

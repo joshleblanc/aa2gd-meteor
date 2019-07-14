@@ -3,8 +3,6 @@ import { User } from '../lib/User';
 import { Server } from '../lib/Server';
 import { Game } from '../lib/Game';
 import { Event } from '/lib/Event';
-import moment from 'moment';
-import { daysOfWeek } from '/lib/utils';
 
 const discordReq = async function(path, token) {
   const api_url = "https://discordapp.com/api";

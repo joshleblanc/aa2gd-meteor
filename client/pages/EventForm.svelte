@@ -12,13 +12,13 @@
     import Button from '/client/components/Button';
     import Yup from 'yup';
     import { Event } from '/lib/Event';
+    import { gamesReady, serversReady } from '../stores/subscriptionStores';
+    import Loader from '../components/Loader';
 
     let games = [];
     let servers = [];
     const computation = Tracker.autorun(() => {
         const user = User.current();
-        Meteor.subscribe('servers', user.servers);
-        Meteor.subscribe('games', user.games);
         servers = user.getServers().fetch();
         games = user.getGames().fetch();
     });
@@ -84,47 +84,51 @@
     }
 </style>
 
-<div class="root">
-    <StyledPaper title="Create a new event!">
-        <TextField 
-            label="Name" 
-            fullWidth 
-            value={name} 
-            on:input={e => event.name = e.target.value} 
-            helperText={errors.name}
-        />
-        <Autocomplete 
-            fullWidth
-            helperText={errors.serverId}
-            label="Server"
-            on:change={e => event.serverId = e.detail}
-            placeholder="Select a server"
-            options={servers.map(s => {
-                return {
-                    value: s._id,
-                    name: s.name,
-                    image: s.avatarUrl()
-                }
-            })}
-        />
-        <Autocomplete
-            fullWidth
-            label="Game"
-            helperText={errors.gameId}
-            on:change={e => event.gameId = e.detail}
-            placeholder="Select a game"
-            options={games.map(g => {
-                return {
-                    value: g._id,
-                    name: g.name,
-                    image: g.iconUrl()
-                }
-            })}
-        />
-        <Timepicker on:change={e => event.date = e.detail} value={event.date.toLocaleString()} helperText={errors.date} />
-        {#if event.serverId && event.gameId && event.date}
-            <p>There are {availableUsers} users available for that server, game, and date.</p>
-        {/if}
-        <Button variant="primary" on:click={submit} disabled={!formValid}>Submit</Button>
-    </StyledPaper>
-</div>
+{#if $gamesReady && $serversReady}
+    <div class="root">
+        <StyledPaper title="Create a new event!">
+            <TextField 
+                label="Name" 
+                fullWidth 
+                value={name} 
+                on:input={e => event.name = e.target.value} 
+                helperText={errors.name}
+            />
+            <Autocomplete 
+                fullWidth
+                helperText={errors.serverId}
+                label="Server"
+                on:change={e => event.serverId = e.detail}
+                placeholder="Select a server"
+                options={servers.map(s => {
+                    return {
+                        value: s._id,
+                        name: s.name,
+                        image: s.avatarUrl()
+                    }
+                })}
+            />
+            <Autocomplete
+                fullWidth
+                label="Game"
+                helperText={errors.gameId}
+                on:change={e => event.gameId = e.detail}
+                placeholder="Select a game"
+                options={games.map(g => {
+                    return {
+                        value: g._id,
+                        name: g.name,
+                        image: g.iconUrl()
+                    }
+                })}
+            />
+            <Timepicker on:change={e => event.date = e.detail} value={event.date.toLocaleString()} helperText={errors.date} />
+            {#if event.serverId && event.gameId && event.date}
+                <p>There are {availableUsers} users available for that server, game, and date.</p>
+            {/if}
+            <Button variant="primary" on:click={submit} disabled={!formValid}>Submit</Button>
+        </StyledPaper>
+    </div>
+{:else}
+    <Loader />
+{/if}

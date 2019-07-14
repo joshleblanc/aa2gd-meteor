@@ -5,6 +5,7 @@
   import Navbar from './components/Navbar';
   import Profile from './pages/Profile.svelte';
   import EventForm from './pages/EventForm.svelte';
+  import { usersReady } from './stores/subscriptionStores';
 
 
   export let url = "";
@@ -70,18 +71,21 @@
   </style>
 </svelte:head>
 
+{#if $usersReady}
+  <div class="root">
+    <Router url="{url}">
+      <Navbar on:mobileOpen={() => { mobileOpen = !mobileOpen } } mobileOpen={mobileOpen} />
+      <Sidebar mobileOpen={mobileOpen} />
+      <div class="content">
+        <div class="toolbar" />
+        <Route path="home" component="{Home}" />
+        <Route path="profile" component="{Profile}" />
+        <Route path="events/new" component={EventForm} />
+      </div>
+    </Router>
+  </div>
+{/if}
 
-<div class="root">
-  <Router url="{url}">
-    <Navbar on:mobileOpen={() => { mobileOpen = !mobileOpen } } mobileOpen={mobileOpen} />
-    <Sidebar mobileOpen={mobileOpen} />
-    <div class="content">
-      <div class="toolbar" />
-      <Route path="home" component="{Home}" />
-      <Route path="profile" component="{Profile}" />
-      <Route path="events/new" component={EventForm} />
-    </div>
-  </Router>
-</div>
+
 
 

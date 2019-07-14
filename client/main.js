@@ -5,15 +5,10 @@ import '@fortawesome/fontawesome-pro/css/all.css';
 import '@fortawesome/fontawesome-pro/js/all.js';
 import 'pickerjs/dist/picker.css';
 import { Tracker } from 'meteor/tracker';
+import { User } from '../lib/User';
 
 Meteor.startup(() => {
-  const handle = Meteor.subscribe('currentUser');
-  console.log("weuiofnwef");
-  Tracker.autorun(() => {
-    if(handle.ready()) {
-      new App({
-        target: document.querySelector('main')
-      });
-    }
-  })
+  new App({
+    target: document.querySelector('main')
+  });
 });
