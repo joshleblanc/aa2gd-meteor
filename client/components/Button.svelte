@@ -6,7 +6,8 @@
   export let disabled;
   export let value;
 
-  const classNames = classnames({
+  let classNames;
+  $: classNames = classnames({
     [`is-${variant}`]: !!variant,
     'is-disabled': disabled
   }, className, 'nes-btn');

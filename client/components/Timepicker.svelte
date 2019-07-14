@@ -3,8 +3,9 @@
     import Picker from 'pickerjs';
     import { createEventDispatcher } from 'svelte';
     import moment from 'moment';
-    
+
     export let value;
+    export let helperText;
     const dispatch = createEventDispatcher();
     let ref;
     $: {
@@ -28,4 +29,4 @@
     }
 </script>
 
-<TextField label="Date and time" fullWidth bind:ref={ref} value={value} />
+<TextField label="Date and time" fullWidth bind:ref={ref} value={value} helperText={helperText}/>

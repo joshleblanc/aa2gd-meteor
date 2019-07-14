@@ -56,7 +56,7 @@
     <div class="{containerClassnames}">
         <label>{label}</label>
         <div class="children">
-            <input readonly={readonly} type={type} class="{inputClassnames}" disabled={disabled} value={value} on:change on:click bind:this={ref} />
+            <input readonly={readonly} type={type} class="{inputClassnames}" disabled={disabled} value={value} on:change on:input on:click bind:this={ref} />
             {#if adornment}
                 <svelte:component this={adornment} on:click={forward}/>
             {/if}

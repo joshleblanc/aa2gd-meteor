@@ -10,6 +10,7 @@
     import Timepicker from '../components/Timepicker';
     import moment from 'moment';
     import Button from '/client/components/Button';
+    import Yup from 'yup';
 
     let games = [];
     let servers = [];
@@ -21,13 +22,48 @@
         games = user.getGames().fetch();
     });
 
+    const schema = Yup.object().shape({
+        name: Yup.string().required(),
+        server: Yup.string().required(),
+        game: Yup.string().required(),
+        date: Yup.string().required()
+    });
+
+    let errors = {};
+    let formValid = false;
     let name;
     let server;
     let game;
     let date = moment().set('minutes', 0);
 
+    function setErrors(error) {
+        errors = {};
+        error.inner.forEach(e => {
+            errors[e.params.path] = e.message;
+        });
+    }
+
+    function setValid(valid) {
+        if(valid) {
+            errors = {};
+        }
+        formValid = valid;
+    }
+
+    $: schema.validate({
+            name,
+            server,
+            game,
+            date
+        }, { abortEarly: false }).catch(error => {
+            setErrors(error);
+        }).then(valid => {
+            setValid(!!valid);
+        });
+
+    $: console.log(formValid);
     function submit() {
-        console.log(name, server, game, date);
+        
     }
 </script>
 
@@ -41,9 +77,16 @@
 
 <div class="root">
     <StyledPaper title="Create a new event!">
-        <TextField label="Name" fullWidth value={name} on:change={e => name = e.target.value} />
+        <TextField 
+            label="Name" 
+            fullWidth 
+            value={name} 
+            on:input={e => name = e.target.value} 
+            helperText={errors.name}
+        />
         <Autocomplete 
             fullWidth
+            helperText={errors.server}
             label="Server"
             on:change={e => server = e.detail}
             placeholder="Select a server"
@@ -58,6 +101,7 @@
         <Autocomplete
             fullWidth
             label="Game"
+            helperText={errors.game}
             on:change={e => game = e.detail}
             placeholder="Select a game"
             options={games.map(g => {
@@ -68,7 +112,7 @@
                 }
             })}
         />
-        <Timepicker on:change={e => date = e.detail} value={date.format('YYYY-MM-DD HH:00')} />
-        <Button variant="primary" on:click={submit}>Submit</Button>
+        <Timepicker on:change={e => date = e.detail} value={date.format('YYYY-MM-DD HH:00')} helperText={errors.date} />
+        <Button variant="primary" on:click={submit} disabled={!formValid}>Submit</Button>
     </StyledPaper>
 </div>
