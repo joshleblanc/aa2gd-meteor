@@ -12,6 +12,7 @@
     export let value = "";
     export let type = "text";
     export let readonly = false;
+    export let autofocus = false;
 
     export let ref;
     const dispatcher = createEventDispatcher();
@@ -56,7 +57,18 @@
     <div class="{containerClassnames}">
         <label>{label}</label>
         <div class="children">
-            <input readonly={readonly} type={type} class="{inputClassnames}" disabled={disabled} value={value} on:change on:input on:click bind:this={ref} />
+            <input 
+                readonly={readonly} 
+                type={type} 
+                class="{inputClassnames}" 
+                disabled={disabled} 
+                value={value} 
+                on:change 
+                on:input 
+                on:click 
+                bind:this={ref} 
+                autofocus={autofocus}
+            />
             {#if adornment}
                 <svelte:component this={adornment} on:click={forward}/>
             {/if}

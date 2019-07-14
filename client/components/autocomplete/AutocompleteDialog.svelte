@@ -19,11 +19,16 @@
     const dispatch = createEventDispatcher();
 
     let search = "";
+    let searchField;
     let filteredOptions = [];
     $: {
         const limit = 25;
         const selectedOptions = options.filter(o => o.name.toLowerCase().startsWith(search.toLowerCase()));
         filteredOptions = selectedOptions.slice(0, limit);
+    }
+
+    $: if(searchField) {
+        searchField.focus();
     }
 
     function selectItem(option) {
@@ -50,7 +55,7 @@
 
 <Dialog open={open} title={title} on:close>
     <div class="list-container">
-        <TextField bind:value={search} />
+        <TextField bind:value={search} fullWidth autofocus/>
         <p>Type something to search</p>
         <div class="list-container">
             <List>
