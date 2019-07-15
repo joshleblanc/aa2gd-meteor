@@ -18,6 +18,11 @@
     onDestroy(() => computation.stop());
 
     let selectedTab = 0;
+
+    const now = new Date();
+    const currentCutoff = new Date();
+    currentCutoff.setHours(currentCutoff.getHours() + 3);
+
 </script>
 
 {#if $serversReady}
@@ -32,7 +37,14 @@
                     selectedTab={selectedTab} 
                     on:select={e => selectedTab = e.detail}
                 />
-                <EventList server={server} />
+                {#if selectedTab === 0}
+                    <EventList server={server} filter={event => event.date < now && event.date > currentCutoff} />
+                {:else if selectedTab === 1}
+                    <EventList server={server} filter={event => event.date > currentCutoff }/>
+                {:else}
+                    <EventList server={server} filter={event => event.date < now }/>
+                {/if}
+                
             </StyledPaper>
         </div>
     </div>

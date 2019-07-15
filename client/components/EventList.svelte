@@ -12,10 +12,12 @@
   import Loader from './Loader';
 
   export let server;
+  export let filter;
+
   let events = [];
   const computation = Tracker.autorun(() => {
     console.log(server);
-    events = server.events().fetch();
+    events = server.events().fetch().filter(filter);
   });
 
   onDestroy(() => {
