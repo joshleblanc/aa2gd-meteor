@@ -44,6 +44,7 @@
     font-size: 0.5357142857142857rem;
     line-height: 0.9375rem;
     font-weight: 500;
+    text-align: center;
   }
 
   .availability-cell {
