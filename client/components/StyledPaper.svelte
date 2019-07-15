@@ -1,7 +1,7 @@
 <script>
   import classnames from 'classnames';
-  export let title;
-  export let className;
+  export let title = false;
+  export let className = "";
 
   const classNames = classnames({
     "nes-container": true,
