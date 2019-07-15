@@ -1,15 +1,15 @@
 <script>
   import classnames from 'classnames';
 
-  export let variant;
-  export let className;
-  export let disabled;
-  export let value;
+  export let variant = "";
+  export let className = "";
+  export let disabled = false;
+  export let value = "";
 
-  let classNames;
+  let classNames = "";
   $: classNames = classnames({
     [`is-${variant}`]: !!variant,
-    'is-disabled': disabled
+    'is-diabled': disabled,
   }, className, 'nes-btn');
 
 </script>
@@ -20,4 +20,10 @@
   }
 </style>
 
-<button class={classNames} disabled={disabled} on:click><slot></slot></button>
+<button 
+  class={classNames} 
+  disabled={disabled} 
+  on:click
+>
+  <slot></slot>
+</button>
