@@ -2,13 +2,8 @@
   import moment from 'moment';
   import { Tracker } from 'meteor/tracker';
   import { User } from '../../lib/User';
-  import { daysOfWeek } from '/lib/utils';
+  import { daysOfWeek, times, toUtc } from '/lib/utils';
   import { onDestroy } from 'svelte';
-
-  const times = [];
-  for (let i = 0; i < 24; i++) {
-    times.push(`${i}:00`);
-  }
 
   let user;
   const computation = Tracker.autorun(() => {
@@ -18,15 +13,7 @@
   function handleClick(day, time) {
     user.toggleAvailableTime(toUtc(day, time));
   }
-
-  function toUtc(day, time) {
-    const t = moment(time, 'HH:mm');
-    t.set('day', day);
-    t.utc();
   
-    return `${daysOfWeek[t.day()]} ${t.format('HH:mm')}`;
-  }
-
   onDestroy(() => {
     computation.stop();
   });

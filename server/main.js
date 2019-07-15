@@ -46,6 +46,24 @@ Meteor.publish('currentUser', function() {
   }
 });
 
+Meteor.publish('users', function(servers) {
+  if(this.userId) {
+    return Meteor.users.find({
+      servers: {
+        $elemMatch: {
+          $in: servers
+        }
+      }
+    }, {
+      fields: {
+        timeTable: 1
+      }
+    })
+  } else {
+    this.ready();
+  }
+});
+
 Meteor.publish('events', function(servers) {
   if(this.userId) {
     return Event.find({

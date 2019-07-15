@@ -5,7 +5,7 @@
   import Navbar from './components/Navbar';
   import Profile from './pages/Profile.svelte';
   import EventForm from './pages/EventForm.svelte';
-  import { usersReady } from './stores/subscriptionStores';
+  import { currentUserReady } from './stores/subscriptionStores';
   import Server from './pages/Server';
   import Meteor from 'meteor/meteor';
 
@@ -73,7 +73,7 @@
   </style>
 </svelte:head>
 
-{#if $usersReady}
+{#if $currentUserReady}
   <div class="root">
     <Router url="{url}">
       <Navbar on:mobileOpen={() => { mobileOpen = !mobileOpen } } mobileOpen={mobileOpen} />

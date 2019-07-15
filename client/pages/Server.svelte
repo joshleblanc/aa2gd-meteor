@@ -1,12 +1,13 @@
 <script>
     import HeaderPaper from '../components/HeaderPaper';
-    import { serversReady } from '../stores/subscriptionStores';
+    import { serversReady, usersReady } from '../stores/subscriptionStores';
     import Loader from '../components/Loader';
     import { Tracker } from 'meteor/tracker';
     import { onDestroy } from 'svelte';
     import { Server } from '/lib/Server';
     import StyledPaper from '../components/StyledPaper';
     import Tabs from '../components/Tabs';
+    import UserAvailabilityTable from '../components/UserAvailabilityTable';
     import EventList from '../components/EventList';
 
     let server;
@@ -44,7 +45,15 @@
                 {:else}
                     <EventList server={server} filter={event => event.date < now }/>
                 {/if}
-                
+            </StyledPaper>
+        </div>
+        <div class="column is-half-desktop">
+            <StyledPaper title="User availability">
+                {#if $usersReady}
+                    <UserAvailabilityTable users={server.users().fetch()}/>
+                {:else}
+                    <Loader />
+                {/if}
             </StyledPaper>
         </div>
     </div>

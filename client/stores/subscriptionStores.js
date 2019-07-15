@@ -12,8 +12,18 @@ function sub(fn) {
     })
 }
 
-export const usersReady = sub(() => {
+export const currentUserReady = sub(() => {
     return Meteor.subscribe('currentUser').ready();
+});
+
+export const usersReady = sub(() => {
+    const user = User.current();
+    if(user) {
+        return Meteor.subscribe('users', user.servers).ready();
+    } else {
+        return false;
+    }
+    
 });
 
 export const serversReady = sub(() => {
