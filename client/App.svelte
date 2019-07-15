@@ -8,9 +8,9 @@
   import { currentUserReady } from './stores/subscriptionStores';
   import Server from './pages/Server';
   import Meteor from 'meteor/meteor';
+  import Event from './pages/Event';
 
   export let url = "";
-  $: console.log(url);
   let mobileOpen = false;
 </script>
 
@@ -83,6 +83,7 @@
         <Route path="home" component="{Home}" />
         <Route path="profile" component="{Profile}" />
         <Route path="events/new" component={EventForm} />
+        <Route path="events/:id" component={Event} />
         <Route path="servers/:id" component={Server} />
       </div>
     </Router>
