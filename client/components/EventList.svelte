@@ -16,16 +16,12 @@
 
   let events = [];
   const computation = Tracker.autorun(() => {
-    console.log(server);
     events = server.events().fetch().filter(filter);
   });
 
   onDestroy(() => {
     computation.stop();
   });
-
-  $: console.log(events);
-
 </script>
 
 
