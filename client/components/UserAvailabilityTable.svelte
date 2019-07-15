@@ -1,9 +1,23 @@
 <script>
     import { daysOfWeek, times, toUtc } from '/lib/utils';
+    import Dialog from './Dialog';
+    import List from './List';
+    import ListItem from './ListItem';
+    import ListItemText from './ListItemText';
+    import ListItemPrimaryText from './ListItemPrimaryText';
+    import ListItemAvatar from './ListItemAvatar';
+    import Avatar from './Avatar';
+
     export let users = [];
     console.log(users);
 
     const max = users.length;
+    let modalOpen = false;
+    let selectedTime;
+    let selectedUsers = [];
+    let localTime;
+    
+ 
     function styleForTime(day, time) {
         const count = countUsers(day, time);
         if (count === 0) {
@@ -23,6 +37,15 @@
             }
         });
         return count;
+    }
+
+    function showAvailableUsers(day, time) {
+      selectedTime = toUtc(day, time);
+      localTime = `${day} ${time}`;
+      selectedUsers = users.filter(u => u.timeTable.includes(selectedTime));
+      if(selectedUsers.length > 0) {
+        modalOpen = true;
+      }
     }
 </script>
 
@@ -78,10 +101,32 @@
       <tr>
         <td colspan="2">{time}</td>
         {#each daysOfWeek as day}
-          <td class="availability-cell" style={styleForTime(day, time)}>{countUsers(day, time)}</td>
+          <td 
+            class="availability-cell" 
+            class:nes-pointer={countUsers(day, time) > 0}
+            style={styleForTime(day, time)}
+            on:click={() => showAvailableUsers(day, time)}
+          >
+            {countUsers(day, time)}
+          </td>
         {/each}
       </tr>
     {/each}
   </tbody>
 </table>
 
+<Dialog open={modalOpen} title="Available users" on:close={() => modalOpen = false}>
+  <p>{localTime}</p>
+  <List>
+    {#each selectedUsers as user}
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar src={user.avatarUrl()} />
+        </ListItemAvatar>
+        <ListItemText>
+          <ListItemPrimaryText>{user.services.discord.username}</ListItemPrimaryText>
+        </ListItemText>
+      </ListItem>
+    {/each}
+  </List>
+</Dialog>
