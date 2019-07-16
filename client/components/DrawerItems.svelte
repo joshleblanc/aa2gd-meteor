@@ -28,12 +28,24 @@
 
   const computation = Tracker.autorun(() => {
     const user = User.current();
+    const now = new Date();
+    now.setHours(now.getHours() - 3);
     if(user) {
       events = Event.find({
-        serverId: {
-          $in: user.servers
-        }
-      }).fetch();
+        $and: [
+          {
+            serverId: {
+              $in: user.servers
+            }
+          },
+          {
+            date: {
+              $gt: now
+            }
+          }
+        ]
+        
+      }, { sort: { date: 1 }}).fetch();
     } else {
       events = [];
     }
