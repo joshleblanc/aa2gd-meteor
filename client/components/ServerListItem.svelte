@@ -22,7 +22,7 @@
     <ListItemPrimaryText>{server.name}</ListItemPrimaryText>
     <ListItemSecondaryText>
       <span>0 ongoing</span>
-      0 upcoming
+      <span>0 upcoming</span>
     </ListItemSecondaryText>
   </ListItemText>
 </ListItem>
