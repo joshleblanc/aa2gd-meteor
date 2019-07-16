@@ -51,9 +51,6 @@
     }
   });
 
-  console.log(Meteor.userId());
-
-
   onDestroy(() => {
     computation.stop();
   });

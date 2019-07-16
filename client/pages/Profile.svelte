@@ -9,14 +9,17 @@
     import ConnectionList from '../components/ConnectionList';
     import { User } from '../../lib/User';
     import TimeTable from '../components/TimeTable';
+    import Dialog from '../components/D'
 
     let user;
     let avatarUrl;
     let name;
     let hasSteam = true;
     let serverIds = [];
+    let steamModalOpen = false;
     const computation = Tracker.autorun(() => {
         user = User.current();
+        hasSteam = user.connections.includes(c => c.type === "steam");
     });
 
     onDestroy(() => {
@@ -54,3 +57,7 @@
         </div>
     </div>
 {/if}
+
+<Dialog open={steamFormOpen}>
+
+</Dialog>
