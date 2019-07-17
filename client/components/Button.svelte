@@ -20,6 +20,7 @@
 <style>
   button {
     font-size: 0.625rem;
+    margin: 8px;
   }
 </style>
 
