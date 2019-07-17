@@ -3,6 +3,7 @@ import { User } from '../lib/User';
 import { Server } from '../lib/Server';
 import { Game } from '../lib/Game';
 import { Event } from '/lib/Event';
+import { getGames } from '/lib/utils';
 
 const discordReq = async function(path, token) {
   const api_url = "https://discordapp.com/api";
@@ -14,18 +15,7 @@ const discordReq = async function(path, token) {
   return response.data;
 };
 
-const getGames = async function(id) {
-  const gamesResponse = await HTTP.get(
-    `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${Meteor.settings.steam.key}&steamid=${id}&format=json&include_appinfo=1&include_played_free_games=1`
-  );
-  const games = gamesResponse.data.response.games;
-  if (games) {
-    games.forEach(g => {
-      Game.upsert({ appid: g.appid }, g);
-    })
-  }
-  return games;
-};
+
 
 Meteor.publish('currentUser', function() {
   if(this.userId) {

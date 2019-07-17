@@ -9,17 +9,20 @@
     import ConnectionList from '../components/ConnectionList';
     import { User } from '../../lib/User';
     import TimeTable from '../components/TimeTable';
-    import Dialog from '../components/D'
+    import Dialog from '../components/Dialog'
+    import Caption from '../components/Caption';
+    import TextField from '../components/TextField';
+    import SteamForm from '../components/SteamForm';
 
     let user;
     let avatarUrl;
     let name;
-    let hasSteam = true;
+    let hasSteam = false;
     let serverIds = [];
     let steamModalOpen = false;
     const computation = Tracker.autorun(() => {
         user = User.current();
-        hasSteam = user.connections.includes(c => c.type === "steam");
+        // hasSteam = user.games.length > 0 || user.connections.includes(c => c.type === "steam");
     });
 
     onDestroy(() => {
@@ -32,7 +35,7 @@
         <div class="column">
             <HeaderPaper imgUrl={user.avatarUrl()} title={user.services.discord.username}>
                 {#if !hasSteam}
-                    <Button>Connect Steam</Button>
+                    <Button on:click={() => steamModalOpen = true}>Connect Steam</Button>
                 {/if}
                 <Button variant="error" on:click={() => Meteor.logout()}>Logout</Button>
             </HeaderPaper>
@@ -58,6 +61,4 @@
     </div>
 {/if}
 
-<Dialog open={steamFormOpen}>
-
-</Dialog>
+<SteamForm open={steamModalOpen} on:close={() => steamModalOpen = false}/>

@@ -58,7 +58,7 @@
                 type={type} 
                 class="{inputClassnames}" 
                 disabled={disabled} 
-                value={value} 
+                value={value}
                 on:change 
                 on:input 
                 on:click 
