@@ -22,6 +22,7 @@
     padding: 0 0.5rem;
     background-color: #303030;
   }
+  
 </style>
 
 <div class={classNames}>

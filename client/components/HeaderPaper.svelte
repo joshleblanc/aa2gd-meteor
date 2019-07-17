@@ -21,11 +21,11 @@
 
 <StyledPaper>
     <div class="columns">
-        <div class="column is-three-quarters-desktop nameContainer">
+        <div class="column is-7-desktop nameContainer">
             <Avatar src={imgUrl} />
             <h4>{title}</h4>
         </div>
-        <div class="column is-1-quarter-desktop nameContainer">
+        <div class="column is-5-desktop nameContainer">
             <div class="grow" />
             <slot></slot>
         </div>
