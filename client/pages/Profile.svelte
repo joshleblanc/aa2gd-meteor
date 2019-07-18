@@ -22,7 +22,7 @@
     let steamModalOpen = false;
     const computation = Tracker.autorun(() => {
         user = User.current();
-        // hasSteam = user.games.length > 0 || user.connections.includes(c => c.type === "steam");
+        hasSteam = user.games.length > 0 || user.connections.includes(c => c.type === "steam");
     });
 
     onDestroy(() => {
