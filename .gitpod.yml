@@ -1,0 +1,7 @@
+image:
+    file: Dockerfile
+tasks:
+    - init:
+        meteor npm install
+ports:
+- port: 3000
