@@ -12,7 +12,7 @@
   let classNames = "";
   $: classNames = classnames({
     [`is-${variant}`]: !!variant,
-    'is-diabled': disabled,
+    'is-disabled': disabled,
   }, className, 'nes-btn');
 
 </script>
