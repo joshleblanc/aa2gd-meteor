@@ -28,6 +28,8 @@ Meteor.publish('currentUser', function() {
         profile: 1,
         services: 1,
         connections: 1,
+        hasGames: 1,
+        checkGames: 1,
         timeTable: 1
       }
     })
@@ -124,6 +126,10 @@ User.extend({
       this.connections = connections;
       this.servers = servers.map(s => s._id);
       this.games = games.map(g => g._id);
+      if(steamConnection) {
+        this.hasGames = true;
+        this.checkGames = false;
+      }
       return this.save();
     }
   }

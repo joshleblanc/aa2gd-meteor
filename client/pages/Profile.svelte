@@ -22,7 +22,6 @@
     let steamModalOpen = false;
     const computation = Tracker.autorun(() => {
         user = User.current();
-        hasSteam = user.games.length > 0 || user.connections.includes(c => c.type === "steam");
     });
 
     onDestroy(() => {
@@ -34,7 +33,7 @@
     <div class="columns">
         <div class="column">
             <HeaderPaper imgUrl={user.avatarUrl()} title={user.services.discord.username}>
-                {#if !hasSteam}
+                {#if !user.hasGames}
                     <Button on:click={() => steamModalOpen = true}>Connect Steam</Button>
                 {/if}
                 <Button variant="error" on:click={() => Meteor.logout()}>Logout</Button>
