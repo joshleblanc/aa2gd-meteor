@@ -13,6 +13,7 @@
   let user;
   const computation = Tracker.autorun(() => {
     user = User.current();
+    console.log(user);
   });
 
   const dispatch = createEventDispatcher();

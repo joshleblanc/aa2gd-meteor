@@ -7,11 +7,17 @@
   import EventForm from './pages/EventForm.svelte';
   import { currentUserReady } from './stores/subscriptionStores';
   import Server from './pages/Server';
-  import Meteor from 'meteor/meteor';
+  import { Meteor } from 'meteor/meteor';
+  import { User } from '/lib/User';
   import Event from './pages/Event';
+  import { Tracker } from 'meteor/tracker';
 
   export let url = "";
   let mobileOpen = false;
+  let user;
+  Tracker.autorun(() => {
+    user = User.current();
+  });
 </script>
 
 <style>
@@ -59,6 +65,11 @@
     a:hover {
       text-decoration: none;
     }
+
+    .content h6 {
+      font-weight: unset;
+    }
+
     .title {
       font-weight: unset;
     }
@@ -74,20 +85,30 @@
 </svelte:head>
 
 {#if $currentUserReady}
-  <div class="root">
-    <Router url="{url}">
-      <Navbar on:mobileOpen={() => { mobileOpen = !mobileOpen } } mobileOpen={mobileOpen} />
-      <Sidebar mobileOpen={mobileOpen} />
+  {#if user}
+    <div class="root">
+      <Router url="{url}">
+        <Navbar on:mobileOpen={() => { mobileOpen = !mobileOpen } } mobileOpen={mobileOpen} />
+        <Sidebar mobileOpen={mobileOpen} />
+        <div class="content">
+          <div class="toolbar" />
+          <Route path="home" component="{Home}" />
+          <Route path="profile" component="{Profile}" />
+          <Route path="events/new" component={EventForm} />
+          <Route path="events/:id" component={Event} />
+          <Route path="servers/:id" component={Server} />
+        </div>
+      </Router>
+    </div>
+  {:else}
+    <div class="root">
+      <Navbar mobileOpen={false} />
       <div class="content">
         <div class="toolbar" />
-        <Route path="home" component="{Home}" />
-        <Route path="profile" component="{Profile}" />
-        <Route path="events/new" component={EventForm} />
-        <Route path="events/:id" component={Event} />
-        <Route path="servers/:id" component={Server} />
+        <Home />
       </div>
-    </Router>
-  </div>
+    </div>
+  {/if}
 {/if}
 
 

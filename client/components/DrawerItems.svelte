@@ -57,6 +57,12 @@
 
 </script>
 
+<style>
+  p {
+    padding: 8px;
+  }
+</style>
+
 <CurrentUserDisplay />
 <Divider />
 <List>
@@ -84,6 +90,10 @@
       {/each}
     {/if}
   {:else}
-    <Loader />
+    {#if Meteor.userId()}
+      <Loader />
+    {:else}
+      <p>Famti.me</p>
+    {/if}
   {/if}
 </List>
