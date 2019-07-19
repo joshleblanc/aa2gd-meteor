@@ -14,6 +14,7 @@
     import TextField from '../components/TextField';
     import SteamForm from '../components/SteamForm';
     import CheckGamesCheckbox from '../components/CheckGamesCheckbox';
+    import AlwaysAvailableCheckbox from '../components/AlwaysAvailableCheckbox';
 
     let user;
     let steamModalOpen = false;
@@ -36,6 +37,7 @@
                 <Button variant="error" on:click={() => Meteor.logout()}>Logout</Button>
                 <div slot="options">
                     <CheckGamesCheckbox />
+                    <AlwaysAvailableCheckbox />
                 </div>
             </HeaderPaper>
         </div>

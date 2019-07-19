@@ -27,6 +27,7 @@ Meteor.publish('currentUser', function() {
         games: 1,
         profile: 1,
         services: 1,
+        alwaysAvailable: 1,
         connections: 1,
         hasGames: 1,
         checkGames: 1,
