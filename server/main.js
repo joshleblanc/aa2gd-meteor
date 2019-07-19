@@ -84,11 +84,7 @@ Meteor.publish("servers", function(ids) {
 
 Meteor.publish("games", function(ids) {
   if(this.userId) {
-    return Game.find({
-      _id: {
-        $in: ids
-      }
-    }, { sort: { name: 1 }})
+    return Game.find({}, { sort: { name: 1 }})
   } else {
     this.ready();
   }
