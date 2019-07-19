@@ -59,6 +59,9 @@
 
   function handleSubmit() {
     webhook.insert();
+    webhook = new Webhook();
+    webhook.creatorId = Meteor.userId();
+    webhook.serverId = serverId;
   }
 
   export let open;
@@ -67,8 +70,8 @@
 <Dialog open={open} on:close title="Webhooks">
   <h5>Register Wehooks</h5>
   <Caption>You can register webhooks here to get notifications of events in your server.</Caption>
-  <TextField label="Name" fullWidth on:input={e => webhook.name = e.target.value} helperText={errors.name} />
-  <TextField label="URL" fullWidth on:input={e => webhook.url = e.target.value} helperText={errors.url} />
+  <TextField label="Name" fullWidth on:input={e => webhook.name = e.target.value} helperText={errors.name} value={webhook.name} />
+  <TextField label="URL" fullWidth on:input={e => webhook.url = e.target.value} helperText={errors.url} value={webhook.url} />
   <Button variant="primary" on:click={handleSubmit} disabled={!formValid}>Submit</Button>
   <StyledPaper title="Registered Webhooks">
     {#if $webhooksReady}
