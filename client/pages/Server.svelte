@@ -9,8 +9,11 @@
     import Tabs from '../components/Tabs';
     import UserAvailabilityTable from '../components/UserAvailabilityTable';
     import EventList from '../components/EventList';
+    import Button from '../components/Button';
+    import WebhookDialog from '../components/WebhookDialog';
 
     let server;
+    let webhookDialogOpen = false;
     export let id;
     const computation = Tracker.autorun(() => {
         server = Server.findOne({ _id: id });
@@ -29,7 +32,9 @@
 {#if $serversReady}
     <div class="columns is-multiline">
         <div class="column is-full">
-            <HeaderPaper title={server.name} imgUrl={server.avatarUrl()} />
+            <HeaderPaper title={server.name} imgUrl={server.avatarUrl()}>
+                <Button on:click={() => webhookDialogOpen = true }>Webhooks</Button>
+            </HeaderPaper>
         </div>
         <div class="column is-half-desktop">
             <StyledPaper title="Events">
@@ -57,6 +62,7 @@
             </StyledPaper>
         </div>
     </div>
+    <WebhookDialog open={webhookDialogOpen} on:close={() => webhookDialogOpen = false} serverId={server._id} />
 {:else}
     <Loader />
 {/if}

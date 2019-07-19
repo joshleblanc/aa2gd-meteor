@@ -4,6 +4,7 @@ import { Server } from '../lib/Server';
 import { Game } from '../lib/Game';
 import { Event } from '/lib/Event';
 import { getGames } from '/lib/utils';
+import { Webhook } from '/lib/Webhook';
 
 const discordReq = async function(path, token) {
   const api_url = "https://discordapp.com/api";
@@ -32,6 +33,16 @@ Meteor.publish('currentUser', function() {
         timeTable: 1
       }
     })
+  } else {
+    this.ready();
+  }
+});
+
+Meteor.publish('webhooks', function() {
+  if(this.userId) {
+    return Webhook.find({
+      creatorId: this.userId
+    });
   } else {
     this.ready();
   }

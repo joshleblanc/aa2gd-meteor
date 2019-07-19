@@ -5,6 +5,7 @@
         margin-top: 4px;
         margin-bottom: 4px;
         display: block;
+        overflow-wrap: break-word;
     }
 </style>
 

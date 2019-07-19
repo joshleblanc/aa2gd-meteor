@@ -70,6 +70,10 @@
       font-weight: unset;
     }
 
+    .content h5 {
+      font-weight: unset;
+    }
+
     .title {
       font-weight: unset;
     }
