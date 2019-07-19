@@ -15,8 +15,6 @@ const discordReq = async function(path, token) {
   return response.data;
 };
 
-
-
 Meteor.publish('currentUser', function() {
   if(this.userId) {
     return Meteor.users.find({
@@ -140,7 +138,7 @@ Meteor.startup(() => {
       $set: {
         loginStyle: "popup",
         clientId: "570931295253823488", 
-        secret: "C6RXU2uDnb1Um1yxRxlnTXBdYsAiTCE8"
+        secret: Meteor.settings.discord.secret
       }
     }
   );
