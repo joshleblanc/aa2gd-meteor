@@ -32,7 +32,7 @@
         const utc = toUtc(day, time);
         let count = 0;
         users.forEach(user => {
-            if(user.timeTable.includes(utc)) {
+            if(user.timeTable.includes(utc) || user.alwaysAvailable) {
                 count += 1;
             }
         });
