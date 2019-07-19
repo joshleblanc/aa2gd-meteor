@@ -30,4 +30,9 @@
             <slot></slot>
         </div>
     </div>
+    <div class="columns">
+        <div class="column">
+            <slot name="options"></slot>
+        </div>
+    </div>
 </StyledPaper>

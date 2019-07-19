@@ -13,12 +13,9 @@
     import Caption from '../components/Caption';
     import TextField from '../components/TextField';
     import SteamForm from '../components/SteamForm';
+    import CheckGamesCheckbox from '../components/CheckGamesCheckbox';
 
     let user;
-    let avatarUrl;
-    let name;
-    let hasSteam = false;
-    let serverIds = [];
     let steamModalOpen = false;
     const computation = Tracker.autorun(() => {
         user = User.current();
@@ -37,6 +34,9 @@
                     <Button on:click={() => steamModalOpen = true}>Connect Steam</Button>
                 {/if}
                 <Button variant="error" on:click={() => Meteor.logout()}>Logout</Button>
+                <div slot="options">
+                    <CheckGamesCheckbox />
+                </div>
             </HeaderPaper>
         </div>
     </div>
