@@ -40,6 +40,7 @@ jquery@1.11.11
 launch-screen@1.1.1
 lichthagel:accounts-discord@0.2.0
 lichthagel:discord-oauth@0.1.0
+littledata:synced-cron@1.5.1
 livedata@1.0.18
 localstorage@1.2.0
 logging@1.1.20

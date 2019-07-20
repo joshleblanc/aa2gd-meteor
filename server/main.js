@@ -140,9 +140,18 @@ User.extend({
       return this.save();
     }
   }
+});
+
+SyncedCron.add({
+  name: "Send reminders about events",
+  schedule: parser => parser.text("every 15 minutes starting on 0th minute, 15th minute, 30th minute, or 45th minute"),
+  job: () => {
+    Event.sendReminders();
+  }
 })
 
 Meteor.startup(() => {
+  SyncedCron.start();
   ServiceConfiguration.configurations.upsert(
     { service: 'discord' },
     {
