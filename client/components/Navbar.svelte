@@ -70,6 +70,10 @@
       .hamburger {
         display: none;
       }
+
+      h6 {
+        margin-left: 240px;
+      }
   }
 </style>
 
@@ -81,7 +85,6 @@
       {:else}
         <Button>></Button>
       {/if}
-      
     </div>
     <h6>Famti.me</h6>
     {#if user}
