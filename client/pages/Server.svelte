@@ -15,12 +15,14 @@
 
     let server;
     let events = [];
+    let users = [];
     let webhookDialogOpen = false;
     export let id;
     const computation = Tracker.autorun(() => {
         server = Server.findOne({ _id: id });
         if(server) {
             events = server.events().fetch();
+            users = server.users().fetch();
         }
     });
 
@@ -34,10 +36,10 @@
 
 </script>
 
-{#if $serversReady && $eventsReady}
+{#if $serversReady }
     <HeaderPaper title={server.name} imgUrl={server.avatarUrl()} />
     <StyledPaper title="Actions">
-        <Button on:click={() => webhookDialogOpen = true }>Manage Webhooks</Button>
+        <Button on:click={() => webhookDialogOpen = true}>Manage Webhooks</Button>
     </StyledPaper>
     <div class="columns is-multiline">
         <div class="column is-half-desktop">
@@ -45,11 +47,7 @@
         </div>
         <div class="column is-half-desktop">
             <StyledPaper title="User availability">
-                {#if $usersReady}
-                    <UserAvailabilityTable users={server.users().fetch()}/>
-                {:else}
-                    <Loader />
-                {/if}
+                <UserAvailabilityTable users={users}/>
             </StyledPaper>
         </div>
     </div>

@@ -3,6 +3,8 @@
     import Tracker from './Tracker';
     import Tabs from './Tabs';
     import EventList from './EventList';
+    import Loader from './Loader';
+    import { eventsReady } from '../stores/subscriptionStores';
     
     export let events;
 
@@ -13,17 +15,21 @@
 </script>
 
 
-<StyledPaper title="Events">
-    <Tabs 
-        tabs={["Current", "Future", "Past"]} 
-        selectedTab={selectedTab} 
-        on:select={e => selectedTab = e.detail}
-    />
-    {#if selectedTab === 0}
-        <EventList events={events.filter(event => event.date < now && event.date > currentCutoff)} />
-    {:else if selectedTab === 1}
-        <EventList events={events.filter(event => event.date > now)}/>
-    {:else}
-        <EventList events={events.filter(event => event.date < now && event.date <= currentCutoff )}/>
-    {/if}
-</StyledPaper>
+{#if $eventsReady}
+    <StyledPaper title="Events">
+        <Tabs 
+            tabs={["Current", "Future", "Past"]} 
+            selectedTab={selectedTab} 
+            on:select={e => selectedTab = e.detail}
+        />
+        {#if selectedTab === 0}
+            <EventList events={events.filter(event => event.date < now && event.date > currentCutoff)} />
+        {:else if selectedTab === 1}
+            <EventList events={events.filter(event => event.date > now)}/>
+        {:else}
+            <EventList events={events.filter(event => event.date < now && event.date <= currentCutoff )}/>
+        {/if}
+    </StyledPaper>
+{:else}
+    <Loader />
+{/if}

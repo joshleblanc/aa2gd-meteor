@@ -7,6 +7,8 @@
     import ListItemPrimaryText from './ListItemPrimaryText';
     import ListItemAvatar from './ListItemAvatar';
     import Avatar from './Avatar';
+    import Loader from './Loader';
+    import { usersReady } from '../stores/subscriptionStores';
 
     export let users = [];
     console.log(users);
@@ -87,33 +89,37 @@
   }
 </style>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="2"></th>
-      {#each daysOfWeek as day}
-        <th align="center">{day}</th>
-      {/each}
-    </tr>
-  </thead>
-  <tbody>
-    {#each times as time}
+{#if $usersReady}
+  <table>
+    <thead>
       <tr>
-        <td colspan="2">{time}</td>
+        <th colspan="2"></th>
         {#each daysOfWeek as day}
-          <td 
-            class="availability-cell" 
-            class:nes-pointer={countUsers(day, time) > 0}
-            style={styleForTime(day, time)}
-            on:click={() => showAvailableUsers(day, time)}
-          >
-            {countUsers(day, time)}
-          </td>
+          <th align="center">{day}</th>
         {/each}
       </tr>
-    {/each}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {#each times as time}
+        <tr>
+          <td colspan="2">{time}</td>
+          {#each daysOfWeek as day}
+            <td 
+              class="availability-cell" 
+              class:nes-pointer={countUsers(day, time) > 0}
+              style={styleForTime(day, time)}
+              on:click={() => showAvailableUsers(day, time)}
+            >
+              {countUsers(day, time)}
+            </td>
+          {/each}
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+{:else}
+  <Loader />
+{/if}
 
 <Dialog open={modalOpen} title="Available users" on:close={() => modalOpen = false}>
   <p>{localTime}</p>

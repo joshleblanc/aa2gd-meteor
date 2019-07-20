@@ -62,9 +62,7 @@
             </StyledPaper>
         </div>
         <div class="column">
-            {#if $eventsReady}
-                <EventsPaper events={events} />
-            {/if}
+            <EventsPaper events={events} />
         </div>
     </div>
 {/if}
