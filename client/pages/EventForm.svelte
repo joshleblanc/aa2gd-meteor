@@ -41,6 +41,7 @@
     let date = new Date();
     let event = new Event();
     event.date = new Date();
+    event.creatorId = Meteor.userId();
     event.date.setMinutes(0);
     event.date.setSeconds(0);
     date.setMinutes(0);
