@@ -42,6 +42,7 @@
 {#if $eventsReady && $gamesReady}
   <Tracker deps={[id]} fn={computation}>
     <HeaderPaper title={event.name} imgUrl={event.game().iconUrl()} subtitle={event.game().name}>
+      <p></p>
       {event.date.toLocaleString()}
     </HeaderPaper>
     <StyledPaper title="Actions">
