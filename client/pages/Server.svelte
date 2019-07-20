@@ -1,6 +1,6 @@
 <script>
     import HeaderPaper from '../components/HeaderPaper';
-    import { serversReady, usersReady } from '../stores/subscriptionStores';
+    import { serversReady, usersReady, eventsReady } from '../stores/subscriptionStores';
     import Loader from '../components/Loader';
     import { Tracker } from 'meteor/tracker';
     import { onDestroy } from 'svelte';
@@ -11,12 +11,17 @@
     import EventList from '../components/EventList';
     import Button from '../components/Button';
     import WebhookDialog from '../components/WebhookDialog';
+    import EventsPaper from '../components/EventsPaper';
 
     let server;
+    let events = [];
     let webhookDialogOpen = false;
     export let id;
     const computation = Tracker.autorun(() => {
         server = Server.findOne({ _id: id });
+        if(server) {
+            events = server.events().fetch();
+        }
     });
 
     onDestroy(() => computation.stop());
@@ -29,27 +34,14 @@
 
 </script>
 
-{#if $serversReady}
+{#if $serversReady && $eventsReady}
     <HeaderPaper title={server.name} imgUrl={server.avatarUrl()} />
     <StyledPaper title="Actions">
         <Button on:click={() => webhookDialogOpen = true }>Manage Webhooks</Button>
     </StyledPaper>
     <div class="columns is-multiline">
         <div class="column is-half-desktop">
-            <StyledPaper title="Events">
-                <Tabs 
-                    tabs={["Current", "Future", "Past"]} 
-                    selectedTab={selectedTab} 
-                    on:select={e => selectedTab = e.detail}
-                />
-                {#if selectedTab === 0}
-                    <EventList server={server} filter={event => event.date < now && event.date > currentCutoff} />
-                {:else if selectedTab === 1}
-                    <EventList server={server} filter={event => event.date > currentCutoff }/>
-                {:else}
-                    <EventList server={server} filter={event => event.date < now }/>
-                {/if}
-            </StyledPaper>
+            <EventsPaper events={events} />
         </div>
         <div class="column is-half-desktop">
             <StyledPaper title="User availability">

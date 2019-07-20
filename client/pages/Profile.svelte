@@ -15,11 +15,17 @@
     import SteamForm from '../components/SteamForm';
     import CheckGamesCheckbox from '../components/CheckGamesCheckbox';
     import AlwaysAvailableCheckbox from '../components/AlwaysAvailableCheckbox';
+    import EventsPaper from '../components/EventsPaper';
+    import { eventsReady } from '../stores/subscriptionStores';
 
     let user;
+    let events = [];
     let steamModalOpen = false;
     const computation = Tracker.autorun(() => {
         user = User.current();
+        if(user) {
+            events = user.events().fetch();
+        }
     });
 
     onDestroy(() => {
@@ -54,6 +60,11 @@
             <StyledPaper title="Connections">
                 <ConnectionList />
             </StyledPaper>
+        </div>
+        <div class="column">
+            {#if $eventsReady}
+                <EventsPaper events={events} />
+            {/if}
         </div>
     </div>
 {/if}

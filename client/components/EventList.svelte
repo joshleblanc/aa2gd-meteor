@@ -11,17 +11,7 @@
   import { onDestroy } from 'svelte';
   import Loader from './Loader';
 
-  export let server;
-  export let filter;
-
-  let events = [];
-  const computation = Tracker.autorun(() => {
-    events = server.events().fetch().filter(filter);
-  });
-
-  onDestroy(() => {
-    computation.stop();
-  });
+  export let events = [];
 </script>
 
 
@@ -43,7 +33,6 @@
       {/each}
     </List>
   {/if}
-  
 {:else}
   <Loader />
 {/if}
