@@ -21,7 +21,8 @@
     const computation = Tracker.autorun(() => {
         const user = User.current();
         servers = user.getServers().fetch();
-        games = Game.find({});
+        games = Game.find({}).fetch();
+        console.log(games);
     });
 
     const schema = Yup.object().shape({
