@@ -1,15 +1,14 @@
 <script>
     import StyledPaper from './StyledPaper';
     import Avatar from './Avatar';
+    import Caption from './Caption';
 
     export let imgUrl;
     export let title;
+    export let subtitle = undefined;
 </script>
 
 <style>
-    h4 {
-        margin: 8px
-    }
     .nameContainer {
         display: flex;
     }
@@ -17,22 +16,28 @@
     .grow {
         flex-grow: 1;
     }
+
+    .title-container {
+        flex-direction: column;
+        margin: 8px
+    }
 </style>
 
 <StyledPaper>
     <div class="columns">
-        <div class="column is-7-desktop nameContainer">
+        <div class="column nameContainer">
             <Avatar src={imgUrl} />
-            <h4>{title}</h4>
-        </div>
-        <div class="column is-5-desktop nameContainer">
-            <div class="grow" />
-            <slot></slot>
+            <div class="title-container">
+                <h4>{title}</h4>
+                {#if subtitle}
+                    <Caption>{subtitle}</Caption>
+                {/if}
+            </div>
         </div>
     </div>
     <div class="columns">
         <div class="column">
-            <slot name="options"></slot>
+            <slot></slot>
         </div>
     </div>
 </StyledPaper>

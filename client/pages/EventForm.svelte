@@ -50,7 +50,6 @@
     $: availableUsers = event.availableUsers();
 
     function setErrors(error) {
-        console.log(error);
         formValid = false;
         errors = {};
         error.details.forEach(e => {

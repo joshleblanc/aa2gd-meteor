@@ -30,12 +30,11 @@
 </script>
 
 {#if $serversReady}
+    <HeaderPaper title={server.name} imgUrl={server.avatarUrl()} />
+    <StyledPaper title="Actions">
+        <Button on:click={() => webhookDialogOpen = true }>Manage Webhooks</Button>
+    </StyledPaper>
     <div class="columns is-multiline">
-        <div class="column is-full">
-            <HeaderPaper title={server.name} imgUrl={server.avatarUrl()}>
-                <Button on:click={() => webhookDialogOpen = true }>Webhooks</Button>
-            </HeaderPaper>
-        </div>
         <div class="column is-half-desktop">
             <StyledPaper title="Events">
                 <Tabs 

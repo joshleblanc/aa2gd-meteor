@@ -28,20 +28,16 @@
 </script>
 
 {#if user}
-    <div class="columns">
-        <div class="column">
-            <HeaderPaper imgUrl={user.avatarUrl()} title={user.services.discord.username}>
-                {#if !user.hasGames}
-                    <Button on:click={() => steamModalOpen = true}>Connect Steam</Button>
-                {/if}
-                <Button variant="error" on:click={() => Meteor.logout()}>Logout</Button>
-                <div slot="options">
-                    <CheckGamesCheckbox />
-                    <AlwaysAvailableCheckbox />
-                </div>
-            </HeaderPaper>
-        </div>
-    </div>
+    <HeaderPaper imgUrl={user.avatarUrl()} title={user.services.discord.username}>
+        <CheckGamesCheckbox />
+        <AlwaysAvailableCheckbox />
+    </HeaderPaper>
+    <StyledPaper title="Actions">
+        {#if !user.hasGames}
+            <Button on:click={() => steamModalOpen = true}>Connect Steam</Button>
+        {/if}
+        <Button variant="error" on:click={() => Meteor.logout()}>Logout</Button>
+    </StyledPaper>
 
     <div class="columns is-multiline">
         <div class="column is-half-desktop is-full">

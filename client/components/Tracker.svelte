@@ -8,7 +8,7 @@
   const dep = new Tracker.Dependency;
 
   $: {
-    $$props
+    deps;
     dep.changed();
   }
 

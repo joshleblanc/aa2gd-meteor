@@ -29,5 +29,7 @@
   {#if title}
     <p class="title">{title}</p>
   {/if}
-  <slot></slot>
+  <div>
+    <slot></slot>
+  </div>
 </div>

@@ -103,7 +103,6 @@
             <Route path="events/:id" component={Event} />
             <Route path="servers/:id" component={Server} />
           </div>
-
         </div>
       </Router>
     </div>
