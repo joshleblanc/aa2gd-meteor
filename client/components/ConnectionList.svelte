@@ -3,8 +3,9 @@
   import { User } from '../../lib/User';
   import Connection from './Connection';
   import { onDestroy } from 'svelte';
-  export let name;
+  import FixedHeightList from './FixedHeightList';
 
+  export let name;
 
   let user;
   const computation = Tracker.autorun(() => {
@@ -14,6 +15,8 @@
   onDestroy(() => computation.stop());
 </script>
 
-{#each user.connections as connection}
-  <Connection connection={connection} />
-{/each}
+<FixedHeightList>
+  {#each user.connections as connection}
+    <Connection connection={connection} />
+  {/each}
+</FixedHeightList>

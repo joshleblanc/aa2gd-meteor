@@ -10,30 +10,31 @@
   import { Tracker } from 'meteor/tracker';
   import { onDestroy } from 'svelte';
   import Loader from './Loader';
+  import FixedHeightList from './FixedHeightList';
 
   export let events = [];
 </script>
 
 
-{#if $eventsReady && $gamesReady }
-  {#if events.length === 0}
-    <p>No events</p>
+<FixedHeightList>
+  {#if $eventsReady && $gamesReady }
+      {#if events.length === 0}
+        <p>No events</p>
+      {:else}
+          {#each events as event}
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar src={event.game().iconUrl()} />
+              </ListItemAvatar>
+              <ListItemText>
+                <ListItemPrimaryText>{event.name}</ListItemPrimaryText>
+                <ListItemSecondaryText>{event.game().name}</ListItemSecondaryText>
+              </ListItemText>
+            </ListItem>
+          {/each}
+      {/if}
   {:else}
-    <List>
-      {#each events as event}
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar src={event.game().iconUrl()} />
-          </ListItemAvatar>
-          <ListItemText>
-            <ListItemPrimaryText>{event.name}</ListItemPrimaryText>
-            <ListItemSecondaryText>{event.game().name}</ListItemSecondaryText>
-          </ListItemText>
-        </ListItem>
-      {/each}
-    </List>
+    <Loader />
   {/if}
-{:else}
-  <Loader />
-{/if}
+</FixedHeightList>
 

@@ -51,15 +51,15 @@
                 <TimeTable />
             </StyledPaper>
         </div>
-        <div class="column">
+        <div class="column is-half-desktop is-full">
             <EventsPaper events={events} />
         </div>
-        <div class="column">
+        <div class="column is-half-desktop is-full">
             <StyledPaper title="Servers">
                 <ServerList />
             </StyledPaper>
         </div>
-        <div class="column">
+        <div class="column is-half-desktop is-full">
             <StyledPaper title="Connections">
                 <ConnectionList />
             </StyledPaper>

@@ -22,14 +22,14 @@
 
 </script>
 
-{#if $serversReady}
-  <FixedHeightList height={522}>
+<FixedHeightList>
+  {#if $serversReady}
     {#each servers as server}
       <Link to="/servers/{server._id}">
         <ServerListItem server={server} />
       </Link>
     {/each}
-  </FixedHeightList>
-{:else}
-  <Loader />
-{/if}
+  {:else}
+    <Loader />
+  {/if}
+</FixedHeightList>
