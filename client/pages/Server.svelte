@@ -33,7 +33,6 @@
     const now = new Date();
     const currentCutoff = new Date();
     currentCutoff.setHours(currentCutoff.getHours() + 3);
-
 </script>
 
 {#if $serversReady }

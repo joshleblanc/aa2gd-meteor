@@ -52,6 +52,9 @@
             </StyledPaper>
         </div>
         <div class="column">
+            <EventsPaper events={events} />
+        </div>
+        <div class="column">
             <StyledPaper title="Servers">
                 <ServerList />
             </StyledPaper>
@@ -60,9 +63,6 @@
             <StyledPaper title="Connections">
                 <ConnectionList />
             </StyledPaper>
-        </div>
-        <div class="column">
-            <EventsPaper events={events} />
         </div>
     </div>
 {/if}
