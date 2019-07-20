@@ -96,11 +96,14 @@
         <Sidebar mobileOpen={mobileOpen} />
         <div class="content">
           <div class="toolbar" />
-          <Route path="home" component="{Home}" />
-          <Route path="profile" component="{Profile}" />
-          <Route path="events/new" component={EventForm} />
-          <Route path="events/:id" component={Event} />
-          <Route path="servers/:id" component={Server} />
+          <div class="container">
+            <Route path="home" component="{Home}" />
+            <Route path="profile" component="{Profile}" />
+            <Route path="events/new" component={EventForm} />
+            <Route path="events/:id" component={Event} />
+            <Route path="servers/:id" component={Server} />
+          </div>
+
         </div>
       </Router>
     </div>
