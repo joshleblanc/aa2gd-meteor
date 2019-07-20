@@ -14,6 +14,7 @@
   import ListItemPrimaryText from '../components/ListItemPrimaryText';
   import ListItemAvatar from '../components/ListItemAvatar';
   import Avatar from '../components/Avatar';
+  import { navigate } from 'svelte-routing';
 
   export let id;
 
@@ -29,6 +30,7 @@
   function handleDelete() {
     if(window.confirm("Are you sure?")) {
       event.destroy();
+      navigate('/profile', { replace: true });
     }
   }
 
