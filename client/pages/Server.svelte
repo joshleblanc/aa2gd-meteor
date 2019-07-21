@@ -21,7 +21,7 @@
     const computation = Tracker.autorun(() => {
         server = Server.findOne({ _id: id });
         if(server) {
-            events = server.events().fetch();
+            events = server.events({ limit: 30 }).fetch();
             users = server.users().fetch();
         }
     });
