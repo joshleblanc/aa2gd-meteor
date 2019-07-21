@@ -1,5 +1,5 @@
 <script>
-  import { eventsReady, gamesReady } from '../stores/subscriptionStores';
+  import { eventsReady, gamesReady, serversReady } from '../stores/subscriptionStores';
   import { onDestroy } from 'svelte';
   import { Event } from '/lib/Event';
   import HeaderPaper from '../components/HeaderPaper';
@@ -15,6 +15,7 @@
   import ListItemAvatar from '../components/ListItemAvatar';
   import Avatar from '../components/Avatar';
   import { navigate } from 'svelte-routing';
+  import { Link } from 'svelte-routing';
 
   export let id;
 
@@ -39,12 +40,28 @@
   }
 </script>
 
-{#if $eventsReady && $gamesReady}
+{#if $eventsReady && $gamesReady && $serversReady}
   <Tracker deps={[id]} fn={computation}>
-    <HeaderPaper title={event.name} imgUrl={event.game().iconUrl()} subtitle={event.game().name}>
-      <p></p>
-      {event.date.toLocaleString()}
-    </HeaderPaper>
+    <StyledPaper title={event.name}>
+      <Link to={`/servers/${event.server()._id}`}>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar src={event.server().avatarUrl()} />
+          </ListItemAvatar>
+          <ListItemText>
+            <ListItemPrimaryText>{event.server().name}</ListItemPrimaryText>
+          </ListItemText>
+        </ListItem>
+      </Link>
+      <ListItem noHover>
+        <ListItemAvatar>
+          <Avatar src={event.game().iconUrl()} />
+        </ListItemAvatar>
+        <ListItemText>
+          <ListItemPrimaryText>{event.game().name}</ListItemPrimaryText>
+        </ListItemText>
+      </ListItem>
+    </StyledPaper>
     <StyledPaper title="Actions">
       {#if event.userIds.includes(Meteor.userId())}
         <Button variant="warning" on:click={handleSignupToggle}>Cancel sign up</Button>

@@ -1,3 +1,7 @@
+<script>
+    export let noHover = false;
+</script>
+
 <style>
     li {
         padding-left: 16px;
@@ -14,11 +18,15 @@
         text-decoration: none;
     }
 
+    li:hover.no-hover {
+        background-color: unset;
+    }
+
     li:hover {
         background-color: rgba(0,0,0,0.08);
     }
 </style>
 
-<li on:click>
+<li on:click class:no-hover={noHover}>
     <slot></slot>
 </li>
