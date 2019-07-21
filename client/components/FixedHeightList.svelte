@@ -1,7 +1,5 @@
 <script>
   import List from './List';
-  export let height;
-
 </script>
 
 <style>
