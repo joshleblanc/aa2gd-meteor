@@ -11,6 +11,7 @@
   import { onDestroy } from 'svelte';
   import Loader from './Loader';
   import FixedHeightList from './FixedHeightList';
+  import { Link } from 'svelte-routing';
 
   export let events = [];
 </script>
@@ -22,15 +23,17 @@
         <p>No events</p>
       {:else}
           {#each events as event}
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar src={event.game().iconUrl()} />
-              </ListItemAvatar>
-              <ListItemText>
-                <ListItemPrimaryText>{event.name}</ListItemPrimaryText>
-                <ListItemSecondaryText>{event.game().name}</ListItemSecondaryText>
-              </ListItemText>
-            </ListItem>
+            <Link to={`/events/${event._id}`}>
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar src={event.game().iconUrl()} />
+                </ListItemAvatar>
+                <ListItemText>
+                  <ListItemPrimaryText>{event.name}</ListItemPrimaryText>
+                  <ListItemSecondaryText>{event.game().name}</ListItemSecondaryText>
+                </ListItemText>
+              </ListItem>
+            </Link>
           {/each}
       {/if}
   {:else}
