@@ -7,6 +7,7 @@
       requestPermissions: ['identify', 'email', 'connections', 'guilds', 'guilds.join']
     }, (error) => {
       if (error) {
+        console.error(error);
         // Do some error handling stuff
       } else {
         User.current().callMethod('populate');
