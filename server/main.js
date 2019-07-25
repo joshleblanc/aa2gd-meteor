@@ -1,3 +1,4 @@
+import { onPageLoad } from 'meteor/server-render';
 import { Meteor } from 'meteor/meteor';
 import { User } from '../lib/User';
 import { Server } from '../lib/Server';
@@ -5,6 +6,7 @@ import { Game } from '../lib/Game';
 import { Event } from '/lib/Event';
 import { getGames } from '/lib/utils';
 import { Webhook } from '/lib/Webhook';
+import App from '/app/App.svelte';
 
 const discordReq = async function(path, token) {
   const api_url = "https://discordapp.com/api";
@@ -149,6 +151,13 @@ SyncedCron.add({
     Event.sendReminders();
   }
 })
+
+onPageLoad(sink => {
+  const { html, css } = App.render({ url: sink.request.url});
+  console.log(html);
+  sink.appendToHead(`<style>${css.code}</style>`);
+  sink.renderIntoElementById('main', html);
+});
 
 Meteor.startup(() => {
   SyncedCron.start();
