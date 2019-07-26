@@ -10,7 +10,10 @@
         console.error(error);
         // Do some error handling stuff
       } else {
-        User.current().callMethod('populate');
+        User.current().callMethod('populate', (err, result) => {
+          console.error(err);
+          console.log(result);
+        });
       }
     });
   }
