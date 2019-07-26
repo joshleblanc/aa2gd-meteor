@@ -7,6 +7,9 @@
     export let value;
     export let helperText;
 
+    const format = "YYYY-MM-DD HH:mm";
+    $: valueString = moment(value).format(format);
+
     const date = new Date();
     date.setSeconds(0);
     date.setMinutes(0);
@@ -16,7 +19,7 @@
     $: {
         if(ref) {
             const picker = new Picker(ref, {
-                format: 'YYYY-MM-DD HH:mm',
+                format: format,
                 headers: true,
                 date: date,
                 pick: () => {
@@ -35,4 +38,4 @@
     }
 </script>
 
-<TextField label="Date and time" fullWidth bind:ref={ref} value={value} helperText={helperText}/>
+<TextField label="Date and time" fullWidth bind:ref={ref} value={valueString} helperText={helperText}/>

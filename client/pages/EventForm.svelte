@@ -128,7 +128,7 @@
                     }
                 })}
             />
-            <Timepicker on:change={e => event.date = e.detail} value={event.date.toLocaleString()} helperText={errors.date} />
+            <Timepicker on:change={e => event.date = e.detail} value={event.date} helperText={errors.date} />
             {#if event.serverId && event.gameId && event.date}
                 <p>There are {availableUsers} users available for that server, game, and date.</p>
             {/if}
