@@ -22,7 +22,6 @@
         const user = User.current();
         servers = user.getServers().fetch();
         games = Game.find({}).fetch();
-        console.log(games);
     });
 
     const schema = Yup.object().shape({
