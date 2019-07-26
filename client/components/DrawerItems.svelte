@@ -1,5 +1,7 @@
 <script>
   import CurrentUserDisplay from './CurrentUserDisplay';
+  import { format } from '../constants';
+  import moment from 'moment';
   import Divider from './Divider';
   import { Tracker } from 'meteor/tracker';
   import { onDestroy } from 'svelte';
@@ -83,7 +85,7 @@
             <ListItemText>
               <ListItemPrimaryText>{event.name}</ListItemPrimaryText>
               <ListItemSecondaryText>{event.server().name}</ListItemSecondaryText>
-              <ListItemTertiaryText>{moment(event.date).format("YYYY-MM-DD HH:mm")}</ListItemTertiaryText>
+              <ListItemTertiaryText>{moment(event.date).format(format)}</ListItemTertiaryText>
             </ListItemText>
           </ListItem>
         </Link>

@@ -1,5 +1,6 @@
 <script>
     import TextField from './TextField';
+    import { format } from '../constants';
     import Picker from 'pickerjs';
     import { createEventDispatcher } from 'svelte';
     import moment from 'moment';
@@ -7,7 +8,6 @@
     export let value;
     export let helperText;
 
-    const format = "YYYY-MM-DD HH:mm";
     $: valueString = moment(value).format(format);
 
     const date = new Date();
