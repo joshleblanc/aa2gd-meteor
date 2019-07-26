@@ -27,7 +27,7 @@
   }
 </script>
 
-<Dialog open={open} title="Connect steam account"} on:close>
+<Dialog open={open} title="Connect steam account" on:close>
   <StyledPaper title="Oops!">
       <p>Looks like you need to connect your steam account.</p>
       <p>Enter your steam ID below to get your games.</p>
