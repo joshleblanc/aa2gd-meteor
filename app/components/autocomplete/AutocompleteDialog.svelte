@@ -24,6 +24,7 @@
     $: {
         const limit = 25;
         const selectedOptions = options.filter(o => o.name && o.name.toLowerCase().startsWith(search.toLowerCase()));
+        console.log(search);
         filteredOptions = selectedOptions.slice(0, limit);
     }
 
@@ -55,7 +56,7 @@
 
 <Dialog open={open} title={title} on:close>
     <div class="list-container">
-        <TextField bind:value={search} fullWidth autofocus/>
+        <TextField on:input={e => search = e.target.value} value={search} fullWidth autofocus/>
         <p>Type something to search</p>
         <div class="list-container">
             <List>

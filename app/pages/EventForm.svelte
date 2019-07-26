@@ -15,6 +15,7 @@
     import { gamesReady, serversReady } from '../stores/subscriptionStores';
     import Loader from '../components/Loader';
     import { onDestroy } from 'svelte';
+    import { navigate } from 'svelte-routing';
 
     let games = [];
     let servers = [];
@@ -22,7 +23,6 @@
         const user = User.current();
         servers = user.getServers().fetch();
         games = Game.find({}).fetch();
-        console.log(games);
     });
 
     const schema = Yup.object().shape({
@@ -79,7 +79,7 @@
     })
 
     function submit() {
-        event.insert();
+        event.insert(id => navigate(`/events/${id}`), null);
     }
 </script>
 
@@ -129,7 +129,7 @@
                     }
                 })}
             />
-            <Timepicker on:change={e => event.date = e.detail} value={event.date.toLocaleString()} helperText={errors.date} />
+            <Timepicker on:change={e => event.date = e.detail} value={event.date} helperText={errors.date} />
             {#if event.serverId && event.gameId && event.date}
                 <p>There are {availableUsers} users available for that server, game, and date.</p>
             {/if}

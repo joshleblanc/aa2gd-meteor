@@ -12,6 +12,9 @@
   import Loader from './Loader';
   import FixedHeightList from './FixedHeightList';
   import { Link } from 'svelte-routing';
+  import ListItemTertiaryText from './ListItemTertiaryText';
+  import moment from 'moment';
+  import { format } from '../constants';
 
   export let events = [];
 </script>
@@ -31,6 +34,7 @@
                 <ListItemText>
                   <ListItemPrimaryText>{event.name}</ListItemPrimaryText>
                   <ListItemSecondaryText>{event.game().name}</ListItemSecondaryText>
+                  <ListItemTertiaryText>{moment(event.date).format(format)}</ListItemTertiaryText>
                 </ListItemText>
               </ListItem>
             </Link>
