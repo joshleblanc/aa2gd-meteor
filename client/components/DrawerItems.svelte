@@ -83,7 +83,7 @@
             <ListItemText>
               <ListItemPrimaryText>{event.name}</ListItemPrimaryText>
               <ListItemSecondaryText>{event.server().name}</ListItemSecondaryText>
-              <ListItemTertiaryText>{event.date.toLocaleString()}</ListItemTertiaryText>
+              <ListItemTertiaryText>{moment(event.date).format("YYYY-MM-DD HH:mm")}</ListItemTertiaryText>
             </ListItemText>
           </ListItem>
         </Link>
