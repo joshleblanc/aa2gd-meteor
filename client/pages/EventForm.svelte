@@ -15,6 +15,7 @@
     import { gamesReady, serversReady } from '../stores/subscriptionStores';
     import Loader from '../components/Loader';
     import { onDestroy } from 'svelte';
+    import { navigate } from 'svelte-routing';
 
     let games = [];
     let servers = [];
@@ -78,7 +79,7 @@
     })
 
     function submit() {
-        event.insert();
+        event.insert(id => navigate(`/events/${id}`), null);
     }
 </script>
 
