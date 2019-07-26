@@ -29,6 +29,12 @@
       "client": "client/main.js",
       "server": "server/main.js"
     },
-    "testModule": "tests/main.js"
+    "testModule": "tests/main.js",
+    "nodeModules": {
+      "recompile": {
+        "svelte-routing": ["server"],
+        "bulma/css/bulma.css": "server"
+      }
+    }
   }
 }

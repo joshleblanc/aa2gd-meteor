@@ -7,7 +7,12 @@ import { Webhook } from '/lib/Webhook';
 function sub(fn) {
     return readable(false, set => {
         const computation = Tracker.autorun(() => {
-            set(fn());
+            if(Meteor.isClient) {
+                set(fn());
+            } else {
+                set(true);
+            }
+            
         });
         return () => computation.stop();
     })

@@ -9,7 +9,7 @@
     import { Meteor } from 'meteor/meteor';
     import Timepicker from '../components/Timepicker';
     import moment from 'moment';
-    import Button from '/client/components/Button';
+    import Button from '../components/Button';
     import Yup from 'yup';
     import { Event } from '/lib/Event';
     import { gamesReady, serversReady } from '../stores/subscriptionStores';

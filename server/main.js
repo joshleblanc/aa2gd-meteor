@@ -153,7 +153,7 @@ SyncedCron.add({
 })
 
 onPageLoad(sink => {
-  const { html, css } = App.render({ url: sink.request.url});
+  const { html, css } = App.render({ url: sink.request.url.path });
   console.log(html);
   sink.appendToHead(`<style>${css.code}</style>`);
   sink.renderIntoElementById('main', html);

@@ -1,4 +1,5 @@
 <script>
+  import 'bulma/css/bulma.css';
   import { Router, Link, Route } from "svelte-routing";
   import Sidebar from './components/Sidebar';
   import Home from './pages/Home.svelte';
@@ -14,10 +15,12 @@
 
   export let url = "";
   let mobileOpen = false;
-  let user;
-  Tracker.autorun(() => {
-    user = User.current();
-  });
+  let user = true;
+  // Tracker.autorun(function() {
+  //   user = User.findOne({
+  //     _id: this.userId
+  //   });
+  // });
 </script>
 
 <style>

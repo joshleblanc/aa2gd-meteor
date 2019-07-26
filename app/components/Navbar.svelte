@@ -10,17 +10,17 @@
 
   export let mobileOpen;
 
-  let user;
-  const computation = Tracker.autorun(() => {
-    user = User.current();
-    console.log(user);
-  });
+  let user = true;;
+  // const computation = Tracker.autorun(() => {
+  //   user = User.current();
+  //   console.log(user);
+  // });
 
   const dispatch = createEventDispatcher();
 
-  onDestroy(() => {
-    computation.stop();
-  });
+  // onDestroy(() => {
+  //   computation.stop();
+  // });
 
   let headerClass;
   $: if(mobileOpen) {
