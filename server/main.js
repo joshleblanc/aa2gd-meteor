@@ -6,9 +6,9 @@ import { Event } from '/lib/Event';
 import { getGames } from '/lib/utils';
 import { Webhook } from '/lib/Webhook';
 
-const discordReq = async function(path, token) {
+const discordReq = function(path, token) {
   const api_url = "https://discordapp.com/api";
-  const response = await HTTP.get(`${api_url}/${path}`, {
+  const response = HTTP.get(`${api_url}/${path}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -103,15 +103,16 @@ Meteor.publish("games", function(ids) {
 
 User.extend({
   meteorMethods: {
-    async populate() {
+    populate() {
+      console.log("Entering populate method");
       const token = this.services.discord.accessToken;
-      const connections = await discordReq("users/@me/connections", token);
-      let servers = await discordReq("users/@me/guilds", token);
-
+      const connections = discordReq("users/@me/connections", token);
+      let servers = discordReq("users/@me/guilds", token);
+      console.log(connections);
       const steamConnection = connections.find(c => c.type === "steam");
       let games = [];
       if(steamConnection) {
-        games = await getGames(steamConnection.id);
+        games = getGames(steamConnection.id);
       }
 
       servers.forEach(s => {
