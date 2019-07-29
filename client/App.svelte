@@ -1,5 +1,6 @@
 <script>
   import { Router, Link, Route } from "svelte-routing";
+  import { fade } from 'svelte/transition';
   import Sidebar from './components/Sidebar';
   import Home from './pages/Home.svelte';
   import Navbar from './components/Navbar';
@@ -11,6 +12,7 @@
   import { User } from '/lib/User';
   import Event from './pages/Event';
   import { Tracker } from 'meteor/tracker';
+  import LoginOverlay from './components/LoginOverlay';
 
   export let url = "";
   let mobileOpen = false;
@@ -90,7 +92,7 @@
 
 {#if $currentUserReady}
   {#if user}
-    <div class="root">
+    <div class="root" transition:fade>
       <Router url="{url}">
         <Navbar on:mobileOpen={() => { mobileOpen = !mobileOpen } } mobileOpen={mobileOpen} />
         <Sidebar mobileOpen={mobileOpen} />
@@ -116,6 +118,7 @@
     </div>
   {/if}
 {/if}
+<LoginOverlay />
 
 
 
