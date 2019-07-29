@@ -28,6 +28,7 @@ Meteor.publish('currentUser', function() {
         "services.discord.username": 1,
         "services.discord.id": 1,
         "services.discord.avatar": 1,
+        "services.resume": 1,
         alwaysAvailable: 1,
         connections: 1,
         hasGames: 1,
