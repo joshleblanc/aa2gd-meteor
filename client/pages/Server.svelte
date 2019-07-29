@@ -19,11 +19,14 @@
     let webhookDialogOpen = false;
     export let id;
     const computation = Tracker.autorun(() => {
-        server = Server.findOne({ _id: new Mongo.ObjectID(id) });
-        if(server) {
-            events = server.events({ limit: 30 }).fetch();
-            users = server.users().fetch();
+        if(id) {
+            server = Server.findOne({ _id: new Mongo.ObjectID(id) });
+            if(server) {
+                events = server.events({ limit: 30 }).fetch();
+                users = server.users().fetch();
+            }
         }
+        
     });
 
     onDestroy(() => computation.stop());
@@ -35,7 +38,7 @@
     currentCutoff.setHours(currentCutoff.getHours() + 3);
 </script>
 
-{#if $serversReady }
+{#if $serversReady}
     <HeaderPaper title={server.name} imgUrl={server.avatarUrl()} />
     <StyledPaper title="Actions">
         <Button on:click={() => webhookDialogOpen = true}>Manage Webhooks</Button>
