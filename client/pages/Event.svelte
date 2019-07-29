@@ -23,7 +23,7 @@
   let users = [];
   function computation() {
     event = Event.findOne({
-      _id: id
+      _id: new Mongo.ObjectID(id)
     });
     users = event.users().fetch();
   }
@@ -38,12 +38,13 @@
   function handleSignupToggle() {
     event.registerUser(Meteor.userId());
   }
+  
 </script>
 
 {#if $eventsReady && $gamesReady && $serversReady}
   <Tracker deps={[id]} fn={computation}>
     <StyledPaper title={event.name}>
-      <Link to={`/servers/${event.server()._id}`}>
+      <Link to={`/servers/${event.server()._id.toHexString()}`}>
         <ListItem>
           <ListItemAvatar>
             <Avatar src={event.server().avatarUrl()} />

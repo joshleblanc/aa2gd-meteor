@@ -19,7 +19,7 @@
     let webhookDialogOpen = false;
     export let id;
     const computation = Tracker.autorun(() => {
-        server = Server.findOne({ _id: id });
+        server = Server.findOne({ _id: new Mongo.ObjectID(id) });
         if(server) {
             events = server.events({ limit: 30 }).fetch();
             users = server.users().fetch();

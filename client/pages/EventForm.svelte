@@ -19,10 +19,19 @@
 
     let games = [];
     let servers = [];
+    let user;
+    let event = new Event();
+    event.date = new Date();
+    event.date.setMinutes(0);
+    event.date.setSeconds(0);
+
     const computation = Tracker.autorun(() => {
-        const user = User.current();
-        servers = user.getServers().fetch();
-        games = Game.find({}).fetch();
+        user = User.current();
+        if(user) {
+            event.creatorId = user._id;
+            servers = user.getServers().fetch();
+            games = Game.find({}).fetch();
+        }
     });
 
     const schema = Yup.object().shape({
@@ -38,14 +47,6 @@
     let server;
     let game;
     let availableUsers = 0;
-    let date = new Date();
-    let event = new Event();
-    event.date = new Date();
-    event.creatorId = Meteor.userId();
-    event.date.setMinutes(0);
-    event.date.setSeconds(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
 
     $: availableUsers = event.availableUsers();
 
@@ -79,7 +80,7 @@
     })
 
     function submit() {
-        event.insert(id => navigate(`/events/${id}`), null);
+        event.insert(id => navigate(`/events/${id.toHexString()}`), null);
     }
 </script>
 
