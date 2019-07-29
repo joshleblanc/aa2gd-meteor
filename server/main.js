@@ -120,7 +120,8 @@ User.extend({
 
       console.log("Upserting servers");
       servers.forEach(s => {
-        Server.upsert({id: s.id}, s);
+        const { id, ...server } = s;
+        Server.upsert({id}, { $set: server });
       });
       console.log("Done upserting servers");
 
