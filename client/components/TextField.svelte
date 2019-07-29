@@ -18,7 +18,6 @@
     const dispatcher = createEventDispatcher();
 
     function forward(e) {
-        console.log("pwkemf");
         dispatcher('click', e);
     }
 

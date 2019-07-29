@@ -11,7 +11,6 @@
     import { usersReady } from '../stores/subscriptionStores';
 
     export let users = [];
-    console.log(users);
 
     const max = users.length;
     let modalOpen = false;

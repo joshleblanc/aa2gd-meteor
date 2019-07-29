@@ -24,7 +24,6 @@
     $: {
         const limit = 25;
         const selectedOptions = options.filter(o => o.name && o.name.toLowerCase().startsWith(search.toLowerCase()));
-        console.log(search);
         filteredOptions = selectedOptions.slice(0, limit);
     }
 
