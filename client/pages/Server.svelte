@@ -41,10 +41,10 @@
         <Button on:click={() => webhookDialogOpen = true}>Manage Webhooks</Button>
     </StyledPaper>
     <div class="columns is-multiline">
-        <div class="column is-half-desktop">
+        <div class="column">
             <EventsPaper events={events} />
         </div>
-        <div class="column is-half-desktop">
+        <div class="column">
             <StyledPaper title="User availability">
                 <UserAvailabilityTable users={users}/>
             </StyledPaper>
