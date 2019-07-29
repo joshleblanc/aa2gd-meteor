@@ -106,30 +106,41 @@ User.extend({
     populate() {
       console.log("Entering populate method");
       const token = this.services.discord.accessToken;
+      console.log("Getting connections");
       const connections = discordReq("users/@me/connections", token);
+      console.log("Done getting connections");
+      console.log("Getting servers");
       let servers = discordReq("users/@me/guilds", token);
-      console.log(connections);
+      console.log("Done getting servers");
       const steamConnection = connections.find(c => c.type === "steam");
       let games = [];
       if(steamConnection) {
+        console.log("Getting games");
         games = getGames(steamConnection.id);
+        console.log("Done getting games");
       }
 
+      console.log("Upserting servers");
       servers.forEach(s => {
         Server.upsert({id: s.id}, s);
       });
+      console.log("Done upserting servers");
 
+      console.log("Finding user servers");
       servers = Server.find({
         id: {
           $in: servers.map(s => s.id)
         }
       });
+      console.log("Done finding user servers");
 
+      console.log("Finding user games");
       games = Game.find({
         appid: {
           $in: games.map(s => s.appid)
         }
       });
+      console.log("Done finding user games");
 
       this.connections = connections;
       this.servers = servers.map(s => s._id);
@@ -138,6 +149,7 @@ User.extend({
         this.hasGames = true;
         this.checkGames = false;
       }
+      console.log("Saving");
       return this.save();
     }
   }
