@@ -15,7 +15,6 @@
     const user = User.current();
     if(user) {
       servers = user.getServers().fetch();
-      console.log(servers);
     }
   });
 
