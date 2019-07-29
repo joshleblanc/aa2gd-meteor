@@ -52,23 +52,25 @@
   }
 </style>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="2"></th>
-      {#each daysOfWeek as day}
-        <th align="center">{day}</th>
-      {/each}
-    </tr>
-  </thead>
-  <tbody>
-    {#each times as time}
+{#if user}
+  <table>
+    <thead>
       <tr>
-        <td colspan="2">{time}</td>
+        <th colspan="2"></th>
         {#each daysOfWeek as day}
-          <td class="availability-cell" on:click={() => handleClick(day, time)} style="background-color: {user.timeTable.includes(toUtc(day, time)) ? 'rgb(0,100,0)' : 'rgb(100,0,0)'}"></td>
+          <th align="center">{day}</th>
         {/each}
       </tr>
-    {/each}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {#each times as time}
+        <tr>
+          <td colspan="2">{time}</td>
+          {#each daysOfWeek as day}
+            <td class="availability-cell" on:click={() => handleClick(day, time)} style="background-color: {user.timeTable.includes(toUtc(day, time)) ? 'rgb(0,100,0)' : 'rgb(100,0,0)'}"></td>
+          {/each}
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+{/if}

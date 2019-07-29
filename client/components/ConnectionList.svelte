@@ -15,8 +15,10 @@
   onDestroy(() => computation.stop());
 </script>
 
-<FixedHeightList>
-  {#each user.connections as connection}
-    <Connection connection={connection} />
-  {/each}
-</FixedHeightList>
+{#if user}
+  <FixedHeightList>
+    {#each user.connections as connection}
+      <Connection connection={connection} />
+    {/each}
+  </FixedHeightList>
+{/if}

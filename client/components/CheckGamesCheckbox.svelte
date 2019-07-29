@@ -17,7 +17,9 @@
   }
 </script>
 
-<label>
-    <input type="checkbox" class="nes-checkbox" checked={!user.checkGames} on:change={handleCheckGamesChange} />
-    <span>Include unowned games</span>
-</label>
+{#if user}
+    <label>
+        <input type="checkbox" class="nes-checkbox" checked={!user.checkGames} on:change={handleCheckGamesChange} />
+        <span>Include unowned games</span>
+    </label>
+{/if}

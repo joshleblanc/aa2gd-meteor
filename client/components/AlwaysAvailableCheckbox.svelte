@@ -17,7 +17,9 @@
   }
 </script>
 
-<label>
-    <input type="checkbox" class="nes-checkbox" checked={user.alwaysAvailable} on:change={handleAlwaysAvailableChange} />
-    <span>Available at any time</span>
-</label>
+{#if user}
+    <label>
+        <input type="checkbox" class="nes-checkbox" checked={user.alwaysAvailable} on:change={handleAlwaysAvailableChange} />
+        <span>Available at any time</span>
+    </label>
+{/if}

@@ -13,7 +13,9 @@
   let servers = [];
   const computation = Tracker.autorun(() => {
     const user = User.current();
-    servers = user.getServers().fetch();
+    if(user) {
+      servers = user.getServers().fetch();
+    }
   });
 
   onDestroy(() => {
