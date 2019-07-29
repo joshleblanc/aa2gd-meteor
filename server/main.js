@@ -115,9 +115,7 @@ User.extend({
       const steamConnection = connections.find(c => c.type === "steam");
       let games = [];
       if(steamConnection) {
-        console.log("Getting games");
         games = getGames(steamConnection.id);
-        console.log("Done getting games");
       }
 
       console.log("Upserting servers");
