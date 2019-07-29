@@ -68,7 +68,7 @@
 </script>
 
 <Dialog open={open} on:close title="Webhooks">
-  <h5>Register Wehooks</h5>
+  <h5>Register Webhooks</h5>
   <Caption>You can register webhooks here to get notifications of events in your server.</Caption>
   <TextField label="Name" fullWidth on:input={e => webhook.name = e.target.value} helperText={errors.name} value={webhook.name} />
   <TextField label="URL" fullWidth on:input={e => webhook.url = e.target.value} helperText={errors.url} value={webhook.url} />
