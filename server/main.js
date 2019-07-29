@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { User } from '../lib/User';
-import { Server } from '../lib/Server';
+import { Server, Servers } from '../lib/Server';
 import { Game } from '../lib/Game';
 import { Event } from '/lib/Event';
 import { getGames } from '/lib/utils';
@@ -104,51 +104,47 @@ Meteor.publish("games", function(ids) {
 User.extend({
   meteorMethods: {
     populate() {
-      console.log("Entering populate method");
       const token = this.services.discord.accessToken;
-      console.log("Getting connections");
       const connections = discordReq("users/@me/connections", token);
-      console.log("Done getting connections");
-      console.log("Getting servers");
       let servers = discordReq("users/@me/guilds", token);
-      console.log("Done getting servers");
       const steamConnection = connections.find(c => c.type === "steam");
       let games = [];
       if(steamConnection) {
-        games = getGames(steamConnection.id);
+        try {
+          games = getGames(steamConnection.id);
+        } catch(e) {
+          console.log("Getting games failed");
+          console.error(e);
+        }
       }
 
-      console.log("Upserting servers");
+      const serverBulk = Servers.rawCollection().initializeUnorderedBulkOp();
       servers.forEach(s => {
         const { id, ...server } = s;
-        Server.upsert({id}, { $set: server });
+        serverBulk.find({ id }).upsert().updateOne({ $set: server });
       });
-      console.log("Done upserting servers");
+      Meteor.wrapAsync(serverBulk.execute, serverBulk)();
 
-      console.log("Finding user servers");
       servers = Server.find({
         id: {
           $in: servers.map(s => s.id)
         }
       });
-      console.log("Done finding user servers");
 
-      console.log("Finding user games");
       games = Game.find({
         appid: {
           $in: games.map(s => s.appid)
         }
       });
-      console.log("Done finding user games");
 
       this.connections = connections;
       this.servers = servers.map(s => s._id);
       this.games = games.map(g => g._id);
+
       if(steamConnection) {
         this.hasGames = true;
         this.checkGames = false;
       }
-      console.log("Saving");
       return this.save();
     }
   }
