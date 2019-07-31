@@ -25,6 +25,7 @@
                 pick: () => {
                     dispatch('change', picker.getDate());
                 },
+                controls: true,
                 increment: {
                     year: 1,
                     month: 1,
