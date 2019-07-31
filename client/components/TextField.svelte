@@ -13,7 +13,7 @@
     export let type = "text";
     export let readonly = false;
     export let autoFocus = false;
-    let ref;
+    export let ref;
 
     const dispatcher = createEventDispatcher();
 
