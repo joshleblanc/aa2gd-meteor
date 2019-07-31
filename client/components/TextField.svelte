@@ -1,7 +1,7 @@
 <script>
     import ErrorText from './ErrorText';
     import classnames from 'classnames';
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, onMount } from 'svelte';
     export let inline = false;
     export let fullWidth = false;
     export let variant = null;
@@ -12,14 +12,20 @@
     export let value = "";
     export let type = "text";
     export let readonly = false;
-    export let autofocus = false;
+    export let autoFocus = false;
+    let ref;
 
-    export let ref;
     const dispatcher = createEventDispatcher();
 
     function forward(e) {
         dispatcher('click', e);
     }
+
+    onMount(() => {
+        if(autoFocus) {
+            ref.focus();
+        }
+    });
 
     const containerClassnames = classnames({
         'is-inline': inline,
@@ -62,7 +68,6 @@
                 on:input 
                 on:click 
                 bind:this={ref} 
-                autofocus={autofocus}
             />
             {#if adornment}
                 <svelte:component this={adornment} on:click={forward}/>
