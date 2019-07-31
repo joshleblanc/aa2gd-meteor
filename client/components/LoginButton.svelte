@@ -2,6 +2,7 @@
   import Button from './Button.svelte';
   import { User } from '../../lib/User';
   import { populatingUserData, loggingIn } from '../stores/state';
+  import { navigate } from 'svelte-routing';
 
   function handleClick(event) {
     loggingIn.set(true);
@@ -19,6 +20,7 @@
             console.error(err);
           } else {
             console.log("Done populating user data");
+            navigate('/profile', { replace: true });
           }
           populatingUserData.set(false);
         });
