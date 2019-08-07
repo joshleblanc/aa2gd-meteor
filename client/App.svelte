@@ -1,5 +1,5 @@
 <script>
-  import { Router, Link, Route } from "svelte-routing";
+  import { Router, Link, Route, navigate } from "svelte-routing";
   import { fade } from 'svelte/transition';
   import Sidebar from './components/Sidebar';
   import Home from './pages/Home.svelte';
@@ -19,6 +19,9 @@
   let user;
   Tracker.autorun(() => {
     user = User.current();
+    if(user && window.location.pathname === "/") {
+      navigate('/profile');
+    }
   });
 </script>
 
