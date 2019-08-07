@@ -18,6 +18,7 @@
   import { format } from '../constants';
   import { Link } from 'svelte-routing';
   import moment from 'moment';
+  import Loader from '../components/Loader';
 
   export let id;
 
@@ -94,4 +95,6 @@
       </List>
     </StyledPaper>
   </Tracker>
+{:else}
+  <Loader />
 {/if}
