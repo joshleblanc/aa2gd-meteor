@@ -15,7 +15,9 @@
   import ListItemAvatar from '../components/ListItemAvatar';
   import Avatar from '../components/Avatar';
   import { navigate } from 'svelte-routing';
+  import { format } from '../constants';
   import { Link } from 'svelte-routing';
+  import moment from 'moment';
 
   export let id;
 
@@ -61,6 +63,9 @@
         <ListItemText>
           <ListItemPrimaryText>{event.game().name}</ListItemPrimaryText>
         </ListItemText>
+      </ListItem>
+      <ListItem noHover>
+        <ListItemText>{moment(event.date).format(format)}</ListItemText>
       </ListItem>
     </StyledPaper>
     <StyledPaper title="Actions">
