@@ -113,9 +113,11 @@ User.extend({
       let servers = discordReq("users/@me/guilds", token);
       const steamConnection = connections.find(c => c.type === "steam");
       let games = [];
+      let gotGames = false;
       if(steamConnection) {
         try {
           games = getGames(steamConnection.id);
+          gotGames = true;
         } catch(e) {
           console.log("Getting games failed");
           console.error(e);
@@ -145,7 +147,7 @@ User.extend({
       this.servers = servers.map(s => s._id);
       this.games = games.map(g => g._id);
 
-      if(steamConnection) {
+      if(steamConnection && gotGames) {
         this.hasGames = true;
         this.checkGames = false;
       }
