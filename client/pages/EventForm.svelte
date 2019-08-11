@@ -91,7 +91,7 @@
     }
 </style>
 
-{#if $gamesReady && $serversReady && usersReady}
+{#if $gamesReady && $serversReady && $usersReady}
     <div class="root">
         <StyledPaper title="Create a new event!">
             <TextField 
