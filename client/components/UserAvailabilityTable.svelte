@@ -17,27 +17,33 @@
     let selectedTime;
     let selectedUsers = [];
     let localTime;
+
+    const styles = {};
+    const counts = {};
+
+    $: {
+      times.forEach(time => {
+        daysOfWeek.forEach(day => {
+          const utc = toUtc(day, time);
+          let count = 0;
+          users.forEach(user => {
+              if(user.timeTable.includes(utc) || user.alwaysAvailable) {
+                  count += 1;
+              }
+          });
+          counts[`${day}${time}`] = count;
+        });
+      });
+    }
     
  
-    function styleForTime(day, time) {
-        const count = countUsers(day, time);
+    function styleForCount(count) {
         if (count === 0) {
             color = `rgb(100, 0, 0)`;
         } else {
             color = `rgba(0, ${(count / max) * 100}, 0, 1)`;
         }
         return `background-color: ${color}`;
-    }
-
-    function countUsers(day, time) {
-        const utc = toUtc(day, time);
-        let count = 0;
-        users.forEach(user => {
-            if(user.timeTable.includes(utc) || user.alwaysAvailable) {
-                count += 1;
-            }
-        });
-        return count;
     }
 
     function showAvailableUsers(day, time) {
@@ -105,11 +111,11 @@
           {#each daysOfWeek as day}
             <td 
               class="availability-cell" 
-              class:nes-pointer={countUsers(day, time) > 0}
-              style={styleForTime(day, time)}
+              class:nes-pointer={counts[`${day}${time}`] > 0}
+              style={styleForCount(counts[`${day}${time}`])}
               on:click={() => showAvailableUsers(day, time)}
             >
-              {countUsers(day, time)}
+              {counts[`${day}${time}`]}
             </td>
           {/each}
         </tr>

@@ -12,7 +12,7 @@
     import Button from '/client/components/Button';
     import Yup from 'yup';
     import { Event } from '/lib/Event';
-    import { gamesReady, serversReady } from '../stores/subscriptionStores';
+    import { gamesReady, serversReady, usersReady } from '../stores/subscriptionStores';
     import Loader from '../components/Loader';
     import { onDestroy } from 'svelte';
     import { navigate } from 'svelte-routing';
@@ -91,7 +91,7 @@
     }
 </style>
 
-{#if $gamesReady && $serversReady}
+{#if $gamesReady && $serversReady && usersReady}
     <div class="root">
         <StyledPaper title="Create a new event!">
             <TextField 

@@ -64,7 +64,9 @@ Meteor.publish('users', function(servers) {
       fields: {
         timeTable: 1,
         services: 1,
-        alwaysAvailable: 1
+        alwaysAvailable: 1,
+        servers: 1,
+        games: 1
       }
     })
   } else {
