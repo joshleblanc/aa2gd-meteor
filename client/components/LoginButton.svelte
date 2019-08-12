@@ -20,7 +20,6 @@
             console.error(err);
           } else {
             console.log("Done populating user data");
-            navigate('/profile', { replace: true });
           }
           populatingUserData.set(false);
         });
