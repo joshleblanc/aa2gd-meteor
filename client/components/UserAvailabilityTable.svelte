@@ -49,7 +49,7 @@
     function showAvailableUsers(day, time) {
       selectedTime = toUtc(day, time);
       localTime = `${day} ${time}`;
-      selectedUsers = users.filter(u => u.timeTable.includes(selectedTime));
+      selectedUsers = users.filter(u => u.timeTable.includes(selectedTime) || u.alwaysAvailable);
       if(selectedUsers.length > 0) {
         modalOpen = true;
       }
