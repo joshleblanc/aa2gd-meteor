@@ -12,7 +12,6 @@
 
     export let users = [];
 
-    const max = users.length;
     let modalOpen = false;
     let selectedTime;
     let selectedUsers = [];
@@ -32,6 +31,7 @@
               }
           });
           counts[`${day}${time}`] = count;
+          styles[`${day}${time}`] = styleForCount(count);
         });
       });
     }
@@ -41,7 +41,7 @@
         if (count === 0) {
             color = `rgb(100, 0, 0)`;
         } else {
-            color = `rgba(0, ${(count / max) * 100}, 0, 1)`;
+            color = `rgba(0, ${(count / users.length) * 100}, 0, 1)`;
         }
         return `background-color: ${color}`;
     }
@@ -112,7 +112,7 @@
             <td 
               class="availability-cell" 
               class:nes-pointer={counts[`${day}${time}`] > 0}
-              style={styleForCount(counts[`${day}${time}`])}
+              style={styles[`${day}${time}`]}
               on:click={() => showAvailableUsers(day, time)}
             >
               {counts[`${day}${time}`]}
