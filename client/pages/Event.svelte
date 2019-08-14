@@ -24,11 +24,16 @@
 
   let event;
   let users = [];
+  let momentDate;
+  let duration;
+
   function computation() {
     event = Event.findOne({
       _id: new Mongo.ObjectID(id)
     });
+    momentDate = moment(event.date);
     users = event.users().fetch();
+    duration = moment.duration(momentDate.diff(moment()));
   }
 
   function handleDelete() {
@@ -66,7 +71,18 @@
         </ListItemText>
       </ListItem>
       <ListItem noHover>
-        <ListItemText>{moment(event.date).format(format)}</ListItemText>
+        <ListItemText>{momentDate.format(format)}</ListItemText>
+      </ListItem>
+      <ListItem noHover>
+        <ListItemText>
+          {#if duration.seconds() > 0}
+            Begins
+          {:else if duration.hours() > -3}
+            Began
+          {:else}
+            Ended 
+          {/if}
+          {duration.humanize(true)}</ListItemText>
       </ListItem>
     </StyledPaper>
     <StyledPaper title="Actions">
