@@ -8,7 +8,7 @@
   import Avatar from './Avatar';
   import ListItemText from './ListItemText';
   import ListItemPrimaryText from './ListItemPrimaryText';
-  import { User } from '../../lib/User';
+  import { User } from '/lib/models/User';
 
   let user;
   const computation = Tracker.autorun(() => {

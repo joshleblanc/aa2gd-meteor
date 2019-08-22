@@ -4,7 +4,7 @@
   import TextField from './TextField';
   import Button from './Button';
   import Dialog from './Dialog';
-  import { User } from '/lib/User';
+  import { User } from '/lib/models/User';
   import { createEventDispatcher } from 'svelte';
   let steamId = "";
   export let open = false;

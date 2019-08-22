@@ -1,28 +1,24 @@
 <script>
-  import { Router, Link, Route, navigate } from "svelte-routing";
+  import Router from 'svelte-routing/src/Router';
+  import Link from 'svelte-routing/src/Link';
+  import Route from 'svelte-routing/src/Route';
+  import { navigate } from "svelte-routing";
   import { fade } from 'svelte/transition';
   import Sidebar from './components/Sidebar';
   import Home from './pages/Home.svelte';
   import Navbar from './components/Navbar';
   import Profile from './pages/Profile.svelte';
   import EventForm from './pages/EventForm.svelte';
-  import { currentUserReady } from './stores/subscriptionStores';
+  import { currentUserReady, currentUser } from './stores/subscriptionStores';
   import Server from './pages/Server';
   import { Meteor } from 'meteor/meteor';
-  import { User } from '/lib/User';
+  import { User } from '/lib/models/User';
   import Event from './pages/Event';
-  import { Tracker } from 'meteor/tracker';
   import LoginOverlay from './components/LoginOverlay';
+  import { track } from '/lib/utils';
 
   export let url = "";
   let mobileOpen = false;
-  let user;
-  Tracker.autorun(() => {
-    user = User.current();
-    if(user && window.location.pathname === "/") {
-      navigate('/profile');
-    }
-  });
 </script>
 
 <style>
@@ -94,16 +90,16 @@
 </svelte:head>
 
 {#if $currentUserReady}
-  {#if user}
+  {#if $currentUser}
     <div class="root" transition:fade>
-      <Router url="{url}">
+      <Router url={url}>
         <Navbar on:mobileOpen={() => { mobileOpen = !mobileOpen } } mobileOpen={mobileOpen} />
         <Sidebar mobileOpen={mobileOpen} />
         <div class="content">
           <div class="toolbar" />
           <div class="container">
-            <Route path="home" component="{Home}" />
-            <Route path="profile" component="{Profile}" />
+            <Route path="/" component="{Home}" />
+            <Route path="/profile" component={Profile} />
             <Route path="events/new" component={EventForm} />
             <Route path="events/:id" component={Event} />
             <Route path="servers/:id" component={Server} />
@@ -122,6 +118,7 @@
   {/if}
 {/if}
 <LoginOverlay />
+
 
 
 

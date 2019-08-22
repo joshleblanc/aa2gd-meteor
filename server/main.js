@@ -1,10 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { User } from '../lib/User';
-import { Server, Servers } from '../lib/Server';
-import { Game } from '../lib/Game';
-import { Event } from '/lib/Event';
+import { onPageLoad } from 'meteor/server-render';
+import { User } from '/lib/models/User';
+import { Server, Servers } from '/lib/models/Server';
+import { Game } from '/lib/models/Game';
+import { Event } from '/lib/models/Event';
 import { getGames } from '/lib/utils';
-import { Webhook } from '/lib/Webhook';
+import { Webhook } from '/lib/models/Webhook';
+import App from '../lib/ui/App';
 
 const discordReq = function(path, token) {
   const api_url = "https://discordapp.com/api";
@@ -32,7 +34,7 @@ Meteor.publish('currentUser', function() {
         "services.discord.accessToken": 1,
         alwaysAvailable: 1,
         connections: 1,
-        hasGames: 1,
+      hasGames: 1,
         checkGames: 1,
         timeTable: 1
       }
@@ -178,4 +180,11 @@ Meteor.startup(() => {
       }
     }
   );
+});
+
+onPageLoad(sink => {
+  const path = sink.request.url.path;
+  const { html, css } = App.render({ url: path });
+  sink.renderIntoElementById('main', html);
+  sink.appendToHead(`<style>${css.code}</style>`);
 });

@@ -1,22 +1,16 @@
 <script>
   import moment from 'moment';
   import { Tracker } from 'meteor/tracker';
-  import { User } from '../../lib/User';
+  import { User } from '/lib/models/User';
   import { daysOfWeek, times, toUtc } from '/lib/utils';
   import { onDestroy } from 'svelte';
+  import { track } from '/lib/utils';
+  import { currentUser } from '../stores/subscriptionStores';
 
-  let user;
-  const computation = Tracker.autorun(() => {
-    user = User.current();
-  });
 
   function handleClick(day, time) {
-    user.toggleAvailableTime(toUtc(day, time));
+    $currentUser.toggleAvailableTime(toUtc(day, time));
   }
-  
-  onDestroy(() => {
-    computation.stop();
-  });
 
 </script>
 
@@ -52,7 +46,7 @@
   }
 </style>
 
-{#if user}
+{#if $currentUser}
   <table>
     <thead>
       <tr>
@@ -67,7 +61,7 @@
         <tr>
           <td colspan="2">{time}</td>
           {#each daysOfWeek as day}
-            <td class="availability-cell" on:click={() => handleClick(day, time)} style="background-color: {user.timeTable.includes(toUtc(day, time)) ? 'rgb(0,100,0)' : 'rgb(100,0,0)'}"></td>
+            <td class="availability-cell" on:click={() => handleClick(day, time)} style="background-color: {$currentUser.timeTable.includes(toUtc(day, time)) ? 'rgb(0,100,0)' : 'rgb(100,0,0)'}"></td>
           {/each}
         </tr>
       {/each}

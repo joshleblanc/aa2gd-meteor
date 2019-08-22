@@ -7,7 +7,7 @@
     import Button from '../components/Button';
     import ServerList from '../components/ServerList';
     import ConnectionList from '../components/ConnectionList';
-    import { User } from '../../lib/User';
+    import { User } from '/lib/models/User';
     import TimeTable from '../components/TimeTable';
     import Dialog from '../components/Dialog'
     import Caption from '../components/Caption';
@@ -21,16 +21,28 @@
     let user;
     let events = [];
     let steamModalOpen = false;
-    const computation = Tracker.autorun(() => {
+    console.log("Loading profile");
+    if(Meteor.isClient) {
+        console.log("Client");
+        const computation = Tracker.autorun(() => {
+            user = User.current();
+            if(user) {
+                events = user.events({ limit: 30 }).fetch();
+            }
+        });
+        onDestroy(() => {
+            computation.stop();
+        });
+    } else {
+        console.log("Server");
         user = User.current();
         if(user) {
-            events = user.events({ limit: 30 }).fetch();
+            events = user.events({ limie: 30}).fetch();
         }
-    });
+    }
 
-    onDestroy(() => {
-        computation.stop();
-    });
+
+
 </script>
 
 {#if user}

@@ -5,21 +5,26 @@
   import { Link } from 'svelte-routing';
   import { Tracker } from 'meteor/tracker';
   import { onDestroy } from 'svelte';
-  import { User } from '../../lib/User';
+  import { User } from '/lib/models/User';
   import { createEventDispatcher } from 'svelte';
 
   export let mobileOpen;
 
   let user;
-  const computation = Tracker.autorun(() => {
-    user = User.current();
-  });
+
+  if(Meteor.isClient) {
+    const computation = Tracker.autorun(() => {
+      user = User.current();
+    });
+    onDestroy(() => {
+      computation.stop();
+    });
+  }
+
 
   const dispatch = createEventDispatcher();
 
-  onDestroy(() => {
-    computation.stop();
-  });
+
 
   let headerClass;
   $: if(mobileOpen) {

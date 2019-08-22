@@ -14,7 +14,7 @@
   import { Link } from 'svelte-routing';
   import ListItemTertiaryText from './ListItemTertiaryText';
   import moment from 'moment';
-  import { format } from '../constants';
+  import { format } from '/lib/constants';
 
   export let events = [];
 </script>

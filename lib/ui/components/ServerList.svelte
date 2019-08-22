@@ -2,24 +2,21 @@
   import FixedHeightList from './FixedHeightList';
   import ServerListItem from './ServerListItem';
   import { Link } from 'svelte-routing';
-  import { Server } from '../../lib/Server';
+  import { Server } from '/lib/models/Server';
   import { Tracker } from 'meteor/tracker';
   import { Meteor } from 'meteor/meteor';
-  import { User } from '/lib/User';
+  import { User } from '/lib/models/User';
   import { serversReady } from '../stores/subscriptionStores';
   import Loader from './Loader';
   import { onDestroy } from 'svelte';
+  import { currentUser } from '../stores/subscriptionStores';
+  import { track } from '/lib/utils';
   
   let servers = [];
-  const computation = Tracker.autorun(() => {
-    const user = User.current();
-    if(user) {
-      servers = user.getServers().fetch();
+  track(() => {
+    if($currentUser) {
+      servers = $currentUser.getServers().fetch();
     }
-  });
-
-  onDestroy(() => {
-    computation.stop();
   });
 
 </script>

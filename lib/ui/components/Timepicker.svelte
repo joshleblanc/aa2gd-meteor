@@ -1,6 +1,6 @@
 <script>
     import TextField from './TextField';
-    import { format } from '../constants';
+    import { format } from '/lib/constants';
     import Picker from 'pickerjs';
     import { createEventDispatcher } from 'svelte';
     import moment from 'moment';

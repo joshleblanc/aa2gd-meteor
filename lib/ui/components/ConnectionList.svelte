@@ -1,23 +1,17 @@
 <script>
   import { Tracker } from 'meteor/tracker';
-  import { User } from '../../lib/User';
+  import { User } from '/lib/models/User';
   import Connection from './Connection';
   import { onDestroy } from 'svelte';
   import FixedHeightList from './FixedHeightList';
-
+  import { currentUser } from '../stores/subscriptionStores';
   export let name;
 
-  let user;
-  const computation = Tracker.autorun(() => {
-    user = User.current();
-  });
-
-  onDestroy(() => computation.stop());
 </script>
 
-{#if user}
+{#if $currentUser}
   <FixedHeightList>
-    {#each user.connections as connection}
+    {#each $currentUser.connections as connection}
       <Connection connection={connection} />
     {/each}
   </FixedHeightList>

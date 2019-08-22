@@ -1,6 +1,6 @@
 <script>
   import Button from './Button.svelte';
-  import { User } from '../../lib/User';
+  import { User } from '/lib/models/User';
   import { populatingUserData, loggingIn } from '../stores/state';
   import { navigate } from 'svelte-routing';
 

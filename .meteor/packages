@@ -26,3 +26,5 @@ http
 littledata:synced-cron
 percolate:migrations
 montiapm:agent
+server-render
+alawi:ssr-helper

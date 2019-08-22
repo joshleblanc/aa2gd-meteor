@@ -4,7 +4,7 @@
     import Loader from '../components/Loader';
     import { Tracker } from 'meteor/tracker';
     import { onDestroy } from 'svelte';
-    import { Server } from '/lib/Server';
+    import { Server } from '/lib/models/Server';
     import StyledPaper from '../components/StyledPaper';
     import Tabs from '../components/Tabs';
     import UserAvailabilityTable from '../components/UserAvailabilityTable';
