@@ -13,6 +13,7 @@
   import Event from './pages/Event';
   import { Tracker } from 'meteor/tracker';
   import LoginOverlay from './components/LoginOverlay';
+  import FindGamesForm from './pages/FindGamesForm';
 
   export let url = "";
   let mobileOpen = false;
@@ -107,6 +108,7 @@
             <Route path="events/new" component={EventForm} />
             <Route path="events/:id" component={Event} />
             <Route path="servers/:id" component={Server} />
+            <Route path="games/find" component={FindGamesForm} />
           </div>
         </div>
       </Router>

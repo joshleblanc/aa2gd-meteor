@@ -52,7 +52,7 @@
                 <slot></slot>
             </section>
             <footer class="modal-card-foot dialog-menu">
-                <Button on:click={forward}>Cancel</Button>
+                <Button on:click={forward}>Close</Button>
             </footer>
         </div>
     </div>

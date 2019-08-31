@@ -15,6 +15,8 @@
     export let title = "";
     export let open = false;
     export let options = [];
+    export let multiple = false;
+    export let selected = [];
 
     const dispatch = createEventDispatcher();
 
@@ -28,9 +30,12 @@
 
     function selectItem(option) {
         if(option && option.value) {
-            dispatch('select', option.value)
-            dispatch('close');
-            search = "";
+            dispatch('change', option.value)
+            if(!multiple) {
+              dispatch('close');
+              search = "";
+            }
+
         }
     }
 
@@ -52,6 +57,11 @@
     <div class="list-container">
         <TextField on:input={e => search = e.target.value} value={search} fullWidth autoFocus/>
         <p>Type something to search</p>
+        {#if multiple}
+          {#each selected as item}
+            <div class="nes-container is-rounded">{item.name}</div>
+          {/each}
+        {/if}
         <div class="list-container">
             <List>
                 {#each filteredOptions as option}

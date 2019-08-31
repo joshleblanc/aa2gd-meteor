@@ -17,6 +17,7 @@
     import AlwaysAvailableCheckbox from '../components/AlwaysAvailableCheckbox';
     import EventsPaper from '../components/EventsPaper';
     import { eventsReady } from '../stores/subscriptionStores';
+    import { Link } from 'svelte-routing';
 
     let user;
     let events = [];
@@ -42,6 +43,9 @@
         {#if !user.hasGames}
             <Button on:click={() => steamModalOpen = true}>Connect Steam</Button>
         {/if}
+        <Link to="/games/find">
+          <Button>Find Games</Button>
+        </Link>
         <Button variant="error" on:click={() => Meteor.logout()}>Logout</Button>
     </StyledPaper>
 
