@@ -11,6 +11,7 @@
   import Tracker from "../components/Tracker";
   import StyledPaper from "../components/StyledPaper";
   import Autocomplete from "../components/autocomplete/Autocomplete";
+  import yup from 'yup';
 
   let selectedServer;
   let user;
@@ -19,6 +20,30 @@
   let server;
   let selectedUsers = [];
   let users = [];
+  let errors = {};
+  const schema = yup.object().shape({
+    server: yup.string().required(),
+    users: yup.array().min(2)
+  });
+
+  function setErrors(err) {
+      errors = {};
+      err.forEach(e => {
+        errors[e.path] = e.message
+      });
+  }
+
+  $: {
+    console.log(selectedUsers);
+    schema.validate({
+      server: selectedServer,
+      users: selectedUsers
+    }, { abortEarly: false }).catch(function(err) {
+      setErrors(err.inner);
+    });
+  }
+
+  const form = {}
   
   function computation() {
     user = User.current();
@@ -58,6 +83,7 @@
           on:change={e => selectedServer = e.detail}
           selected={selectedServer}
           placeholder="Select a server"
+          helperText={errors.server}
           options={servers.map(s => {
             return {
               value: s._id,
@@ -72,6 +98,7 @@
           label="Users"
           multiple
           on:change={e => selectedUsers = e.detail}
+          helperText={errors.users}
           placeholder="Select users"
           selected={selectedUsers}
           options={users.map(s => {
@@ -82,9 +109,18 @@
             }
           })}
         />
-        {#each games as game}
-          <StyledPaper>{game.name}</StyledPaper>
-        {/each}
+        {#if selectedServer}
+          {#if selectedUsers.length < 2}
+            Select more than 1 user
+          {:else}
+            {#each games as game}
+              <StyledPaper>{game.name}</StyledPaper>
+            {/each}
+          {/if}
+        {:else}
+          Select a server
+        {/if}
+        
       </StyledPaper>
     </div>
   </Tracker>
