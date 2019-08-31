@@ -27,14 +27,18 @@
   });
 
   function setErrors(err) {
-      errors = {};
       err.forEach(e => {
         errors[e.path] = e.message
       });
   }
 
+  function removeErrors() {
+    errors = {};
+  }
+
   $: {
     console.log(selectedUsers);
+    removeErrors();
     schema.validate({
       server: selectedServer,
       users: selectedUsers
