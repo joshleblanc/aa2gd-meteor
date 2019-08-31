@@ -5,6 +5,7 @@ import { Game } from '../lib/Game';
 import { Event } from '/lib/Event';
 import { getGames } from '/lib/utils';
 import { Webhook } from '/lib/Webhook';
+import SteamID from 'steamid';
 
 const discordReq = function(path, token) {
   const api_url = "https://discordapp.com/api";
@@ -118,7 +119,9 @@ User.extend({
       let gotGames = false;
       if(steamConnection) {
         try {
-          games = getGames(steamConnection.id);
+          const sid = new SteamID(steamConnection.id)
+          sid.instance = SteamID.Instance.DESKTOP // 1
+          games = getGames(sid.getSteamID64());
           gotGames = true;
         } catch(e) {
           console.log("Getting games failed");
