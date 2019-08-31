@@ -1,22 +1,34 @@
 <script>
-    import StyledPaper from '../components/StyledPaper';
-    import TextField from '../components/TextField';
-    import Autocomplete from '../components/autocomplete/Autocomplete';
-    import { Tracker } from 'meteor/tracker';
-    import { Server } from '/lib/Server';
-    import { Game } from '/lib/Game';
-    import { User } from '/lib/User';
-    import { Meteor } from 'meteor/meteor';
-    import Timepicker from '../components/Timepicker';
-    import moment from 'moment';
-    import Button from '/client/components/Button';
-    import Yup from 'yup';
-    import { Event } from '/lib/Event';
-    import { gamesReady, serversReady, usersReady } from '../stores/subscriptionStores';
-    import Loader from '../components/Loader';
-    import { onDestroy } from 'svelte';
-    import { navigate } from 'svelte-routing';
+    import StyledPaper from "../components/StyledPaper";
+    import TextField from "../components/TextField";
+    import Autocomplete from "../components/autocomplete/Autocomplete";
+    import { Tracker } from "meteor/tracker";
+    import { Server } from "/lib/Server";
+    import { Game } from "/lib/Game";
+    import { User } from "/lib/User";
+    import { Meteor } from "meteor/meteor";
+    import Timepicker from "../components/Timepicker";
+    import moment from "moment";
+    import Button from "/client/components/Button";
+    import Yup from "yup";
+    import { Event } from "/lib/Event";
+    import {
+      gamesReady,
+      serversReady,
+      usersReady
+    } from "../stores/subscriptionStores";
+    import Loader from "../components/Loader";
+    import { onDestroy } from "svelte";
+    import { navigate } from "svelte-routing";
 
+    let errors = {};
+    let formValid = false;
+    let name;
+    let server;
+    let game;
+    let availableUsers = 0;
+    let selectedServer;
+    let selectedGame;
     let games = [];
     let servers = [];
     let user;
@@ -26,68 +38,60 @@
     event.date.setSeconds(0);
 
     const computation = Tracker.autorun(() => {
-        user = User.current();
-        if(user) {
-            event.creatorId = user._id;
-            servers = user.getServers().fetch();
-            games = Game.find({}).fetch();
-        }
+      user = User.current();
+      if (user) {
+        event.creatorId = user._id;
+        servers = user.getServers().fetch();
+        games = Game.find({}).fetch();
+      }
     });
-
-    const schema = Yup.object().shape({
-        name: Yup.string().required(),
-        server: Yup.string().required(),
-        game: Yup.string().required(),
-        date: Yup.string().required()
-    });
-
-    let errors = {};
-    let formValid = false;
-    let name;
-    let server;
-    let game;
-    let availableUsers = 0;
 
     $: availableUsers = event.availableUsers();
+    $: if (selectedServer) {
+      event.serverId = selectedServer.value;
+    }
+
+    $: if (selectedGame) {
+      event.gameId = selectedGame.value;
+    }
 
     function setErrors(error) {
-        formValid = false;
-        errors = {};
-        error.details.forEach(e => {
-            errors[e.name] = e.message;
-        });
+      formValid = false;
+      errors = {};
+      error.details.forEach(e => {
+        errors[e.name] = e.message;
+      });
     }
 
     function setValid(valid) {
-        if(valid) {
-            errors = {};
-        }
-        formValid = valid;
+      if (valid) {
+        errors = {};
+      }
+      formValid = valid;
     }
 
     $: event.validate({ stopOnFirstError: false }, err => {
-        if(err) {
-            setErrors(err)
-        } else {
-            setValid(true);
-        }
-        
+      if (err) {
+        setErrors(err);
+      } else {
+        setValid(true);
+      }
     });
 
     onDestroy(() => {
-        computation.stop();
-    })
+      computation.stop();
+    });
 
     function submit() {
-        event.insert(id => navigate(`/events/${id.toHexString()}`), null);
+      event.insert(id => navigate(`/events/${id.toHexString()}`), null);
     }
 </script>
 
 <style>
     .root {
-        max-width: 496px;
-        margin-left: auto;
-        margin-right: auto;
+      max-width: 496px;
+      margin-left: auto;
+      margin-right: auto;
     }
 </style>
 
@@ -105,7 +109,8 @@
                 fullWidth
                 helperText={errors.serverId}
                 label="Server"
-                on:change={e => event.serverId = e.detail}
+                selected={selectedServer}
+                on:change={e => selectedServer = e.detail}
                 placeholder="Select a server"
                 options={servers.map(s => {
                     return {
@@ -119,7 +124,8 @@
                 fullWidth
                 label="Game"
                 helperText={errors.gameId}
-                on:change={e => event.gameId = e.detail}
+                selected={selectedGame}
+                on:change={e => selectedGame = e.detail}
                 placeholder="Select a game"
                 options={games.map(g => {
                     return {

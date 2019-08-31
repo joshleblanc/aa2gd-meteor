@@ -152,6 +152,8 @@ User.extend({
       this.servers = servers.map(s => s._id);
       this.games = games.map(g => g._id);
 
+      console.log(this.games);
+
       if(steamConnection && gotGames) {
         this.hasGames = true;
         this.checkGames = false;

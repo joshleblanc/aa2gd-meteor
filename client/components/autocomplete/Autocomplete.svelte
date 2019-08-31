@@ -29,7 +29,7 @@
   $: {
     if (multiple) {
       textFieldValue = selected.map(s => s.name).join(", ");
-    } else {
+    } else if(selected) {
       textFieldValue = selected.name;
     }
   }

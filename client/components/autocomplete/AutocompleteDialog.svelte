@@ -39,6 +39,8 @@
         }
     }
 
+    $: console.log(selected, multiple);
+
 </script>
 
 <style>
@@ -57,15 +59,10 @@
     <div class="list-container">
         <TextField on:input={e => search = e.target.value} value={search} fullWidth autoFocus/>
         <p>Type something to search</p>
-        {#if multiple}
-          {#each selected as item}
-            <div class="nes-container is-rounded">{item.name}</div>
-          {/each}
-        {/if}
         <div class="list-container">
             <List>
                 {#each filteredOptions as option}
-                    <ListItem on:click={() => selectItem(option)}>
+                    <ListItem on:click={() => selectItem(option)} selected={multiple && selected.map(s => s.value).includes(option.value)}>
                         <ListItemAvatar>
                             <ListItemAvatar>
                                 {#if option.image}

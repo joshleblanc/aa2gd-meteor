@@ -1,54 +1,55 @@
 <script>
-  import { gamesReady, serversReady, usersReady } from '../stores/subscriptionStores';
-  import { User } from '/lib/User';
-  import { Game } from '/lib/Game';
-  import { Server } from '/lib/Server';
-  import Loader from '../components/Loader';
-  import Tracker from '../components/Tracker';
-  import StyledPaper from '../components/StyledPaper';
-  import Autocomplete from '../components/autocomplete/Autocomplete';
+  import {
+    gamesReady,
+    serversReady,
+    usersReady
+  } from "../stores/subscriptionStores";
+  import { User } from "/lib/User";
+  import { Game } from "/lib/Game";
+  import { Server } from "/lib/Server";
+  import Loader from "../components/Loader";
+  import Tracker from "../components/Tracker";
+  import StyledPaper from "../components/StyledPaper";
+  import Autocomplete from "../components/autocomplete/Autocomplete";
 
   let selectedServer;
   let user;
   let servers;
-  let games;
+  let games = [];
   let server;
   let selectedUsers = [];
-  let users = []
+  let users = [];
+  
   function computation() {
     user = User.current();
-    if(user) {
+    if (user) {
       servers = user.getServers().fetch();
-      if(selectedServer) {
+      if (selectedServer) {
         server = Server.findOne({ _id: selectedServer.value });
-        if(server) {
-          console.log(server);
+        if (server) {
           users = server.users().fetch();
-          console.log(users);
+          const selectedUserModels = User.find({
+            _id: {
+              $in: selectedUsers.map(su => su.value)
+            }
+          }).fetch();
+          games = Game.findCommon(selectedUserModels).fetch();
         }
       }
-      games = Game.find({
-        _id: {
-          $in: users.map(u => u._id)
-        }
-      }).fetch();
-      console.log(games);
     }
   }
-
-  $: console.log(games, users);
 </script>
 
 <style>
-    .root {
-        max-width: 496px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+  .root {
+    max-width: 496px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 </style>
 
 {#if $gamesReady && $serversReady && $usersReady}
-  <Tracker deps={[selectedServer]} fn={computation}>
+  <Tracker deps={[selectedServer, selectedUsers]} fn={computation}>
     <div class="root">
       <StyledPaper title="Find common games between users">
         <Autocomplete
@@ -81,9 +82,9 @@
             }
           })}
         />
-        <div class="nes-container is-rounded">
-
-        </div>
+        {#each games as game}
+          <StyledPaper>{game.name}</StyledPaper>
+        {/each}
       </StyledPaper>
     </div>
   </Tracker>
