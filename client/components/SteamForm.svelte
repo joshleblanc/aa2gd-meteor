@@ -34,11 +34,11 @@
       <Caption>
           Your ID looks like:
           <br/>
-          https://steamcommunity/id/{"<YOUR ID HERE>"}
+          https://steamcommunity.com/id/{"<YOUR ID HERE>"}
           <br />
           or 
           <br />
-          https://steamcommunity/profiles/{"<YOUR ID HERE>"}
+          https://steamcommunity.com/profiles/{"<YOUR ID HERE>"}
       </Caption>
       <TextField 
           label="Steam ID"
