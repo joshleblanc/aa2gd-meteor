@@ -18,7 +18,7 @@
     user.callMethod('setSteamGames', steamId, (err, res) => {
       loading = false;
       if(err) {
-        error = "Couldn't find that steam account";
+        error = "Couldn't find that steam account. Your profile might be private, or steam might be overloaded. Try again.";
       } else {
         error = null;
         dispatch('close');
