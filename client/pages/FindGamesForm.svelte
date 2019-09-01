@@ -117,9 +117,14 @@
           {#if selectedUsers.length < 2}
             Select more than 1 user
           {:else}
-            {#each games as game}
-              <StyledPaper>{game.name}</StyledPaper>
-            {/each}
+            {#if games.length === 0}
+              No common games! Make sure both users have connected their steam account.
+            {:else}
+              {#each games as game}
+                <StyledPaper>{game.name}</StyledPaper>
+              {/each}
+            {/if}
+            
           {/if}
         {:else}
           Select a server
