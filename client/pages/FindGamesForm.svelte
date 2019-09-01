@@ -11,6 +11,12 @@
   import Tracker from "../components/Tracker";
   import StyledPaper from "../components/StyledPaper";
   import Autocomplete from "../components/autocomplete/Autocomplete";
+  import ListItem from '../components/ListItem';
+  import ListItemAvatar from '../components/ListItemAvatar';
+  import ListItemText from '../components/ListItemText';
+  import ListItemPrimaryText from '../components/ListItemPrimaryText';
+  import FixedHeightList from '../components/FixedHeightList';
+  import Avatar from '../components/Avatar';
   import yup from 'yup';
 
   let selectedServer;
@@ -120,11 +126,17 @@
             {#if games.length === 0}
               No common games! Make sure both users have connected their steam account.
             {:else}
-              {#each games as game}
-                <StyledPaper>{game.name}</StyledPaper>
-              {/each}
+              <FixedHeightList>
+                {#each games as game}
+                  <ListItem>
+                    <ListItemAvatar><Avatar src={game.iconUrl()} /></ListItemAvatar>
+                    <ListItemText>
+                      <ListItemPrimaryText>{game.name}</ListItemPrimaryText>
+                    </ListItemText>
+                  </ListItem>
+                {/each}
+              </FixedHeightList>
             {/if}
-            
           {/if}
         {:else}
           Select a server
