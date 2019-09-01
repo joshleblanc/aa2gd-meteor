@@ -68,7 +68,11 @@
               $in: selectedUsers.map(su => su.value)
             }
           }).fetch();
-          games = Game.findCommon(selectedUserModels).fetch();
+          if(selectedUserModels.length > 1) {
+            games = Game.findCommon(selectedUserModels).fetch();
+          } else {
+            games = [];
+          }
         }
       }
     }
