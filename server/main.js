@@ -157,6 +157,8 @@ User.extend({
       if(steamConnection && gotGames) {
         this.hasGames = true;
         this.checkGames = false;
+      } else if(this.games.length === 0) {
+        this.hasGames = false;
       }
       return this.save();
     }
