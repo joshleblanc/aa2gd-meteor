@@ -90,7 +90,10 @@
         <Autocomplete
           fullWidth
           label="Server"
-          on:change={e => selectedServer = e.detail}
+          on:change={e => {
+            selectedUsers = [];
+            selectedServer = e.detail
+          }}
           selected={selectedServer}
           placeholder="Select a server"
           helperText={errors.server}
