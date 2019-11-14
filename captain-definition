@@ -4,6 +4,6 @@
       "FROM dockersaturn/meteor",
       "ENV NODE_VERSION 8.16.0",
       "COPY . /app",
-      "RUN bash $METEOR_DIR/lib/build_app.sh"
+      "RUN bash $METEORD_DIR/lib/build_app.sh"
   ]
  }
