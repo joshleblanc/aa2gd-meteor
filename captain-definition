@@ -1,4 +1,9 @@
  {
   "schemaVersion": 2,
-  "dockerfilePath": "./Dockerfile"
+  "dockerfileLines": [
+      "FROM dockersaturn/meteor",
+      "ENV NODE_VERSION ${NODE_VERSION:8.1.2-beta.15}",
+      "COPY . /app",
+      "RUN bash $METEOR_DIR/lib/build_app.sh"
+  ]
  }
