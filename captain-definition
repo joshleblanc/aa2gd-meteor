@@ -1,6 +1,6 @@
  {
   "schemaVersion": 2,
   "dockerfileLines": [
-      "FROM jshimko/meteor-launchpad:latest"
+      "FROM horizonshadow/meteor-launchpad:latest"
   ]
  }
