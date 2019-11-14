@@ -1,6 +1,4 @@
  {
   "schemaVersion": 2,
-  "dockerfileLines": [
-      "FROM horizonshadow/meteor-launchpad:latest"
-  ]
+  "dockerfilePath": "./Dockerfile"
  }
