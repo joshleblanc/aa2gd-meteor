@@ -18,6 +18,6 @@ before_deploy:
   - docker build --build-arg FONTAWESOMETOKEN=$FONTAWESOMETOKEN -t horizonshadow/famtime .
 deploy:
   provider: script
-  script: docker push horizonshadow/famtime
+  script: docker push horizonshadow/famtime && kubectl rollout restart deployment/famtime
   on:
     branch: master
