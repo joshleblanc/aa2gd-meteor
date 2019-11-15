@@ -35,10 +35,11 @@ RUN meteor build --directory build --server-only
 
 FROM node:8-alpine
 
+COPY --from=0 /app/build/bundle /app/
 RUN ls
 
-RUN cd /build/bundle/programs/server && npm install
+RUN cd /app/programs/server && npm install
 
-WORKDIR /app/build/bundle
+WORKDIR /app
 
 CMD ["node", "main.js"]
