@@ -5,7 +5,7 @@
 <div class="columns">
   <div class="column">
     <StyledPaper title="Welcome!">
-      <h6>Login to get started Test</h6>
+      <h6>Login to get started</h6>
       <p>
         Sign in with discord and create events for any of the channels you're apart of.
         Enter your availability to let event creators know when you're available.
