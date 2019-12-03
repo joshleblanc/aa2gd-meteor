@@ -21,8 +21,8 @@
   <ListItemText>
     <ListItemPrimaryText>{server.name}</ListItemPrimaryText>
     <ListItemSecondaryText>
-      <span>0 ongoing</span>
-      <span>0 upcoming</span>
+      <span>{server.current().length} ongoing</span>
+      <span>{server.future().length} upcoming</span>
     </ListItemSecondaryText>
   </ListItemText>
 </ListItem>
