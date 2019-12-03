@@ -28,7 +28,7 @@
   let duration;
 
   function computation() {
-    Meteor.subscribe('event', new Mongo.ObjectID(id));
+    Meteor.subscribe('event', new Mongo.ObjectID(id)).ready();
     event = Event.findOne({
       _id: new Mongo.ObjectID(id)
     });
