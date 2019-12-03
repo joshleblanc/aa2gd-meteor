@@ -28,6 +28,7 @@
   let duration;
 
   function computation() {
+    Meteor.subscribe('event', new Mongo.ObjectID(id));
     event = Event.findOne({
       _id: new Mongo.ObjectID(id)
     });
@@ -46,7 +47,7 @@
   function handleSignupToggle() {
     event.registerUser(Meteor.userId());
   }
-  
+
 </script>
 
 {#if $eventsReady && $gamesReady && $serversReady}
@@ -80,7 +81,7 @@
           {:else if duration.hours() > -3}
             Began
           {:else}
-            Ended 
+            Ended
           {/if}
           {duration.humanize(true)}</ListItemText>
       </ListItem>
@@ -91,7 +92,7 @@
       {:else}
         <Button variant="primary" on:click={handleSignupToggle}>Sign up</Button>
       {/if}
-      
+
       {#if event.creatorId === Meteor.userId()}
         <Button variant="error" on:click={handleDelete}>Delete</Button>
       {/if}

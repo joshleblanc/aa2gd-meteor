@@ -85,7 +85,13 @@ Meteor.publish('events', function(servers) {
   } else {
     this.ready();
   }
+});
 
+Meteor.publish('event', function(id) {
+  const event = Event.find({ _id: id });
+  const users = Event.findOne({_id: id}).users();
+
+  return [event, users];
 });
 
 Meteor.publish("servers", function(ids) {
@@ -180,7 +186,7 @@ Meteor.startup(() => {
     {
       $set: {
         loginStyle: "popup",
-        clientId: "570931295253823488", 
+        clientId: "570931295253823488",
         secret: Meteor.settings.discord.secret
       }
     }
