@@ -33,7 +33,7 @@
     }, 'nes-field');
 
     const inputClassnames = classnames({
-        [`is-${variant}`]: !!variant
+        [`is-${variant}`]: !!variant,
     }, 'nes-input');
 </script>
 
@@ -51,28 +51,29 @@
     .children {
         display: flex;
     }
-    
+
 </style>
 
 <div class="root">
     <div class="{containerClassnames}">
         <label>{label}</label>
         <div class="children">
-            <input 
-                readonly={readonly} 
-                type={type} 
-                class="{inputClassnames}" 
-                disabled={disabled} 
+            <input
+                readonly={readonly}
+                type={type}
+                class="{inputClassnames}"
+                disabled={disabled}
                 value={value}
-                on:change 
-                on:input 
-                on:click 
-                bind:this={ref} 
+                on:change
+                on:input
+                on:click
+                bind:this={ref}
+                data-input
             />
             {#if adornment}
                 <svelte:component this={adornment} on:click={forward}/>
             {/if}
-        </div>  
+        </div>
         {#if helperText}
             <ErrorText>{helperText}</ErrorText>
         {/if}
