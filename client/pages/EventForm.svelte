@@ -12,6 +12,7 @@
     import Button from "/client/components/Button";
     import Yup from "yup";
     import { Event } from "/lib/Event";
+    import {format} from "../constants";
     import {
       gamesReady,
       serversReady,
@@ -135,7 +136,7 @@
                     }
                 })}
             />
-            <Timepicker on:change={e => event.date = e.detail} value={event.date} helperText={errors.date} />
+            <Timepicker on:change={e => event.date = e.detail } value={event.date} helperText={errors.date} />
             {#if event.serverId && event.gameId && event.date}
                 <p>There are {availableUsers} users available for that server, game, and date.</p>
             {/if}

@@ -91,6 +91,11 @@
     body {
       font-size: 0.85rem;
     }
+
+    .flatpickr-current-month {
+      font-size: 96%;
+      padding-top: 16px;
+    }
   </style>
 </svelte:head>
 
