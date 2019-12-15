@@ -12,6 +12,7 @@
   export let placeholder = "";
   export let options = [];
   export let name = "";
+  export let loading = false;
 
   export let selected;
 
@@ -43,8 +44,9 @@
     on:click={() => modalOpen = true}
     fullWidth={fullWidth}
     error={error}
-    helperText={helperText}
+    helperText={loading ? "Loading..." : helperText}
     disabled
+    loading="{loading}"
     adornment={AutocompleteAdornment}
 />
 <AutocompleteDialog

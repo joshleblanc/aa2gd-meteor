@@ -14,6 +14,7 @@
     export let readonly = false;
     export let autoFocus = false;
     export let ref;
+    export let loading = false;
 
     const dispatcher = createEventDispatcher();
 
@@ -71,7 +72,7 @@
                 data-input
             />
             {#if adornment}
-                <svelte:component this={adornment} on:click={forward}/>
+                <svelte:component this={adornment} on:click={forward} disabled="{loading}"/>
             {/if}
         </div>
         {#if helperText}

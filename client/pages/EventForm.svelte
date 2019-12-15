@@ -32,6 +32,8 @@
     let servers = [];
     let user;
     let event = new Event();
+    let loadingGames = false;
+
     event.date = new Date();
     event.date.setMinutes(0);
     event.date.setSeconds(0);
@@ -53,9 +55,11 @@
     $: availableUsers = event.availableUsers();
     $: if (selectedServer) {
         event.serverId = selectedServer.value;
+        loadingGames = true;
         Meteor.call('games.sorted', event.serverId, (err, res) => {
             if(!err) {
                 games = res;
+                loadingGames = false;
             }
         });
     }
@@ -143,6 +147,7 @@
                 selected={selectedGame}
                 on:change={e => selectedGame = e.detail}
                 placeholder="Select a game"
+                loading="{loadingGames}"
                 options={
                 games.map(g => {
                     return {
