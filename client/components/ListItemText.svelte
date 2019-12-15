@@ -6,6 +6,7 @@
         margin-bottom: 4px;
         display: block;
         overflow-wrap: break-word;
+        white-space: pre-line;
     }
 </style>
 

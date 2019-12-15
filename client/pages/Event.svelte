@@ -85,6 +85,14 @@
           {/if}
           {duration.humanize(true)}</ListItemText>
       </ListItem>
+      <ListItem noHover>
+        <ListItemText>
+          <StyledPaper title="Description">
+            {event.description}
+          </StyledPaper>
+
+        </ListItemText>
+      </ListItem>
     </StyledPaper>
     <StyledPaper title="Actions">
       {#if event.userIds.includes(Meteor.userId())}

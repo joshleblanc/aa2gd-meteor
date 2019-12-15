@@ -2,32 +2,29 @@
     import StyledPaper from "../components/StyledPaper";
     import TextField from "../components/TextField";
     import Autocomplete from "../components/autocomplete/Autocomplete";
-    import { Tracker } from "meteor/tracker";
-    import { Server } from "/lib/Server";
-    import { Game } from "/lib/Game";
-    import { User } from "/lib/User";
-    import { Meteor } from "meteor/meteor";
+    import {Tracker} from "meteor/tracker";
+    import {Server} from "/lib/Server";
+    import {Game} from "/lib/Game";
+    import {User} from "/lib/User";
+    import {Meteor} from "meteor/meteor";
     import Timepicker from "../components/Timepicker";
     import moment from "moment";
     import Button from "/client/components/Button";
     import Yup from "yup";
-    import { Event } from "/lib/Event";
+    import {Event} from "/lib/Event";
     import {format} from "../constants";
     import {
-      gamesReady,
-      serversReady,
-      usersReady
+        gamesReady,
+        serversReady,
+        usersReady
     } from "../stores/subscriptionStores";
     import Loader from "../components/Loader";
-    import { onDestroy } from "svelte";
-    import { navigate } from "svelte-routing";
+    import {onDestroy} from "svelte";
+    import {navigate} from "svelte-routing";
+    import TextArea from "../components/TextArea.svelte";
 
     let errors = {};
     let formValid = false;
-    let name;
-    let server;
-    let game;
-    let availableUsers = 0;
     let selectedServer;
     let selectedGame;
     let games = [];
@@ -39,52 +36,52 @@
     event.date.setSeconds(0);
 
     const computation = Tracker.autorun(() => {
-      user = User.current();
-      if (user) {
-        event.creatorId = user._id;
-        servers = user.getServers().fetch();
-        games = Game.find({}).fetch();
-      }
+        user = User.current();
+        if (user) {
+            event.creatorId = user._id;
+            servers = user.getServers().fetch();
+            games = Game.find({}).fetch();
+        }
     });
 
     $: availableUsers = event.availableUsers();
     $: if (selectedServer) {
-      event.serverId = selectedServer.value;
+        event.serverId = selectedServer.value;
     }
 
     $: if (selectedGame) {
-      event.gameId = selectedGame.value;
+        event.gameId = selectedGame.value;
     }
 
     function setErrors(error) {
-      formValid = false;
-      errors = {};
-      error.details.forEach(e => {
-        errors[e.name] = e.message;
-      });
+        formValid = false;
+        errors = {};
+        error.details.forEach(e => {
+            errors[e.name] = e.message;
+        });
     }
 
     function setValid(valid) {
-      if (valid) {
-        errors = {};
-      }
-      formValid = valid;
+        if (valid) {
+            errors = {};
+        }
+        formValid = valid;
     }
 
-    $: event.validate({ stopOnFirstError: false }, err => {
-      if (err) {
-        setErrors(err);
-      } else {
-        setValid(true);
-      }
+    $: event.validate({stopOnFirstError: false}, err => {
+        if (err) {
+            setErrors(err);
+        } else {
+            setValid(true);
+        }
     });
 
     onDestroy(() => {
-      computation.stop();
+        computation.stop();
     });
 
     function submit() {
-      event.insert(id => navigate(`/events/${id.toHexString()}`), null);
+        event.insert(id => navigate(`/events/${id.toHexString()}`), null);
     }
 </script>
 
@@ -102,9 +99,16 @@
             <TextField 
                 label="Name" 
                 fullWidth 
-                value={name} 
+                value={event.name}
                 on:input={e => event.name = e.target.value} 
                 helperText={errors.name}
+            />
+            <TextArea
+                fullWidth
+                label="Description"
+                value="{event.description}"
+                on:input={e => event.description = e.target.value}
+                helperText="{errors.description}"
             />
             <Autocomplete 
                 fullWidth
