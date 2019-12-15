@@ -52,13 +52,6 @@
 <svelte:head>
   <!-- Overriding some bulma styles -->
 	<style>
-    .datepicker {
-      width: 100%;
-    }
-
-    .picker-cancel, .picker-confirm {
-      display: inline-block !important
-    }
 
     a {
       color: black;
