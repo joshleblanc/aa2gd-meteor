@@ -18,6 +18,7 @@
         serversReady,
         usersReady
     } from "../stores/subscriptionStores";
+    import {makeUrl} from "../../lib/Game";
     import Loader from "../components/Loader";
     import {onDestroy} from "svelte";
     import {navigate} from "svelte-routing";
@@ -35,18 +36,28 @@
     event.date.setMinutes(0);
     event.date.setSeconds(0);
 
+    Meteor.call('games.sorted', null, (err, res) => {
+      if(!err) {
+        games = res;
+      }
+    });
+
     const computation = Tracker.autorun(() => {
         user = User.current();
         if (user) {
             event.creatorId = user._id;
             servers = user.getServers().fetch();
-            games = Game.find({}).fetch();
         }
     });
 
     $: availableUsers = event.availableUsers();
     $: if (selectedServer) {
         event.serverId = selectedServer.value;
+        Meteor.call('games.sorted', event.serverId, (err, res) => {
+            if(!err) {
+                games = res;
+            }
+        });
     }
 
     $: if (selectedGame) {
@@ -132,11 +143,12 @@
                 selected={selectedGame}
                 on:change={e => selectedGame = e.detail}
                 placeholder="Select a game"
-                options={games.map(g => {
+                options={
+                games.map(g => {
                     return {
                         value: g._id,
                         name: g.name,
-                        image: g.iconUrl()
+                        image: makeUrl(g.appid, g.img_icon_url)
                     }
                 })}
             />
