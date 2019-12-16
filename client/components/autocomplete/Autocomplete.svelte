@@ -73,4 +73,8 @@
     title={placeholder}
     options={options}
     name={name}
-/>
+>
+  <div slot="adornment" let:option={option}>
+    <slot name="adornment" option="{option}"/>
+  </div>
+</AutocompleteDialog>

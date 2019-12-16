@@ -23,6 +23,8 @@
     import {onDestroy} from "svelte";
     import {navigate} from "svelte-routing";
     import TextArea from "../components/TextArea.svelte";
+    import ListItemAvatar from "../components/ListItemAvatar.svelte";
+    import Icon from "../components/Icon.svelte";
 
     let errors = {};
     let formValid = false;
@@ -38,35 +40,34 @@
     event.date.setMinutes(0);
     event.date.setSeconds(0);
 
-    Meteor.call('games.sorted', null, (err, res) => {
-      if(!err) {
-        games = res;
-      }
-    });
-
     const computation = Tracker.autorun(() => {
         user = User.current();
         if (user) {
             event.creatorId = user._id;
             servers = user.getServers().fetch();
+            games = Game.find({}).fetch();
         }
     });
 
-    $: availableUsers = event.availableUsers();
-    $: if (selectedServer) {
-        event.serverId = selectedServer.value;
-        loadingGames = true;
-        Meteor.call('games.sorted', event.serverId, (err, res) => {
-            if(!err) {
-                games = res;
-                loadingGames = false;
+    const countUsers = (serverId, gameId) => {
+        return User.find({
+            games: {
+                $elemMatch: {
+                    $eq: gameId
+                }
+            },
+            servers: {
+                $elemMatch: {
+                    $eq: serverId
+                }
             }
-        });
-    }
+        }).count();
+    };
 
-    $: if (selectedGame) {
-        event.gameId = selectedGame.value;
-    }
+    const counts = {};
+
+    $: availableUsers = event.availableUsers();
+
 
     function setErrors(error) {
         formValid = false;
@@ -90,6 +91,21 @@
             setValid(true);
         }
     });
+
+    const handleGameChange = e => {
+        selectedGame = e.detail;
+        event.gameId = selectedGame.value;
+    };
+
+    const handleServerChange = e => {
+        selectedServer = e.detail;
+        event.serverId = selectedServer.value;
+        Meteor.defer(() => {
+            games.forEach(g => {
+                counts[g._id] = countUsers(event.serverId, g._id)
+            });
+        });
+    };
 
     onDestroy(() => {
         computation.stop();
@@ -130,7 +146,7 @@
                 helperText={errors.serverId}
                 label="Server"
                 selected={selectedServer}
-                on:change={e => selectedServer = e.detail}
+                on:change={handleServerChange}
                 placeholder="Select a server"
                 options={servers.map(s => {
                     return {
@@ -145,18 +161,31 @@
                 label="Game"
                 helperText={errors.gameId}
                 selected={selectedGame}
-                on:change={e => selectedGame = e.detail}
+                on:change={handleGameChange}
                 placeholder="Select a game"
                 loading="{loadingGames}"
                 options={
-                games.map(g => {
-                    return {
-                        value: g._id,
-                        name: g.name,
-                        image: makeUrl(g.appid, g.img_icon_url)
-                    }
-                })}
-            />
+                    games.sort((a,b) => counts[b._id] - counts[a._id]).map(g => {
+                        return {
+                            value: g._id,
+                            name: g.name,
+                            count: counts[g._id],
+                            image: makeUrl(g.appid, g.img_icon_url)
+                        }
+                    })
+                }
+            >
+                <div slot="adornment" let:option={option}>
+                    {#if selectedServer}
+                        <ListItemAvatar>
+                            <Icon>
+                                <i class="far fa-user"></i>
+                            </Icon>
+                            {counts[option.value]}
+                        </ListItemAvatar>
+                    {/if}
+                </div>
+            </Autocomplete>
             <Timepicker on:change={e => event.date = e.detail } value={event.date} helperText={errors.date} />
             {#if event.serverId && event.gameId && event.date}
                 <p>There are {availableUsers} users available for that server, game, and date.</p>

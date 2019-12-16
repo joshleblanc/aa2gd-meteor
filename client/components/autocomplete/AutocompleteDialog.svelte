@@ -77,6 +77,7 @@
                         <ListItemText>
                             <ListItemPrimaryText>{option.name}</ListItemPrimaryText>
                         </ListItemText>
+                        <slot option="{option}" name="adornment" />
                     </ListItem>
                 {/each}
             </List>
