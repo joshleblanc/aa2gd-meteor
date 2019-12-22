@@ -132,7 +132,7 @@
     {#each selectedUsers as user}
       <ListItem>
         <ListItemAvatar>
-          <Avatar src={user.avatarUrl()} />
+          <Avatar src={user.avatarUrl} />
         </ListItemAvatar>
         <ListItemText>
           <ListItemPrimaryText>{user.services.discord.username}</ListItemPrimaryText>

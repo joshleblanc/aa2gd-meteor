@@ -31,7 +31,7 @@
     <div class="container">
       <ListItem>
         <ListItemAvatar>
-          <Avatar src={user.avatarUrl()} alt="profile picture" />
+          <Avatar src={user.avatarUrl} alt="profile picture" />
         </ListItemAvatar>
         <ListItemText>
           <ListItemPrimaryText>{user.services.discord.username}</ListItemPrimaryText>

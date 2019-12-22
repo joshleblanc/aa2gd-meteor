@@ -6,6 +6,7 @@ import { Event } from '/lib/Event';
 import { getGames } from '/lib/utils';
 import { Webhook } from '/lib/Webhook';
 import SteamID from 'steamid';
+import './migrations';
 
 const discordReq = function(path, token) {
   const api_url = "https://discordapp.com/api";
@@ -67,7 +68,8 @@ Meteor.publish('users', function(servers) {
         services: 1,
         alwaysAvailable: 1,
         servers: 1,
-        games: 1
+        games: 1,
+        avatarUrl: 1
       }
     })
   } else {
@@ -116,7 +118,7 @@ Meteor.publish("games", function(ids) {
 
 User.extend({
   meteorMethods: {
-    populate() {
+    async populate() {
       const token = this.services.discord.accessToken;
       const connections = discordReq("users/@me/connections", token);
       let servers = discordReq("users/@me/guilds", token);
@@ -166,6 +168,9 @@ User.extend({
       } else if(this.games.length === 0) {
         this.hasGames = false;
       }
+
+      await this.cacheAvatar();
+
       return this.save();
     }
   }
@@ -180,6 +185,7 @@ SyncedCron.add({
 })
 
 Meteor.startup(() => {
+  Migrations.migrateTo('latest');
   SyncedCron.start();
   ServiceConfiguration.configurations.upsert(
     { service: 'discord' },

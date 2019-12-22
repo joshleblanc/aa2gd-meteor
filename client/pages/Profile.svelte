@@ -35,7 +35,7 @@
 </script>
 
 {#if user}
-    <HeaderPaper imgUrl={user.avatarUrl()} title={user.services.discord.username}>
+    <HeaderPaper imgUrl={user.avatarUrl} title={user.services.discord.username}>
         <CheckGamesCheckbox />
         <AlwaysAvailableCheckbox />
     </HeaderPaper>

@@ -122,7 +122,7 @@
             return {
               value: s._id,
               name: s.services.discord.username,
-              image: s.avatarUrl()
+              image: s.avatarUrl
             }
           })}
         />
