@@ -94,8 +94,6 @@
   {:else}
     {#if Meteor.userId()}
       <Loader />
-    {:else}
-      <p>Famti.me</p>
     {/if}
   {/if}
 </List>
