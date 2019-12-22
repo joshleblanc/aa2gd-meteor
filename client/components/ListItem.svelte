@@ -13,8 +13,7 @@
         box-sizing: border-box;
         text-align: left;
         align-items: center;
-        padding-top: 8px;
-        padding-bottom: 8px;
+
         justify-content: flex-start;
         text-decoration: none;
     }

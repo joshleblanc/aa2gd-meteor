@@ -8,18 +8,18 @@
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.6",
-    "@fortawesome/fontawesome-pro": "^5.9.0",
+    "@babel/runtime": "^7.7.7",
+    "@fortawesome/fontawesome-pro": "^5.12.0",
     "bulma": "^0.7.5",
     "classnames": "^2.2.6",
     "meteor-node-stubs": "^1.0.0",
     "moment": "^2.24.0",
-    "nes.css": "^2.2.0",
+    "nes.css": "^2.3.0",
     "pickerjs": "^1.2.1",
     "steamid": "^1.1.3",
-    "svelte": "^3.16.4",
+    "svelte": "^3.16.5",
     "svelte-flatpickr": "^2.3.1",
-    "svelte-routing": "^1.2.1",
+    "svelte-routing": "^1.4.0",
     "yup": "^0.27.0"
   },
   "meteor": {

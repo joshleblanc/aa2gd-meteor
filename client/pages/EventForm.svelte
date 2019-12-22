@@ -11,6 +11,7 @@
     import moment from "moment";
     import Button from "/client/components/Button";
     import Yup from "yup";
+    import Dialog from '../components/Dialog';
     import {Event} from "/lib/Event";
     import {format} from "../constants";
     import {
@@ -25,6 +26,7 @@
     import TextArea from "../components/TextArea.svelte";
     import ListItemAvatar from "../components/ListItemAvatar.svelte";
     import Icon from "../components/Icon.svelte";
+    import UserList from "../components/UserList.svelte";
 
     let errors = {};
     let formValid = false;
@@ -35,6 +37,7 @@
     let user;
     let event = new Event();
     let loadingGames = false;
+    let selectedGameUsers = null;
 
     event.date = new Date();
     event.date.setMinutes(0);
@@ -49,7 +52,7 @@
         }
     });
 
-    const countUsers = (serverId, gameId) => {
+    const gameUsers = (serverId, gameId) => {
         return User.find({
             games: {
                 $elemMatch: {
@@ -61,7 +64,7 @@
                     $eq: serverId
                 }
             }
-        }).count();
+        }).fetch();
     };
 
     const counts = {};
@@ -102,9 +105,15 @@
         event.serverId = selectedServer.value;
         Meteor.defer(() => {
             games.forEach(g => {
-                counts[g._id] = countUsers(event.serverId, g._id)
+                counts[g._id] = gameUsers(event.serverId, g._id);
             });
         });
+    };
+
+    const handleAdornmentClick = (e, id) => {
+        console.log(e, id);
+        e.stopPropagation();
+        selectedGameUsers = id;
     };
 
     onDestroy(() => {
@@ -121,6 +130,18 @@
       max-width: 496px;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    .adornment {
+        height: 40px;
+        display: flex;
+        align-content: center;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .adornment:hover {
+        background-color: rgba(0,0,0,0.08);
     }
 </style>
 
@@ -177,12 +198,14 @@
             >
                 <div slot="adornment" let:option={option}>
                     {#if selectedServer}
-                        <ListItemAvatar>
-                            <Icon>
-                                <i class="far fa-user"></i>
-                            </Icon>
-                            {counts[option.value]}
-                        </ListItemAvatar>
+                        <div  class="adornment" on:click={e => handleAdornmentClick(e, option.value)}>
+                            <ListItemAvatar>
+                                <Icon>
+                                    <i class="far fa-user"></i>
+                                </Icon>
+                                {counts[option.value].length}
+                            </ListItemAvatar>
+                        </div>
                     {/if}
                 </div>
             </Autocomplete>
@@ -193,6 +216,9 @@
             <Button variant="primary" on:click={submit} disabled={!formValid}>Submit</Button>
         </StyledPaper>
     </div>
+    <Dialog open="{!!selectedGameUsers}" on:close={() => selectedGameUsers = null} title="Users">
+        <UserList users="{counts[selectedGameUsers]}" />
+    </Dialog>
 {:else}
     <Loader />
 {/if}

@@ -1,24 +1,25 @@
 <script>
-  import { eventsReady, gamesReady, serversReady } from '../stores/subscriptionStores';
-  import { onDestroy } from 'svelte';
-  import { Event } from '/lib/Event';
+  import {eventsReady, gamesReady, serversReady} from '../stores/subscriptionStores';
+  import {onDestroy} from 'svelte';
+  import {Event} from '/lib/Event';
   import HeaderPaper from '../components/HeaderPaper';
   import Tracker from '../components/Tracker';
   import Button from '../components/Button';
-  import { Meteor } from 'meteor/meteor';
+  import {Meteor} from 'meteor/meteor';
   import StyledPaper from '../components/StyledPaper';
-  import { User } from '/lib/User';
+  import {User} from '/lib/User';
   import List from '../components/List';
   import ListItem from '../components/ListItem';
   import ListItemText from '../components/ListItemText';
   import ListItemPrimaryText from '../components/ListItemPrimaryText';
   import ListItemAvatar from '../components/ListItemAvatar';
   import Avatar from '../components/Avatar';
-  import { navigate } from 'svelte-routing';
-  import { format } from '../constants';
-  import { Link } from 'svelte-routing';
+  import {navigate} from 'svelte-routing';
+  import {format} from '../constants';
+  import {Link} from 'svelte-routing';
   import moment from 'moment';
   import Loader from '../components/Loader';
+  import UserList from "../components/UserList.svelte";
 
   export let id;
 
@@ -38,9 +39,9 @@
   }
 
   function handleDelete() {
-    if(window.confirm("Are you sure?")) {
+    if (window.confirm("Are you sure?")) {
       event.destroy();
-      navigate('/profile', { replace: true });
+      navigate('/profile', {replace: true});
     }
   }
 
@@ -106,18 +107,7 @@
       {/if}
     </StyledPaper>
     <StyledPaper title="Users signed up">
-      <List>
-        {#each users as user}
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar src={user.avatarUrl()} />
-            </ListItemAvatar>
-            <ListItemText>
-              <ListItemPrimaryText>{user.services.discord.username}</ListItemPrimaryText>
-            </ListItemText>
-          </ListItem>
-        {/each}
-      </List>
+      <UserList users="{users}" />
     </StyledPaper>
   </Tracker>
 {:else}
