@@ -186,7 +186,7 @@
                 placeholder="Select a game"
                 loading="{loadingGames}"
                 options={
-                    games.sort((a,b) => counts[b._id] - counts[a._id]).map(g => {
+                    games.sort((a,b) => counts[b._id].length - counts[a._id].length).map(g => {
                         return {
                             value: g._id,
                             name: g.name,
