@@ -64,7 +64,7 @@
                     $eq: serverId
                 }
             }
-        }).fetch();
+        }).fetch() || [];
     };
 
     const counts = {};
