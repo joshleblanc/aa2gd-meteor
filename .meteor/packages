@@ -26,3 +26,4 @@ http@1.4.2
 littledata:synced-cron
 montiapm:agent
 percolate:migrations
+montiapm:profiler
