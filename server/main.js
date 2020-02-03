@@ -36,7 +36,8 @@ Meteor.publish('currentUser', function() {
         connections: 1,
         hasGames: 1,
         checkGames: 1,
-        timeTable: 1
+        timeTable: 1,
+        avatarUrl: 1
       }
     })
   } else {
