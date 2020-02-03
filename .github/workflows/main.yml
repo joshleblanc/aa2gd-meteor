@@ -9,11 +9,11 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag docker.pkg.github.com/joshleblanc/famtime/famtime:$(date +%s) --tag docker.pkg.github.com/joshleblanc/famtime/famtime:latest --build-arg FONTAWESOMETOKEN=${{secrets.fontawesomeToken}}
+      run: docker build . --file Dockerfile --tag docker.pkg.github.com/joshleblanc/aa2gd-meteor/famtime:$(date +%s) --tag docker.pkg.github.com/joshleblanc/aa2gd-meteor/famtime:latest --build-arg FONTAWESOMETOKEN=${{secrets.fontawesomeToken}}
     - name: Login to registry
       run: docker login docker.pkg.github.com --username joshleblanc --password ${{ secrets.githubToken }}
     - name: Publish
-      run: docker push docker.pkg.github.com/joshleblanc/famtime/famtime
+      run: docker push docker.pkg.github.com/joshleblanc/aa2gd-meteor/famtime
     - name: Setup kubectl
       uses: matootie/dokube@v1.2.0
       with:
