@@ -1,6 +1,6 @@
 name: Famtime
 
-on: [push]awesome
+on: [push]
 
 jobs:
   build:
