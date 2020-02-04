@@ -25,7 +25,7 @@
     const computation = Tracker.autorun(() => {
         user = User.current();
         if(user) {
-            events = user.events({ limit: 30 }).fetch();
+            events = user.events({ limit: 30, sort: { date: 1 }}).fetch();
         }
     });
 

@@ -22,7 +22,7 @@
         if(id) {
             server = Server.findOne({ _id: new Mongo.ObjectID(id) });
             if(server) {
-                events = server.events({ limit: 30 }).fetch();
+                events = server.events({ limit: 30, sort: { date: 1 } }).fetch();
                 users = server.users().fetch();
             }
         }
