@@ -6,7 +6,7 @@ FROM ubuntu
 ARG FONTAWESOMETOKEN
 ENV FONTAWESOMETOKEN ${FONTAWESOMETOKEN}
 # Default Meteor version if not defined at build time; see ../build.sh
-ARG METEOR_VERSION=1.8.1
+ARG METEOR_VERSION=1.9
 
 
 # Install dependencies, based on https://github.com/jshimko/meteor-launchpad/blob/master/scripts/install-deps.sh (only the parts we plan to use)
@@ -33,7 +33,7 @@ RUN meteor npm install
 COPY . /app/
 RUN meteor build --directory build --server-only 
 
-FROM node:8-alpine
+FROM node:12.14.0-alpine
 
 COPY --from=0 /app/build/bundle /app/
 RUN ls
