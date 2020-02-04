@@ -1,0 +1,25 @@
+name: Famtime
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag docker.pkg.github.com/joshleblanc/aa2gd-meteor/famtime:$(date +%s) --tag docker.pkg.github.com/joshleblanc/aa2gd-meteor/famtime:latest --build-arg FONTAWESOMETOKEN=${{secrets.fontawesomeToken}}
+    - name: Login to registry
+      run: docker login docker.pkg.github.com --username joshleblanc --password ${{ secrets.githubToken }}
+    - name: Publish
+      run: docker push docker.pkg.github.com/joshleblanc/aa2gd-meteor/famtime
+    - name: Setup kubectl
+      uses: matootie/dokube@v1.2.0
+      with:
+        # DigitalOcean Personal Access Token; Used to fetch latest Kubernetes Config.
+        personalAccessToken: ${{ secrets.doToken }}
+        # The name of the DigitalOcean Kubernetes cluster that you plan to work with.
+        clusterName: k8s-1-16-2-do-0-tor1-1573756517886
+    - name: Rollout
+      run: kubectl rollout restart deployment/famtime
