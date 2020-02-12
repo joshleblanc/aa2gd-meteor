@@ -46,7 +46,7 @@
             }
           }
         ]
-        
+
       }, { sort: { date: 1 }}).fetch();
     } else {
       events = [];
@@ -68,32 +68,26 @@
 <CurrentUserDisplay />
 <Divider />
 <List>
-  {#if $eventsReady && $gamesReady && $serversReady}
-    {#if events.length === 0}
-      <ListItem>
-        <ListItemText>
-          <ListItemPrimaryText>No events have been created!</ListItemPrimaryText>
-        </ListItemText>
-      </ListItem>
-    {:else}
-      {#each events as event}
-        <Link to={`/events/${event._id.toHexString()}`}>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar src={event.game().iconUrl()}></Avatar>
-            </ListItemAvatar>
-            <ListItemText>
-              <ListItemPrimaryText>{event.name}</ListItemPrimaryText>
-              <ListItemSecondaryText>{event.server().name}</ListItemSecondaryText>
-              <ListItemTertiaryText>{moment(event.date).format(format)}</ListItemTertiaryText>
-            </ListItemText>
-          </ListItem>
-        </Link>
-      {/each}
-    {/if}
+  {#if events.length === 0}
+    <ListItem>
+      <ListItemText>
+        <ListItemPrimaryText>No events have been created!</ListItemPrimaryText>
+      </ListItemText>
+    </ListItem>
   {:else}
-    {#if Meteor.userId()}
-      <Loader />
-    {/if}
+    {#each events as event}
+      <Link to={`/events/${event._id.toHexString()}`}>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar src={event.game().iconUrl()}></Avatar>
+          </ListItemAvatar>
+          <ListItemText>
+            <ListItemPrimaryText>{event.name}</ListItemPrimaryText>
+            <ListItemSecondaryText>{event.server().name}</ListItemSecondaryText>
+            <ListItemTertiaryText>{moment(event.date).format(format)}</ListItemTertiaryText>
+          </ListItemText>
+        </ListItem>
+      </Link>
+    {/each}
   {/if}
 </List>

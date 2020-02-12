@@ -21,7 +21,6 @@ static-html
 lichthagel:accounts-discord
 service-configuration@1.0.11
 jagi:astronomy
-msavin:mongol
 http@1.4.2
 littledata:synced-cron
 montiapm:agent

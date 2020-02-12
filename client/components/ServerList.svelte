@@ -9,7 +9,7 @@
   import { serversReady } from '../stores/subscriptionStores';
   import Loader from './Loader';
   import { onDestroy } from 'svelte';
-  
+
   let servers = [];
   const computation = Tracker.autorun(() => {
     const user = User.current();
@@ -25,13 +25,9 @@
 </script>
 
 <FixedHeightList>
-  {#if $serversReady}
-    {#each servers as server}
-      <Link to="/servers/{server._id}">
-        <ServerListItem server={server} />
-      </Link>
-    {/each}
-  {:else}
-    <Loader />
-  {/if}
+  {#each servers as server}
+    <Link to="/servers/{server._id}">
+      <ServerListItem server={server} />
+    </Link>
+  {/each}
 </FixedHeightList>

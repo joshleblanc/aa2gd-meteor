@@ -54,7 +54,7 @@
   }
 
   const form = {}
-  
+
   function computation() {
     user = User.current();
     if (user) {
@@ -87,71 +87,67 @@
   }
 </style>
 
-{#if $gamesReady && $serversReady && $usersReady}
-  <Tracker deps={[selectedServer, selectedUsers]} fn={computation}>
-    <div class="root">
-      <StyledPaper title="Find common games between users">
-        <Autocomplete
-          fullWidth
-          label="Server"
-          on:change={e => {
-            selectedUsers = [];
-            selectedServer = e.detail
-          }}
-          selected={selectedServer}
-          placeholder="Select a server"
-          helperText={errors.server}
-          options={servers.map(s => {
-            return {
-              value: s._id,
-              name: s.name,
-              image: s.avatarUrl()
-            }
-          })}
-        />
+<Tracker deps={[selectedServer, selectedUsers]} fn={computation}>
+  <div class="root">
+    <StyledPaper title="Find common games between users">
+      <Autocomplete
+        fullWidth
+        label="Server"
+        on:change={e => {
+          selectedUsers = [];
+          selectedServer = e.detail
+        }}
+        selected={selectedServer}
+        placeholder="Select a server"
+        helperText={errors.server}
+        options={servers.map(s => {
+          return {
+            value: s._id,
+            name: s.name,
+            image: s.avatarUrl()
+          }
+        })}
+      />
 
-        <Autocomplete
-          fullWidth
-          label="Users"
-          multiple
-          on:change={e => selectedUsers = e.detail}
-          helperText={errors.users}
-          placeholder="Select users"
-          selected={selectedUsers}
-          options={users.map(s => {
-            return {
-              value: s._id,
-              name: s.services.discord.username,
-              image: s.avatarUrl
-            }
-          })}
-        />
-        {#if selectedServer}
-          {#if selectedUsers.length < 2}
-            Select more than 1 user
-          {:else}
-            {#if games.length === 0}
-              No common games! Make sure both users have connected their steam account.
-            {:else}
-              <FixedHeightList>
-                {#each games as game}
-                  <ListItem>
-                    <ListItemAvatar><Avatar src={game.iconUrl()} /></ListItemAvatar>
-                    <ListItemText>
-                      <ListItemPrimaryText>{game.name}</ListItemPrimaryText>
-                    </ListItemText>
-                  </ListItem>
-                {/each}
-              </FixedHeightList>
-            {/if}
-          {/if}
+      <Autocomplete
+        fullWidth
+        label="Users"
+        multiple
+        on:change={e => selectedUsers = e.detail}
+        helperText={errors.users}
+        placeholder="Select users"
+        selected={selectedUsers}
+        options={users.map(s => {
+          return {
+            value: s._id,
+            name: s.services.discord.username,
+            image: s.avatarUrl
+          }
+        })}
+      />
+      {#if selectedServer}
+        {#if selectedUsers.length < 2}
+          Select more than 1 user
         {:else}
-          Select a server
+          {#if games.length === 0}
+            No common games! Make sure both users have connected their steam account.
+          {:else}
+            <FixedHeightList>
+              {#each games as game}
+                <ListItem>
+                  <ListItemAvatar><Avatar src={game.iconUrl()} /></ListItemAvatar>
+                  <ListItemText>
+                    <ListItemPrimaryText>{game.name}</ListItemPrimaryText>
+                  </ListItemText>
+                </ListItem>
+              {/each}
+            </FixedHeightList>
+          {/if}
         {/if}
-        
-      </StyledPaper>
-    </div>
-  </Tracker>
-{:else}
-  <Loader />
-{/if}
+      {:else}
+        Select a server
+      {/if}
+
+    </StyledPaper>
+  </div>
+</Tracker>

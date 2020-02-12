@@ -1,22 +1,22 @@
 <script>
-  import {eventsReady, gamesReady, serversReady} from '../stores/subscriptionStores';
-  import {onDestroy} from 'svelte';
-  import {Event} from '/lib/Event';
+  import { eventsReady, gamesReady, serversReady } from '../stores/subscriptionStores';
+  import { onDestroy } from 'svelte';
+  import { Event } from '/lib/Event';
   import HeaderPaper from '../components/HeaderPaper';
   import Tracker from '../components/Tracker';
   import Button from '../components/Button';
-  import {Meteor} from 'meteor/meteor';
+  import { Meteor } from 'meteor/meteor';
   import StyledPaper from '../components/StyledPaper';
-  import {User} from '/lib/User';
+  import { User } from '/lib/User';
   import List from '../components/List';
   import ListItem from '../components/ListItem';
   import ListItemText from '../components/ListItemText';
   import ListItemPrimaryText from '../components/ListItemPrimaryText';
   import ListItemAvatar from '../components/ListItemAvatar';
   import Avatar from '../components/Avatar';
-  import {navigate} from 'svelte-routing';
-  import {format} from '../constants';
-  import {Link} from 'svelte-routing';
+  import { navigate } from 'svelte-routing';
+  import { format } from '../constants';
+  import { Link } from 'svelte-routing';
   import moment from 'moment';
   import Loader from '../components/Loader';
   import UserList from "../components/UserList.svelte";
@@ -39,9 +39,9 @@
   }
 
   function handleDelete() {
-    if (window.confirm("Are you sure?")) {
+    if(window.confirm("Are you sure?")) {
       event.destroy();
-      navigate('/profile', {replace: true});
+      navigate('/profile', { replace: true });
     }
   }
 
@@ -51,65 +51,61 @@
 
 </script>
 
-{#if $eventsReady && $gamesReady && $serversReady}
-  <Tracker deps={[id]} fn={computation}>
-    <StyledPaper title={event.name}>
-      <Link to={`/servers/${event.server()._id.toHexString()}`}>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar src={event.server().avatarUrl()} />
-          </ListItemAvatar>
-          <ListItemText>
-            <ListItemPrimaryText>{event.server().name}</ListItemPrimaryText>
-          </ListItemText>
-        </ListItem>
-      </Link>
-      <ListItem noHover>
+<Tracker deps={[id]} fn={computation}>
+  <StyledPaper title={event.name}>
+    <Link to={`/servers/${event.server()._id.toHexString()}`}>
+      <ListItem>
         <ListItemAvatar>
-          <Avatar src={event.game().iconUrl()} />
+          <Avatar src={event.server().avatarUrl()} />
         </ListItemAvatar>
         <ListItemText>
-          <ListItemPrimaryText>{event.game().name}</ListItemPrimaryText>
+          <ListItemPrimaryText>{event.server().name}</ListItemPrimaryText>
         </ListItemText>
       </ListItem>
-      <ListItem noHover>
-        <ListItemText>{momentDate.format(format)}</ListItemText>
-      </ListItem>
-      <ListItem noHover>
-        <ListItemText>
-          {#if duration.seconds() > 0}
-            Begins
-          {:else if duration.hours() > -3}
-            Began
-          {:else}
-            Ended
-          {/if}
-          {duration.humanize(true)}</ListItemText>
-      </ListItem>
-      <ListItem noHover>
-        <ListItemText>
-          <StyledPaper title="Description">
-            {event.description}
-          </StyledPaper>
+    </Link>
+    <ListItem noHover>
+      <ListItemAvatar>
+        <Avatar src={event.game().iconUrl()} />
+      </ListItemAvatar>
+      <ListItemText>
+        <ListItemPrimaryText>{event.game().name}</ListItemPrimaryText>
+      </ListItemText>
+    </ListItem>
+    <ListItem noHover>
+      <ListItemText>{momentDate.format(format)}</ListItemText>
+    </ListItem>
+    <ListItem noHover>
+      <ListItemText>
+        {#if duration.seconds() > 0}
+          Begins
+        {:else if duration.hours() > -3}
+          Began
+        {:else}
+          Ended
+        {/if}
+        {duration.humanize(true)}</ListItemText>
+    </ListItem>
+    <ListItem noHover>
+      <ListItemText>
+        <StyledPaper title="Description">
+          {event.description}
+        </StyledPaper>
 
-        </ListItemText>
-      </ListItem>
-    </StyledPaper>
-    <StyledPaper title="Actions">
-      {#if event.userIds.includes(Meteor.userId())}
-        <Button variant="warning" on:click={handleSignupToggle}>Cancel sign up</Button>
-      {:else}
-        <Button variant="primary" on:click={handleSignupToggle}>Sign up</Button>
-      {/if}
+      </ListItemText>
+    </ListItem>
+  </StyledPaper>
+  <StyledPaper title="Actions">
+  {#if event.userIds.includes(Meteor.userId())}
+    <Button variant="warning" on:click={handleSignupToggle}>Cancel sign up</Button>
+  {:else}
+    <Button variant="primary" on:click={handleSignupToggle}>Sign up</Button>
+  {/if}
 
-      {#if event.creatorId === Meteor.userId()}
-        <Button variant="error" on:click={handleDelete}>Delete</Button>
-      {/if}
-    </StyledPaper>
-    <StyledPaper title="Users signed up">
-      <UserList users="{users}" />
-    </StyledPaper>
-  </Tracker>
-{:else}
-  <Loader />
-{/if}
+    {#if event.creatorId === Meteor.userId()}
+      <Button variant="error" on:click={handleDelete}>Delete</Button>
+    {/if}
+  </StyledPaper>
+  <StyledPaper title="Users signed up">
+    <UserList users="{users}" />
+  </StyledPaper>
+</Tracker>

@@ -35,8 +35,8 @@
         });
       });
     }
-    
- 
+
+
     function styleForCount(count) {
         if (count === 0) {
             color = `rgb(100, 0, 0)`;
@@ -56,7 +56,7 @@
     }
 </script>
 
-<!-- I copied this from TimeTable.svelte. 
+<!-- I copied this from TimeTable.svelte.
     should figure out how to share these classes.
     Probably just a component with the styles that renders
     a slot
@@ -94,37 +94,34 @@
   }
 </style>
 
-{#if $usersReady}
-  <table>
-    <thead>
-      <tr>
-        <th colspan="2"></th>
-        {#each daysOfWeek as day}
-          <th align="center">{day}</th>
-        {/each}
-      </tr>
-    </thead>
-    <tbody>
-      {#each times as time}
-        <tr>
-          <td colspan="2">{time}</td>
-          {#each daysOfWeek as day}
-            <td 
-              class="availability-cell" 
-              class:nes-pointer={counts[`${day}${time}`] > 0}
-              style={styles[`${day}${time}`]}
-              on:click={() => showAvailableUsers(day, time)}
-            >
-              {counts[`${day}${time}`]}
-            </td>
-          {/each}
-        </tr>
+<table>
+<thead>
+  <tr>
+    <th colspan="2"></th>
+    {#each daysOfWeek as day}
+      <th align="center">{day}</th>
+    {/each}
+  </tr>
+</thead>
+<tbody>
+  {#each times as time}
+    <tr>
+      <td colspan="2">{time}</td>
+      {#each daysOfWeek as day}
+        <td
+          class="availability-cell"
+          class:nes-pointer={counts[`${day}${time}`] > 0}
+          style={styles[`${day}${time}`]}
+          on:click={() => showAvailableUsers(day, time)}
+        >
+          {counts[`${day}${time}`]}
+        </td>
       {/each}
-    </tbody>
-  </table>
-{:else}
-  <Loader />
-{/if}
+    </tr>
+  {/each}
+</tbody>
+</table>
+
 
 <Dialog open={modalOpen} title="Available users" on:close={() => modalOpen = false}>
   <p>{localTime}</p>

@@ -26,7 +26,7 @@
                 users = server.users().fetch();
             }
         }
-        
+
     });
 
     onDestroy(() => computation.stop());
@@ -38,22 +38,18 @@
     currentCutoff.setHours(currentCutoff.getHours() + 3);
 </script>
 
-{#if $serversReady}
-    <HeaderPaper title={server.name} imgUrl={server.avatarUrl()} />
-    <StyledPaper title="Actions">
-        <Button on:click={() => webhookDialogOpen = true}>Manage Webhooks</Button>
-    </StyledPaper>
-    <div class="columns is-multiline">
-        <div class="column">
-            <EventsPaper events={events} />
-        </div>
-        <div class="column">
-            <StyledPaper title="User availability">
-                <UserAvailabilityTable users={users}/>
-            </StyledPaper>
-        </div>
+<HeaderPaper title={server.name} imgUrl={server.avatarUrl()} />
+<StyledPaper title="Actions">
+    <Button on:click={() => webhookDialogOpen = true}>Manage Webhooks</Button>
+</StyledPaper>
+<div class="columns is-multiline">
+    <div class="column">
+        <EventsPaper events={events} />
     </div>
-    <WebhookDialog open={webhookDialogOpen} on:close={() => webhookDialogOpen = false} serverId={server._id} />
-{:else}
-    <Loader />
-{/if}
+    <div class="column">
+        <StyledPaper title="User availability">
+            <UserAvailabilityTable users={users}/>
+        </StyledPaper>
+    </div>
+</div>
+<WebhookDialog open={webhookDialogOpen} on:close={() => webhookDialogOpen = false} serverId={server._id} />

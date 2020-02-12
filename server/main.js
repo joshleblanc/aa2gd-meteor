@@ -20,8 +20,13 @@ const discordReq = function(path, token) {
 
 Meteor.publish('currentUser', function() {
   if(this.userId) {
-    return Meteor.users.find({
-      _id: this.userId
+    const user = Meteor.users.findOne(this.userId);
+    const users = Meteor.users.find({
+      servers: {
+        $elemMatch: {
+          $in: user.servers
+        }
+      }
     }, {
       fields: {
         servers: 1,
@@ -39,7 +44,19 @@ Meteor.publish('currentUser', function() {
         timeTable: 1,
         avatarUrl: 1
       }
-    })
+    });
+    const servers = Server.find({
+      _id: {
+        $in: user.servers
+      }
+    });
+    const events = Event.find({
+      serverId: {
+        $in: user.servers
+      }
+    });
+    const games = Game.find({}, { sort: { name: 1 }});
+    return [users, servers, events, games];
   } else {
     this.ready();
   }
@@ -55,66 +72,11 @@ Meteor.publish('webhooks', function() {
   }
 });
 
-Meteor.publish('users', function(servers) {
-  if(this.userId) {
-    return Meteor.users.find({
-      servers: {
-        $elemMatch: {
-          $in: servers
-        }
-      }
-    }, {
-      fields: {
-        timeTable: 1,
-        services: 1,
-        alwaysAvailable: 1,
-        servers: 1,
-        games: 1,
-        avatarUrl: 1
-      }
-    })
-  } else {
-    this.ready();
-  }
-});
-
-Meteor.publish('events', function(servers) {
-  if(this.userId) {
-    return Event.find({
-      serverId: {
-        $in: servers
-      }
-    });
-  } else {
-    this.ready();
-  }
-});
-
 Meteor.publish('event', function(id) {
   const event = Event.find({ _id: id });
   const users = Event.findOne({_id: id}).users();
 
   return [event, users];
-});
-
-Meteor.publish("servers", function(ids) {
-  if(this.userId) {
-    return Server.find({
-      _id: {
-        $in: ids
-      }
-    });
-  } else {
-    this.ready();
-  }
-});
-
-Meteor.publish("games", function(ids) {
-  if(this.userId) {
-    return Game.find({}, { sort: { name: 1 }})
-  } else {
-    this.ready();
-  }
 });
 
 User.extend({

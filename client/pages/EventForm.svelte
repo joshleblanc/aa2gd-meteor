@@ -145,80 +145,76 @@
     }
 </style>
 
-{#if $gamesReady && $serversReady && $usersReady}
-    <div class="root">
-        <StyledPaper title="Create a new event!">
-            <TextField 
-                label="Name" 
-                fullWidth 
-                value={event.name}
-                on:input={e => event.name = e.target.value} 
-                helperText={errors.name}
-            />
-            <TextArea
-                fullWidth
-                label="Description"
-                value="{event.description}"
-                on:input={e => event.description = e.target.value}
-                helperText="{errors.description}"
-            />
-            <Autocomplete 
-                fullWidth
-                helperText={errors.serverId}
-                label="Server"
-                selected={selectedServer}
-                on:change={handleServerChange}
-                placeholder="Select a server"
-                options={servers.map(s => {
-                    return {
-                        value: s._id,
-                        name: s.name,
-                        image: s.avatarUrl()
-                    }
-                })}
-            />
-            <Autocomplete
-                fullWidth
-                label="Game"
-                helperText={errors.gameId}
-                selected={selectedGame}
-                on:change={handleGameChange}
-                placeholder="Select a game"
-                loading="{loadingGames}"
-                options={
-                    games.sort((a,b) => counts[b._id] && counts[a._id] ? counts[b._id].length - counts[a._id].length : 0).map(g => {
-                        return {
-                            value: g._id,
-                            name: g.name,
-                            count: counts[g._id],
-                            image: makeUrl(g.appid, g.img_icon_url)
-                        }
-                    })
+<div class="root">
+    <StyledPaper title="Create a new event!">
+        <TextField
+            label="Name"
+            fullWidth
+            value={event.name}
+            on:input={e => event.name = e.target.value}
+            helperText={errors.name}
+        />
+        <TextArea
+            fullWidth
+            label="Description"
+            value="{event.description}"
+            on:input={e => event.description = e.target.value}
+            helperText="{errors.description}"
+        />
+        <Autocomplete
+            fullWidth
+            helperText={errors.serverId}
+            label="Server"
+            selected={selectedServer}
+            on:change={handleServerChange}
+            placeholder="Select a server"
+            options={servers.map(s => {
+                return {
+                    value: s._id,
+                    name: s.name,
+                    image: s.avatarUrl()
                 }
-            >
-                <div slot="adornment" let:option={option}>
-                    {#if selectedServer}
-                        <div  class="adornment" on:click={e => handleAdornmentClick(e, option.value)}>
-                            <ListItemAvatar>
-                                <Icon>
-                                    <i class="far fa-user"></i>
-                                </Icon>
-                                {counts[option.value].length}
-                            </ListItemAvatar>
-                        </div>
-                    {/if}
-                </div>
-            </Autocomplete>
-            <Timepicker on:change={e => event.date = e.detail } value={event.date} helperText={errors.date} />
-            {#if event.serverId && event.gameId && event.date}
-                <p>There are {availableUsers} users available for that server, game, and date.</p>
-            {/if}
-            <Button variant="primary" on:click={submit} disabled={!formValid}>Submit</Button>
-        </StyledPaper>
-    </div>
-    <Dialog open="{!!selectedGameUsers}" on:close={() => selectedGameUsers = null} title="Users">
-        <UserList users="{counts[selectedGameUsers]}" />
-    </Dialog>
-{:else}
-    <Loader />
-{/if}
+            })}
+        />
+        <Autocomplete
+            fullWidth
+            label="Game"
+            helperText={errors.gameId}
+            selected={selectedGame}
+            on:change={handleGameChange}
+            placeholder="Select a game"
+            loading="{loadingGames}"
+            options={
+                games.sort((a,b) => counts[b._id] && counts[a._id] ? counts[b._id].length - counts[a._id].length : 0).map(g => {
+                    return {
+                        value: g._id,
+                        name: g.name,
+                        count: counts[g._id],
+                        image: makeUrl(g.appid, g.img_icon_url)
+                    }
+                })
+            }
+        >
+            <div slot="adornment" let:option={option}>
+                {#if selectedServer}
+                    <div  class="adornment" on:click={e => handleAdornmentClick(e, option.value)}>
+                        <ListItemAvatar>
+                            <Icon>
+                                <i class="far fa-user"></i>
+                            </Icon>
+                            {counts[option.value].length}
+                        </ListItemAvatar>
+                    </div>
+                {/if}
+            </div>
+        </Autocomplete>
+        <Timepicker on:change={e => event.date = e.detail } value={event.date} helperText={errors.date} />
+        {#if event.serverId && event.gameId && event.date}
+            <p>There are {availableUsers} users available for that server, game, and date.</p>
+        {/if}
+        <Button variant="primary" on:click={submit} disabled={!formValid}>Submit</Button>
+    </StyledPaper>
+</div>
+<Dialog open="{!!selectedGameUsers}" on:close={() => selectedGameUsers = null} title="Users">
+    <UserList users="{counts[selectedGameUsers]}" />
+</Dialog>
