@@ -35,6 +35,7 @@
     let games = [];
     let servers = [];
     let user;
+    let users = [];
     let event = new Event();
     let loadingGames = false;
     let selectedGameUsers = null;
@@ -49,28 +50,17 @@
             event.creatorId = user._id;
             servers = user.getServers().fetch();
             games = Game.find({}).fetch();
+            users = User.find({}).fetch();
         }
     });
 
     const gameUsers = (serverId, gameId) => {
-        return User.find({
-            games: {
-                $elemMatch: {
-                    $eq: gameId
-                }
-            },
-            servers: {
-                $elemMatch: {
-                    $eq: serverId
-                }
-            }
-        }).fetch();
+      return users.filter(u => u.games.some(g => g.equals(gameId)) && u.servers.some(s => s.equals(serverId))).length;
     };
 
     const counts = {};
 
     $: availableUsers = event.availableUsers();
-
 
     function setErrors(error) {
         formValid = false;
@@ -103,11 +93,10 @@
     const handleServerChange = e => {
         selectedServer = e.detail;
         event.serverId = selectedServer.value;
-        Meteor.defer(() => {
-            games.forEach(g => {
-                counts[g._id] = gameUsers(event.serverId, g._id);
-            });
+        games.forEach(g => {
+            counts[g._id] = gameUsers(event.serverId, g._id);
         });
+        games = games.sort((a,b) => counts[b._id] && counts[a._id] ? counts[b._id] - counts[a._id] : 0)
     };
 
     const handleAdornmentClick = (e, id) => {
@@ -123,6 +112,7 @@
     function submit() {
         event.insert(id => navigate(`/events/${id.toHexString()}`), null);
     }
+
 </script>
 
 <style>
@@ -185,7 +175,7 @@
             placeholder="Select a game"
             loading="{loadingGames}"
             options={
-                games.sort((a,b) => counts[b._id] && counts[a._id] ? counts[b._id].length - counts[a._id].length : 0).map(g => {
+                games.map(g => {
                     return {
                         value: g._id,
                         name: g.name,
@@ -202,7 +192,7 @@
                             <Icon>
                                 <i class="far fa-user"></i>
                             </Icon>
-                            {counts[option.value].length}
+                            {counts[option.value]}
                         </ListItemAvatar>
                     </div>
                 {/if}

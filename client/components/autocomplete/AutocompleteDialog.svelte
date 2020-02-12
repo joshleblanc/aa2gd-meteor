@@ -23,7 +23,7 @@
     let search = "";
     let filteredOptions = [];
     $: {
-        const limit = 25;
+        const limit = 10;
         const selectedOptions = options.filter(o => o.name && o.name.toLowerCase().startsWith(search.toLowerCase()));
         filteredOptions = selectedOptions.slice(0, limit);
     }
@@ -38,9 +38,6 @@
 
         }
     }
-
-    $: console.log(selected, multiple);
-
 </script>
 
 <style>
