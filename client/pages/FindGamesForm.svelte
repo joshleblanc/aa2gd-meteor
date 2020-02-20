@@ -43,7 +43,6 @@
   }
 
   $: {
-    console.log(selectedUsers);
     removeErrors();
     schema.validate({
       server: selectedServer,

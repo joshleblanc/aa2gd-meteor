@@ -173,7 +173,7 @@
             on:change={handleGameChange}
             placeholder="Select a game"
             loading="{loadingGames}"
-            sortingFn={(a,b) => counts[b._id] && counts[a._id] ? counts[b._id] - counts[a._id] : 0}
+            sortingFn={(a,b) => counts[b.value] !== undefined && counts[a.value] !== undefined ? counts[b.value] - counts[a.value] : 0}
             options={
                 games.map(g => {
                     return {
