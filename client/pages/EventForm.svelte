@@ -96,7 +96,6 @@
         games.forEach(g => {
             counts[g._id] = gameUsers(event.serverId, g._id);
         });
-        games = games.sort((a,b) => counts[b._id] && counts[a._id] ? counts[b._id] - counts[a._id] : 0)
     };
 
     const handleAdornmentClick = (e, id) => {
@@ -174,6 +173,7 @@
             on:change={handleGameChange}
             placeholder="Select a game"
             loading="{loadingGames}"
+            sortingFn={(a,b) => counts[b._id] && counts[a._id] ? counts[b._id] - counts[a._id] : 0}
             options={
                 games.map(g => {
                     return {

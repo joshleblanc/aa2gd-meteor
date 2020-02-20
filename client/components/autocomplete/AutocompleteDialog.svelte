@@ -17,6 +17,7 @@
     export let options = [];
     export let multiple = false;
     export let selected = [];
+    export let sortingFn = null;
 
     const dispatch = createEventDispatcher();
 
@@ -25,7 +26,12 @@
     $: {
         const limit = 10;
         const selectedOptions = options.filter(o => o.name && o.name.toLowerCase().startsWith(search.toLowerCase()));
-        filteredOptions = selectedOptions.slice(0, limit);
+        if(sortingFn) {
+            filteredOptions = selectedOptions.sort(sortingFn).slice(0, limit);
+        } else {
+            filteredOptions = selectedOptions.slice(0, limit);
+        }
+
     }
 
     function selectItem(option) {

@@ -13,6 +13,7 @@
   export let options = [];
   export let name = "";
   export let loading = false;
+  export let sortingFn = null;
 
   export let selected;
 
@@ -55,6 +56,7 @@
     multiple={multiple}
     on:close={() => modalOpen = false}
     selected={selected}
+    sortingFn={sortingFn}
     on:change={item => {
       const selectedItem = options.find(o => o.value === item.detail);
       if(multiple) {
