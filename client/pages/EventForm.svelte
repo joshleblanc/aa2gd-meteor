@@ -206,5 +206,5 @@
     </StyledPaper>
 </div>
 <Dialog open="{!!selectedGameUsers}" on:close={() => selectedGameUsers = null} title="Users">
-    <UserList users="{counts[selectedGameUsers]}" />
+    <UserList users="{User.find({ games: { $elemMatch: { $eq: selectedGameUsers }}}).fetch()}" />
 </Dialog>
