@@ -27,6 +27,7 @@
     import ListItemAvatar from "../components/ListItemAvatar.svelte";
     import Icon from "../components/Icon.svelte";
     import UserList from "../components/UserList.svelte";
+    import GamesAutocomplete from "../components/event_form/GamesAutocomplete.svelte";
 
     let errors = {};
     let formValid = false;
@@ -39,23 +40,29 @@
     let event = new Event();
     let loadingGames = false;
     let selectedGameUsers = null;
+    let gameSearch = "";
+    const dep = new Tracker.Dependency;
+
+    let gameSearchHandle;
 
     event.date = new Date();
     event.date.setMinutes(0);
     event.date.setSeconds(0);
 
     const computation = Tracker.autorun(() => {
+        dep.depend();
+        console.log("Running");
         user = User.current();
+
         if (user) {
             event.creatorId = user._id;
             servers = user.getServers().fetch();
-            games = Game.find({}).fetch();
             users = User.find({}).fetch();
         }
     });
 
     const gameUsers = (serverId, gameId) => {
-      return users.filter(u => u.games.some(g => g.equals(gameId)) && u.servers.some(s => s.equals(serverId))).length;
+        return users.filter(u => u.games.some(g => g.equals(gameId)) && u.servers.some(s => s.equals(serverId))).length;
     };
 
     const counts = {};
@@ -96,6 +103,7 @@
         games.forEach(g => {
             counts[g._id] = gameUsers(event.serverId, g._id);
         });
+        dep.changed();
     };
 
     const handleAdornmentClick = (e, id) => {
@@ -112,6 +120,12 @@
         event.insert(id => navigate(`/events/${id.toHexString()}`), null);
     }
 
+    function handleGameSearchChange(e) {
+        console.log("Changing", e.detail);
+        gameSearch = e.detail;
+        dep.changed();
+    }
+
 </script>
 
 <style>
@@ -119,18 +133,6 @@
       max-width: 496px;
       margin-left: auto;
       margin-right: auto;
-    }
-
-    .adornment {
-        height: 40px;
-        display: flex;
-        align-content: center;
-        align-items: center;
-        padding: 8px;
-    }
-
-    .adornment:hover {
-        background-color: rgba(0,0,0,0.08);
     }
 </style>
 
@@ -165,39 +167,7 @@
                 }
             })}
         />
-        <Autocomplete
-            fullWidth
-            label="Game"
-            helperText={errors.gameId}
-            selected={selectedGame}
-            on:change={handleGameChange}
-            placeholder="Select a game"
-            loading="{loadingGames}"
-            sortingFn={(a,b) => counts[b.value] !== undefined && counts[a.value] !== undefined ? counts[b.value] - counts[a.value] : 0}
-            options={
-                games.map(g => {
-                    return {
-                        value: g._id,
-                        name: g.name,
-                        count: counts[g._id],
-                        image: makeUrl(g.appid, g.img_icon_url)
-                    }
-                })
-            }
-        >
-            <div slot="adornment" let:option={option}>
-                {#if selectedServer}
-                    <div  class="adornment" on:click={e => handleAdornmentClick(e, option.value)}>
-                        <ListItemAvatar>
-                            <Icon>
-                                <i class="far fa-user"></i>
-                            </Icon>
-                            {counts[option.value]}
-                        </ListItemAvatar>
-                    </div>
-                {/if}
-            </div>
-        </Autocomplete>
+        <GamesAutocomplete on:change={handleGameChange} serverId="{event.serverId}"/>
         <Timepicker on:change={e => event.date = e.detail } value={event.date} helperText={errors.date} />
         {#if event.serverId && event.gameId && event.date}
             <p>There are {availableUsers} users available for that server, game, and date.</p>
@@ -205,6 +175,3 @@
         <Button variant="primary" on:click={submit} disabled={!formValid}>Submit</Button>
     </StyledPaper>
 </div>
-<Dialog open="{!!selectedGameUsers}" on:close={() => selectedGameUsers = null} title="Users">
-    <UserList users="{User.find({ games: { $elemMatch: { $eq: selectedGameUsers } }, servers: { $elemMatch: { $eq: selectedServer.value }}}).fetch()}" />
-</Dialog>

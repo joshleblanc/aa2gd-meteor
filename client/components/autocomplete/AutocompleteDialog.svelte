@@ -44,6 +44,11 @@
 
         }
     }
+
+    function onSearchChange(e) {
+        search = e.target.value;
+        dispatch('searchChange', e.target.value);
+    }
 </script>
 
 <style>
@@ -60,7 +65,7 @@
 
 <Dialog open={open} title={title} on:close>
     <div class="list-container">
-        <TextField on:input={e => search = e.target.value} value={search} fullWidth autoFocus/>
+        <TextField on:input={onSearchChange} value={search} fullWidth autoFocus/>
         <p>Type something to search</p>
         <div class="list-container">
             <List>

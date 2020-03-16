@@ -55,8 +55,43 @@ Meteor.publish('currentUser', function() {
         $in: user.servers
       }
     });
-    const games = Game.find({}, { sort: { name: 1 }});
-    return [users, servers, events, games];
+    return [users, servers, events];
+  } else {
+    this.ready();
+  }
+});
+
+Meteor.publish('games', function(search, serverId) {
+  if(this.userId) {
+    const games = Game.find({
+      name: new RegExp(`^${search}`, "i")
+    }).fetch();
+    console.log(serverId);
+    if(serverId) {
+      const counts = {};
+      const users = Meteor.users.find({
+        servers: {
+          $elemMatch: {
+            $eq: serverId
+          }
+        }
+      }).fetch();
+      games.forEach(game => {
+        counts[game._id] = users.filter(u => u.games.some(g => g.equals(game._id)) && u.servers.some(s => s.equals(serverId))).length;
+      });
+      const ids = games.sort((a,b) => counts[b.value] !== undefined && counts[a.value] !== undefined ? counts[b.value] - counts[a.value] : 0);
+      console.log(ids.slice(0, 20).map(g => g._id))
+      return Game.find({
+        _id: {
+          $in: ids.slice(0, 20).map(g => g._id)
+        }
+      })
+    }
+    return Game.find({
+      name: new RegExp(`^${search}`, "i")
+    }, {
+      limit: 20
+    });
   } else {
     this.ready();
   }
