@@ -1,5 +1,5 @@
 import { User } from '../lib/User';
-import { Game } from '../lib/Game';
+import { Games } from '../lib/Game';
 
 Migrations.add({
     version: 1,
@@ -24,14 +24,14 @@ Migrations.add({
     version: 2,
     name: "Remove unused data",
     up: function() {
-        Game.update({}, {
+        Games.update({}, {
             $unset: {
-                playtime_forever: 1,
-                has_community_visible_stats: 1,
-                playtime_windows_forever: 1,
-                playtime_mac_forever: 1,
-                playtime_linux_forever: 1,
-                playtime_2weeks: 1
+                playtime_forever: "",
+                has_community_visible_stats: "",
+                playtime_windows_forever: "",
+                playtime_mac_forever: "",
+                playtime_linux_forever: "",
+                playtime_2weeks: ""
             }
         }, {
             multi: true

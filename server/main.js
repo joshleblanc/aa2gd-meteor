@@ -3,7 +3,7 @@ import { User } from '../lib/User';
 import { Server, Servers } from '../lib/Server';
 import { Game } from '../lib/Game';
 import { Event } from '/lib/Event';
-import { getGames } from '/lib/utils';
+import { getGames, getAllGames } from '/lib/utils';
 import { Webhook } from '/lib/Webhook';
 import SteamID from 'steamid';
 import './migrations';
@@ -143,7 +143,15 @@ SyncedCron.add({
   job: () => {
     Event.sendReminders();
   }
-})
+});
+
+SyncedCron.add({
+  name: "Sync steam games",
+  schedule: parser => parser.text("every 24 hours"),
+  job: () => {
+    getAllGames();
+  }
+});
 
 Meteor.startup(() => {
   Migrations.migrateTo('latest');
