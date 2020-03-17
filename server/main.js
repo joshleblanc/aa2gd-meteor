@@ -66,6 +66,13 @@ Meteor.publish('currentUser', function() {
   }
 });
 
+Meteor.publish('common_games', function(users) {
+  if(!this.userId) {
+    throw new Meteor.Error("Not Authorized");
+  }
+  return Game.findCommon(users);
+});
+
 Meteor.publish('games', function(search, serverId) {
   console.log("Running games publication");
   if(this.userId) {

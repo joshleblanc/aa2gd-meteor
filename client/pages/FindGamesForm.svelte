@@ -68,6 +68,7 @@
             }
           }).fetch();
           if(selectedUserModels.length > 1) {
+            Meteor.subscribe('common_games', selectedUserModels);
             games = Game.findCommon(selectedUserModels).fetch();
           } else {
             games = [];
