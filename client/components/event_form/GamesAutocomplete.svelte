@@ -41,6 +41,10 @@
         }, 600);
     }
 
+    const gameUsers = (serverId, gameId) => {
+        return users.filter(u => u.games.some(g => g.equals(gameId)) && u.servers.some(s => s.equals(serverId))).length;
+    };
+
     Tracker.autorun(() => {
         console.log("Tracker running");
         dep.depend();
@@ -62,10 +66,6 @@
         });
     });
 
-
-    const gameUsers = (serverId, gameId) => {
-        return users.filter(u => u.games.some(g => g.equals(gameId)) && u.servers.some(s => s.equals(serverId))).length;
-    };
 
     function handleSearchChange(e) {
       search = e.detail;
