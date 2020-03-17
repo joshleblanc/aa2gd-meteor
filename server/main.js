@@ -84,8 +84,16 @@ Meteor.publish('games', function(search, serverId) {
         hint: "name_text"
       }).fetch();
     } else {
-      console.log("fetching games");
-      games = Game.find({}, { hint: { _id: 1 }}).fetch();
+      console.log("fetching games", serverId);
+      if(serverId) {
+        games = Game.find({
+          _id: {
+            $in: Server.findOne({ _id: serverId }).users().map(u => u.games).flat()
+          }
+        }).fetch();
+      } else {
+        games = Game.find({}, { hint: { _id: 1 }}).fetch();
+      }
       console.log("done");
     }
     if(serverId) {
