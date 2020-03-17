@@ -91,8 +91,6 @@ Meteor.publish('games', function(search, serverId) {
             $in: Server.findOne({ _id: serverId }).users().map(u => u.games).flat()
           }
         }).fetch();
-      } else {
-        games = Game.find({}, { hint: { _id: 1 }}).fetch();
       }
       console.log("done");
     }
