@@ -62,11 +62,20 @@ Meteor.publish('currentUser', function() {
 });
 
 Meteor.publish('games', function(search, serverId) {
+  console.log("Running games publication");
   if(this.userId) {
-    const games = Game.find({
-      name: new RegExp(`^${search}`, "i")
-    }).fetch();
-    console.log(serverId);
+    let games;
+    if(search.length > 0) {
+      games = Game.find({
+        name: new RegExp(`^${search}`, "i")
+      }, {
+        hint: "name_text"
+      }).fetch();
+    } else {
+      console.log("fetching games");
+      games = Game.find({}, { hint: { _id: 1 }}).fetch();
+      console.log("done");
+    }
     if(serverId) {
       const counts = {};
       const users = Meteor.users.find({
@@ -79,8 +88,12 @@ Meteor.publish('games', function(search, serverId) {
       games.forEach(game => {
         counts[game._id] = users.filter(u => u.games.some(g => g.equals(game._id)) && u.servers.some(s => s.equals(serverId))).length;
       });
-      const ids = games.sort((a,b) => counts[b.value] !== undefined && counts[a.value] !== undefined ? counts[b.value] - counts[a.value] : 0);
-      console.log(ids.slice(0, 20).map(g => g._id))
+      const ids = games.sort((a,b) => {
+        const c = counts[a._id] === undefined ? 0 : counts[a._id];
+        const d = counts[b._id] === undefined ? 0 : counts[b._id];
+        return d - c;
+      });
+
       return Game.find({
         _id: {
           $in: ids.slice(0, 20).map(g => g._id)

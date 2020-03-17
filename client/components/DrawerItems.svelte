@@ -19,7 +19,6 @@
   import Avatar from './Avatar';
   import { Link } from 'svelte-routing';
   import Loader from './Loader';
-  import { eventsReady, gamesReady, serversReady } from '../stores/subscriptionStores';
 
 
   let events = [];

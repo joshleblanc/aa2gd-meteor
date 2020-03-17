@@ -39,3 +39,16 @@ Migrations.add({
     },
     down: function() {}
 });
+
+Migrations.add({
+    version: 3,
+    name: "Add index to game names",
+    up: function() {
+        Games.rawCollection().createIndex({ name: "text" });
+        Games.rawCollection().createIndex({ appid: 1 });
+    },
+    down: function() {
+        Games.rawCollection().dropIndex("name_text");
+        Games.rawCollection().dropIndex({ appid: 1 });
+    }
+});

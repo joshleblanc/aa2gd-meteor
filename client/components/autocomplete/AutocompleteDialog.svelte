@@ -18,6 +18,7 @@
     export let multiple = false;
     export let selected = [];
     export let sortingFn = null;
+    export let loading = false;
 
     const dispatch = createEventDispatcher();
 
@@ -66,7 +67,11 @@
 <Dialog open={open} title={title} on:close>
     <div class="list-container">
         <TextField on:input={onSearchChange} value={search} fullWidth autoFocus/>
-        <p>Type something to search</p>
+        {#if loading}
+            <p>Searching...</p>
+        {:else}
+            <p>Type something to search</p>
+        {/if}
         <div class="list-container">
             <List>
                 {#each filteredOptions as option}
@@ -77,7 +82,7 @@
                                     <Avatar src={option.image} />
                                 {:else}
                                     <Avatar>
-                                        {option.name.split(' ').map(c => c[0].toUpperCase()).join('')}
+                                        {option.name.split(' ').map(c => c[0].toUpperCase()).slice(0, 2).join('')}
                                     </Avatar>
                                 {/if}
                             </ListItemAvatar>

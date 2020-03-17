@@ -38,10 +38,6 @@
     let user;
     let users = [];
     let event = new Event();
-    let loadingGames = false;
-    let selectedGameUsers = null;
-    let gameSearch = "";
-    const dep = new Tracker.Dependency;
 
     let gameSearchHandle;
 
@@ -50,7 +46,6 @@
     event.date.setSeconds(0);
 
     const computation = Tracker.autorun(() => {
-        dep.depend();
         console.log("Running");
         user = User.current();
 
@@ -60,12 +55,6 @@
             users = User.find({}).fetch();
         }
     });
-
-    const gameUsers = (serverId, gameId) => {
-        return users.filter(u => u.games.some(g => g.equals(gameId)) && u.servers.some(s => s.equals(serverId))).length;
-    };
-
-    const counts = {};
 
     $: availableUsers = event.availableUsers();
 
@@ -100,16 +89,6 @@
     const handleServerChange = e => {
         selectedServer = e.detail;
         event.serverId = selectedServer.value;
-        games.forEach(g => {
-            counts[g._id] = gameUsers(event.serverId, g._id);
-        });
-        dep.changed();
-    };
-
-    const handleAdornmentClick = (e, id) => {
-        console.log(e, id);
-        e.stopPropagation();
-        selectedGameUsers = id;
     };
 
     onDestroy(() => {
@@ -119,13 +98,6 @@
     function submit() {
         event.insert(id => navigate(`/events/${id.toHexString()}`), null);
     }
-
-    function handleGameSearchChange(e) {
-        console.log("Changing", e.detail);
-        gameSearch = e.detail;
-        dep.changed();
-    }
-
 </script>
 
 <style>
@@ -167,8 +139,8 @@
                 }
             })}
         />
-        <GamesAutocomplete on:change={handleGameChange} serverId="{event.serverId}"/>
-        <Timepicker on:change={e => event.date = e.detail } value={event.date} helperText={errors.date} />
+        <GamesAutocomplete on:change={handleGameChange} serverId="{event.serverId}" selected="{selectedGame}"/>
+        <Timepicker on:change="{e => event.date = e.detail }" value={event.date} helperText={errors.date} />
         {#if event.serverId && event.gameId && event.date}
             <p>There are {availableUsers} users available for that server, game, and date.</p>
         {/if}

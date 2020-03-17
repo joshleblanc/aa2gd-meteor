@@ -54,6 +54,7 @@
     open={modalOpen}
     label={label}
     multiple={multiple}
+    loading="{loading}"
     on:close={() => modalOpen = false}
     selected={selected}
     sortingFn={sortingFn}
