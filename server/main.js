@@ -55,7 +55,12 @@ Meteor.publish('currentUser', function() {
         $in: user.servers
       }
     });
-    return [users, servers, events];
+    const games = Game.find({
+      _id: {
+        $in: events.fetch().map(e => e._id)
+      }
+    });
+    return [users, servers, events, games];
   } else {
     this.ready();
   }
