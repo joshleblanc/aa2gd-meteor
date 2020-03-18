@@ -1,25 +1,26 @@
 <script>
-  import { eventsReady, gamesReady, serversReady } from '../stores/subscriptionStores';
-  import { onDestroy } from 'svelte';
-  import { Event } from '/lib/Event';
+  import {eventsReady, gamesReady, serversReady} from '../stores/subscriptionStores';
+  import {onDestroy} from 'svelte';
+  import {Event} from '/lib/Event';
   import HeaderPaper from '../components/HeaderPaper';
   import Tracker from '../components/Tracker';
   import Button from '../components/Button';
-  import { Meteor } from 'meteor/meteor';
+  import {Meteor} from 'meteor/meteor';
   import StyledPaper from '../components/StyledPaper';
-  import { User } from '/lib/User';
+  import {User} from '/lib/User';
   import List from '../components/List';
   import ListItem from '../components/ListItem';
   import ListItemText from '../components/ListItemText';
   import ListItemPrimaryText from '../components/ListItemPrimaryText';
   import ListItemAvatar from '../components/ListItemAvatar';
   import Avatar from '../components/Avatar';
-  import { navigate } from 'svelte-routing';
-  import { format } from '../constants';
-  import { Link } from 'svelte-routing';
+  import {navigate} from 'svelte-routing';
+  import {format} from '../constants';
+  import {Link} from 'svelte-routing';
   import moment from 'moment';
   import Loader from '../components/Loader';
   import UserList from "../components/UserList.svelte";
+  import SteamStoreWidget from "../components/SteamStoreWidget.svelte";
 
   export let id;
 
@@ -39,9 +40,9 @@
   }
 
   function handleDelete() {
-    if(window.confirm("Are you sure?")) {
+    if (window.confirm("Are you sure?")) {
       event.destroy();
-      navigate('/profile', { replace: true });
+      navigate('/profile', {replace: true});
     }
   }
 
@@ -53,38 +54,48 @@
 
 <Tracker deps={[id]} fn={computation}>
   <StyledPaper title={event.name}>
-    <Link to={`/servers/${event.server()._id.toHexString()}`}>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar src={event.server().avatarUrl()} />
-        </ListItemAvatar>
-        <ListItemText>
-          <ListItemPrimaryText>{event.server().name}</ListItemPrimaryText>
-        </ListItemText>
-      </ListItem>
-    </Link>
-    <ListItem noHover>
-      <ListItemAvatar>
-        <Avatar src={event.game().iconUrl()} />
-      </ListItemAvatar>
-      <ListItemText>
-        <ListItemPrimaryText>{event.game().name}</ListItemPrimaryText>
-      </ListItemText>
-    </ListItem>
-    <ListItem noHover>
-      <ListItemText>{momentDate.format(format)}</ListItemText>
-    </ListItem>
-    <ListItem noHover>
-      <ListItemText>
-        {#if duration.seconds() > 0}
-          Begins
-        {:else if duration.hours() > -3}
-          Began
-        {:else}
-          Ended
-        {/if}
-        {duration.humanize(true)}</ListItemText>
-    </ListItem>
+    <div class="columns">
+      <div class="column">
+        <Link to={`/servers/${event.server()._id.toHexString()}`}>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar src={event.server().avatarUrl()} />
+            </ListItemAvatar>
+            <ListItemText>
+              <ListItemPrimaryText>{event.server().name}</ListItemPrimaryText>
+            </ListItemText>
+          </ListItem>
+        </Link>
+        <ListItem noHover>
+          <ListItemAvatar>
+            <Avatar src={event.game().iconUrl()} />
+          </ListItemAvatar>
+          <ListItemText>
+            <ListItemPrimaryText>{event.game().name}</ListItemPrimaryText>
+          </ListItemText>
+        </ListItem>
+        <ListItem noHover>
+          <ListItemText>{momentDate.format(format)}</ListItemText>
+        </ListItem>
+        <ListItem noHover>
+          <ListItemText>
+            {#if duration.seconds() > 0}
+              Begins
+            {:else if duration.hours() > -3}
+              Began
+            {:else}
+              Ended
+            {/if}
+            {duration.humanize(true)}</ListItemText>
+        </ListItem>
+      </div>
+      <div class="column">
+        <ListItem noHover>
+          <SteamStoreWidget appid="{event.game().appid}" />
+        </ListItem>
+      </div>
+    </div>
+
     <ListItem noHover>
       <ListItemText>
         <StyledPaper title="Description">
