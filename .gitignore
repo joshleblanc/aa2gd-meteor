@@ -1,5 +1,6 @@
 node_modules/
 settings.json
 deploy-app-config.json
-yarn-error.log 
+yarn-error.log
 idea
+.vscode
